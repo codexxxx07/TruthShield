@@ -1,0 +1,232 @@
+/* ---------------------------------------------------------------
+   Motion primitives. All animation is opt-out for reduced motion.
+---------------------------------------------------------------- */
+@keyframes ts-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ts-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ts-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ts-slide-left {
+  from {
+    opacity: 0;
+    transform: translate3d(24px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes ts-sweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ts-ping-ring {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  80%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes ts-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes ts-shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes ts-dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes ts-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes ts-scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(900%);
+  }
+}
+
+@keyframes ts-draw {
+  from {
+    stroke-dashoffset: var(--dash, 400);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes ts-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes ts-bar {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes ts-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.anim-rise {
+  animation: ts-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-fade {
+  animation: ts-fade 0.5s ease both;
+}
+.anim-pop {
+  animation: ts-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-slide-left {
+  animation: ts-slide-left 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.anim-float {
+  animation: ts-float 7s ease-in-out infinite;
+}
+.anim-spin-slow {
+  animation: ts-sweep 14s linear infinite;
+}
+.anim-blink {
+  animation: ts-blink 2.4s ease-in-out infinite;
+}
+.anim-ping {
+  animation: ts-ping-ring 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.anim-scanline {
+  animation: ts-scanline 4.5s linear infinite;
+}
+.anim-ticker {
+  animation: ts-ticker 42s linear infinite;
+}
+.anim-bar {
+  transform-origin: bottom;
+  animation: ts-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Staggered entrance for lists and grids. */
+.stagger > * {
+  animation: ts-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.stagger > *:nth-child(1) {
+  animation-delay: 0.02s;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.07s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.17s;
+}
+.stagger > *:nth-child(5) {
+  animation-delay: 0.22s;
+}
+.stagger > *:nth-child(6) {
+  animation-delay: 0.27s;
+}
+.stagger > *:nth-child(7) {
+  animation-delay: 0.31s;
+}
+.stagger > *:nth-child(8) {
+  animation-delay: 0.35s;
+}
+.stagger > *:nth-child(9) {
+  animation-delay: 0.38s;
+}
+.stagger > *:nth-child(10) {
+  animation-delay: 0.41s;
+}
+.stagger > *:nth-child(11) {
+  animation-delay: 0.44s;
+}
+.stagger > *:nth-child(12) {
+  animation-delay: 0.47s;
+}
+.stagger > *:nth-child(13) {
+  animation-delay: 0.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
