@@ -191,7 +191,14 @@ export default function ScanUrl() {
     timers.current = [];
   };
 
-  useEffect(() => () => clearTimers(), []);
+  useEffect(
+    () => () => {
+      clearTimers();
+      // Allow the auto-scan effect to re-run after React StrictMode's mount/unmount cycle.
+      autoRan.current = false;
+    },
+    [],
+  );
 
   const startScan = useCallback((raw) => {
     const parsed = normalizeUrl(raw);

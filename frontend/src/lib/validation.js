@@ -6,6 +6,41 @@
 const BLOCKED_PROTOCOLS = ['javascript:', 'data:', 'file:', 'ftp:'];
 const TLD_RE = /^[a-z]{2,24}$/i;
 const LABEL_RE = /^(?!-)[a-z0-9-]{1,63}(?<!-)$/i;
+const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/;
+const IPV4_RE = /^\d{1,3}(\.\d{1,3}){3}$/;
+
+/**
+ * Loopback, private, link-local and reserved hosts must never be treated as
+ * public scan targets. A real scanning backend must enforce this again after
+ * DNS resolution, but rejecting them here keeps them out of the UI and logs.
+ */
+function isBlockedHost(host = '') {
+  const name = String(host).replace(/^\[|\]$/g, '').toLowerCase().replace(/\.$/, '');
+  if (!name) return true;
+  if (
+    name === 'localhost'
+    || name.endsWith('.localhost')
+    || name.endsWith('.local')
+    || name.endsWith('.internal')
+    || name.endsWith('.home.arpa')
+  ) return true;
+  if (name === '::' || name === '::1' || name === '0.0.0.0') return true;
+  if (/^(fc|fd)[0-9a-f]{2}:/i.test(name)) return true; // IPv6 unique-local
+  if (/^fe[89ab][0-9a-f]:/i.test(name)) return true; // IPv6 link-local
+  if (!IPV4_RE.test(name)) return false;
+  const octets = name.split('.').map(Number);
+  if (octets.some((octet) => octet > 255)) return true;
+  const [a, b] = octets;
+  return (
+    a === 0 || a === 10 || a === 127
+    || (a === 100 && b >= 64 && b <= 127)
+    || (a === 169 && b === 254)
+    || (a === 172 && b >= 16 && b <= 31)
+    || (a === 192 && (b === 0 || b === 168))
+    || (a === 198 && (b === 18 || b === 19))
+    || a >= 224
+  );
+}
 
 export function normalizeUrl(raw = '') {
   const trimmed = String(raw).trim();
@@ -27,15 +62,19 @@ export function normalizeUrl(raw = '') {
     return { ok: false, error: 'That does not look like a valid URL.' };
   }
 
+  if (url.username || url.password) {
+    return { ok: false, error: 'Remove the username and password from this URL before scanning.' };
+  }
+
   if (!['http:', 'https:'].includes(url.protocol)) {
     return { ok: false, error: 'Only http:// and https:// URLs can be scanned.' };
   }
 
   const host = url.hostname.replace(/\.$/, '');
   if (!host) return { ok: false, error: 'Missing a hostname.' };
-  if (host === 'localhost') return { ok: false, error: 'Local addresses cannot be publicly scanned.' };
+  if (isBlockedHost(host)) return { ok: false, error: 'Private and local addresses cannot be publicly scanned.' };
 
-  const isIp = /^\d{1,3}(\.\d{1,3}){3}$/.test(host);
+  const isIp = IPV4_RE.test(host);
   if (!isIp) {
     const labels = host.split('.');
     if (labels.length < 2) return { ok: false, error: 'Enter a full domain, for example example.com.' };
@@ -60,6 +99,7 @@ export function validateDomain(raw = '') {
   if (!trimmed) return { ok: false, error: 'Enter a domain name.' };
   if (/\s/.test(trimmed)) return { ok: false, error: 'Domains cannot contain spaces.' };
   if (trimmed.includes('/')) return { ok: false, error: 'Enter the domain only, without a path.' };
+  if (isBlockedHost(trimmed)) return { ok: false, error: 'Private and local addresses cannot be publicly assessed.' };
 
   const labels = trimmed.split('.');
   if (labels.length < 2) return { ok: false, error: 'Include a top-level domain, e.g. example.com.' };
@@ -74,7 +114,12 @@ export function validateDomain(raw = '') {
 export function validateEmail(raw = '') {
   const value = String(raw).trim();
   if (!value) return { ok: false, error: 'Email address is required.' };
-  if (!/^[^\s@]+@[^\s@]+\.[a-z]{2,24}$/i.test(value)) return { ok: false, error: 'Enter a valid email address.' };
+  if (value.length > 254) return { ok: false, error: 'Email address is too long.' };
+  const atIndex = value.lastIndexOf('@');
+  if (atIndex < 1 || atIndex > 64) return { ok: false, error: 'Enter a valid email address.' };
+  if (!EMAIL_RE.test(value)) return { ok: false, error: 'Enter a valid email address.' };
+  const tld = value.slice(atIndex + 1).split('.').pop();
+  if (!tld || !TLD_RE.test(tld)) return { ok: false, error: 'Enter a valid email address.' };
   return { ok: true, value };
 }
 
@@ -105,9 +150,17 @@ const UPI_RE = /^[a-z0-9._-]{2,256}@[a-z]{2,64}$/i;
 export function validateUpi(raw = '') {
   const value = String(raw).trim().toLowerCase();
   if (!value) return { ok: false, error: 'Enter a UPI ID or paste a UPI payment link.' };
+  if (value.length > 2048) return { ok: false, error: 'That payment link is too long.' };
 
   const fromLink = value.match(/[?&](?:pa|upi|vpa)=([^&]+)/);
-  const candidate = fromLink ? decodeURIComponent(fromLink[1]) : value;
+  let candidate = value;
+  if (fromLink) {
+    try {
+      candidate = decodeURIComponent(fromLink[1]);
+    } catch {
+      return { ok: false, error: 'That payment link contains an invalid encoded address.' };
+    }
+  }
 
   if (!UPI_RE.test(candidate)) {
     return { ok: false, error: 'A UPI ID looks like name@bank, e.g. merchant@okhdfcbank.' };

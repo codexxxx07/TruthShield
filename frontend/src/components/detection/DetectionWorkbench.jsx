@@ -75,7 +75,14 @@ export default function DetectionWorkbench({
     timers.current = [];
   };
 
-  useEffect(() => () => clearTimers(), []);
+  useEffect(
+    () => () => {
+      clearTimers();
+      // Allow the effect to re-run after React StrictMode's mount/unmount cycle.
+      started.current = false;
+    },
+    [],
+  );
 
   const run = useCallback(
     (raw) => {

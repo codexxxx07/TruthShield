@@ -19,6 +19,12 @@ import { clamp, cn, formatDate, formatDateTime } from '../lib/utils';
 
 const SAMPLE_DOMAINS = ['github.com', 'sbi-kyc-verify.example', 'acmestore.example'];
 
+/** Only validated domains from the query string reach the certificate engine. */
+function resolveInitialDomain(raw) {
+  const parsed = validateDomain(raw || '');
+  return parsed.ok ? parsed.domain : SAMPLE_DOMAINS[0];
+}
+
 const TABS = [
   { id: 'certificate', label: 'Certificate' },
   { id: 'chain', label: 'Chain of trust' },
@@ -28,7 +34,8 @@ const TABS = [
 
 export default function SslChecker() {
   const [searchParams] = useSearchParams();
-  const [value, setValue] = useState(searchParams.get('domain') || SAMPLE_DOMAINS[0]);
+  const initialDomain = resolveInitialDomain(searchParams.get('domain'));
+  const [value, setValue] = useState(initialDomain);
   const [error, setError] = useState('');
   const [phase, setPhase] = useState('scanning');
   const [report, setReport] = useState(null);
@@ -56,8 +63,13 @@ export default function SslChecker() {
   };
 
   useEffect(() => {
-    const domain = searchParams.get('domain') || SAMPLE_DOMAINS[0];
-    timers.current.push(window.setTimeout(() => setReport(buildSslReport(domain)), 900));
+    const domain = initialDomain;
+    timers.current.push(
+      window.setTimeout(() => {
+        setReport(buildSslReport(domain));
+        setPhase('done');
+      }, 900),
+    );
     return () => timers.current.forEach((timer) => window.clearTimeout(timer));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

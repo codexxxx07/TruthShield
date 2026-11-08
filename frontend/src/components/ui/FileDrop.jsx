@@ -16,6 +16,8 @@ export default function FileDrop({
   const previewRef = useRef(null);
   const [dragging, setDragging] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+  // Preview only the types this control explicitly accepts (never SVG/HTML).
+  const acceptedTypes = String(accept || '').split(',').map((type) => type.trim().toLowerCase()).filter(Boolean);
 
   // Revoke the last object URL when the control unmounts.
   useEffect(
@@ -35,7 +37,7 @@ export default function FileDrop({
     const next = fileList?.[0];
     if (!next) return;
     revokePreview();
-    if (next.type?.startsWith('image/')) {
+    if (acceptedTypes.includes(String(next.type || '').toLowerCase())) {
       const url = URL.createObjectURL(next);
       previewRef.current = url;
       setPreviewUrl(url);

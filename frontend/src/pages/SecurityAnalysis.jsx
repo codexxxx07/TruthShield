@@ -19,6 +19,12 @@ import { validateDomain } from '../lib/validation';
 import { clamp, cn, formatDateTime } from '../lib/utils';
 
 const SAMPLE_DOMAINS = ['sbi-kyc-verify.example', 'github.com', 'secure-update-portal.example'];
+
+/** Only validated domains from the query string reach the assessment engine. */
+function resolveInitialDomain(raw) {
+  const parsed = validateDomain(raw || '');
+  return parsed.ok ? parsed.domain : SAMPLE_DOMAINS[0];
+}
 const SEVERITY_ORDER = ['critical', 'high', 'medium', 'low', 'info'];
 
 function HeaderRow({ header }) {
@@ -45,7 +51,8 @@ function HeaderRow({ header }) {
 
 export default function SecurityAnalysis() {
   const [searchParams] = useSearchParams();
-  const [value, setValue] = useState(searchParams.get('domain') || SAMPLE_DOMAINS[0]);
+  const initialDomain = resolveInitialDomain(searchParams.get('domain'));
+  const [value, setValue] = useState(initialDomain);
   const [error, setError] = useState('');
   const [phase, setPhase] = useState('scanning');
   const [report, setReport] = useState(null);
@@ -73,9 +80,14 @@ export default function SecurityAnalysis() {
   };
 
   useEffect(() => {
-    const domain = searchParams.get('domain');
+    const domain = initialDomain;
     const target = domain || SAMPLE_DOMAINS[0];
-    timers.current.push(window.setTimeout(() => setReport(buildSecurityAssessment(target)), 1050));
+    timers.current.push(
+      window.setTimeout(() => {
+        setReport(buildSecurityAssessment(target));
+        setPhase('done');
+      }, 1050),
+    );
     return () => timers.current.forEach((timer) => window.clearTimeout(timer));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
