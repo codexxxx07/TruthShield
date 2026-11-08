@@ -17,7 +17,7 @@ export default function FaviconLogoHash() {
   return (
     <>
       <ToolHeader feature={feature} index={10} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Hash favicon" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Hash favicon" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -123,9 +123,11 @@ export default function FaviconLogoHash() {
               </ul>
             </SectionCard>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Favicon extraction and perceptual hashing are simulated. No image was downloaded from the target.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

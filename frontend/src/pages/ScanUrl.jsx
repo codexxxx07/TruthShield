@@ -17,7 +17,8 @@ import EmptyState from '../components/ui/EmptyState';
 import TerminalLog from '../components/ui/TerminalLog';
 import { SCAN_STAGES } from '../data/features';
 import { SCAN_HISTORY } from '../data/dashboard';
-import { buildScanReport, SAMPLE_TARGETS, VERDICT_META } from '../lib/mockEngine';
+import { SAMPLE_TARGETS, VERDICT_META } from '../lib/mockEngine';
+import { api, runScan, useLiveBackend } from '../lib/api';
 import { normalizeUrl } from '../lib/validation';
 import { cn, formatDateTime, formatNumber, timeAgo, truncateMiddle } from '../lib/utils';
 import { useToast } from '../context/ToastContext';
@@ -32,12 +33,12 @@ const EXTRA_MODULES = [
 const TONE_BY_VERDICT = { safe: 'safe', suspicious: 'medium', malicious: 'critical' };
 
 const STAGE_TRACE = {
-  resolve: { level: 'ok', text: 'dns.query a=185.220.101.4 · ns1=ns1.hostinger.com · ttl=60' },
-  tls: { level: 'ok', text: 'tls.handshake tls1.3 · chain=depth 2 · ocsp=good' },
-  content: { level: 'info', text: 'dom.render 42 nodes · 7 scripts · 3 third-party origins' },
-  signals: { level: 'warn', text: 'signal.extract 9 findings · redirects=2 · forms=1' },
-  intel: { level: 'err', text: 'intel.correlate 4/5 sources malicious · campaign=KP-2201' },
-  score: { level: 'ok', text: 'risk.score computed · confidence=96% · verdict=malicious' },
+  resolve: { level: 'ok', text: 'dns.query a aaaa ns mx txt' },
+  tls: { level: 'ok', text: 'tls.handshake · chain.validate · sct.read' },
+  content: { level: 'info', text: 'page.render · dom.serialize · scripts.collect' },
+  signals: { level: 'info', text: 'signal.extract · redirects.follow · forms.inspect' },
+  intel: { level: 'info', text: 'intel.correlate feeds, reports and earlier scans' },
+  score: { level: 'ok', text: 'model.score · signals.fuse · verdict.write' },
 };
 
 function progressTrace(stageIndex) {
@@ -182,9 +183,12 @@ export default function ScanUrl() {
   const [stageIndex, setStageIndex] = useState(0);
   const [result, setResult] = useState(null);
   const [enabled, setEnabled] = useState(() => new Set(EXTRA_MODULES.map((module) => module.id)));
+  const [recentScans, setRecentScans] = useState(SCAN_HISTORY);
   const timers = useRef([]);
   const autoRan = useRef(false);
+  const latestRun = useRef(0);
   const toast = useToast();
+  const live = useLiveBackend();
 
   const clearTimers = () => {
     timers.current.forEach((timer) => window.clearTimeout(timer));
@@ -193,7 +197,15 @@ export default function ScanUrl() {
 
   useEffect(() => () => clearTimers(), []);
 
-  const startScan = useCallback((raw) => {
+  const refreshRecent = useCallback(() => {
+    api.dashboard().then((data) => setRecentScans(data.scanHistory), () => {});
+  }, []);
+
+  useEffect(() => {
+    if (live) refreshRecent();
+  }, [live, refreshRecent]);
+
+  const startScan = useCallback(async (raw, { fresh = false } = {}) => {
     const parsed = normalizeUrl(raw);
     if (!parsed.ok) {
       setError(parsed.error);
@@ -207,18 +219,27 @@ export default function ScanUrl() {
     setPhase('scanning');
     setStageIndex(0);
 
-    SCAN_STAGES.forEach((_, index) => {
-      timers.current.push(window.setTimeout(() => setStageIndex(index + 1), 300 * (index + 1)));
+    const runId = ++latestRun.current;
+    SCAN_STAGES.slice(0, -1).forEach((_, index) => {
+      timers.current.push(window.setTimeout(() => setStageIndex(index + 1), 2200 * (index + 1)));
     });
-    timers.current.push(
-      window.setTimeout(() => {
-        setResult(buildScanReport(parsed.url));
-        setPhase('done');
-        toast.success('Scan complete', `Verdict generated for ${parsed.domain}.`);
-      }, 300 * SCAN_STAGES.length + 260),
-    );
+    try {
+      const report = await runScan(parsed.url, { modules: [...enabled], fresh });
+      if (runId !== latestRun.current) return false;
+      clearTimers();
+      setResult(report);
+      setPhase('done');
+      toast.success('Scan complete', `Verdict generated for ${parsed.domain}.`);
+      refreshRecent();
+    } catch (failure) {
+      if (runId !== latestRun.current) return false;
+      clearTimers();
+      setError(failure.message);
+      setPhase('idle');
+      toast.error('Scan failed', failure.message);
+    }
     return true;
-  }, [toast]);
+  }, [enabled, refreshRecent, toast]);
 
   useEffect(() => {
     const target = searchParams.get('url');
@@ -252,12 +273,12 @@ export default function ScanUrl() {
         title="Scan any link before you open it."
         description="Paste a URL or domain to run the full signal mesh: DNS, TLS, content, redirects, brand similarity and threat intelligence — returned as one explainable verdict."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Scan URL' }]}
-        demo
+        demo={live === false}
         meta={
           <>
             <span className="inline-flex items-center gap-1.5"><FiLayers className="text-[12px]" aria-hidden="true" /> 9 default checks</span>
-            <span className="inline-flex items-center gap-1.5"><FiClock className="text-[12px]" aria-hidden="true" /> ~1.8s simulated</span>
-            <span className="inline-flex items-center gap-1.5"><FiShield className="text-[12px]" aria-hidden="true" /> No live scanner connected</span>
+            <span className="inline-flex items-center gap-1.5"><FiClock className="text-[12px]" aria-hidden="true" /> {live === false ? '~1.8s simulated' : 'Usually under 30 seconds'}</span>
+            <span className="inline-flex items-center gap-1.5"><FiShield className="text-[12px]" aria-hidden="true" /> {live === false ? 'No live scanner connected' : 'Live scanner and ML model'}</span>
           </>
         }
         actions={
@@ -323,6 +344,7 @@ export default function ScanUrl() {
                 url={value}
                 onCancel={() => {
                   clearTimers();
+                  latestRun.current += 1;
                   setPhase('idle');
                   setStageIndex(0);
                   toast.info('Scan cancelled');
@@ -349,7 +371,7 @@ export default function ScanUrl() {
                         <div className="flex flex-wrap items-center gap-2">
                           <VerdictBadge verdict={result.verdict} />
                           <Badge tone="neutral">{result.confidence}% confidence</Badge>
-                          <Badge tone="brand" icon={FiCpu}>Simulated</Badge>
+                          {result.live ? <Badge tone="safe" dot>Live analysis</Badge> : <Badge tone="brand" icon={FiCpu}>Simulated</Badge>}
                         </div>
                         <p className="mt-2 break-all font-mono text-[13px] text-ink">{result.domain}</p>
                         <p className="mt-2 text-[12.5px] leading-6 text-ink-2">{result.summary}</p>
@@ -378,7 +400,7 @@ export default function ScanUrl() {
                     </div>
 
                     <div className="mt-4 flex flex-wrap gap-2">
-                      <Button size="sm" variant="secondary" icon={FiRefreshCw} onClick={() => startScan(result.url)}>
+                      <Button size="sm" variant="secondary" icon={FiRefreshCw} onClick={() => startScan(result.url, { fresh: true })}>
                         Re-scan
                       </Button>
                       <CopyButton value={`${window.location.origin}/scan?url=${encodeURIComponent(result.url)}`} label="Copy report link" className="h-9 px-3 text-[12px]" />
@@ -408,7 +430,7 @@ export default function ScanUrl() {
 
                   <SectionCard title="Domain information" description="Registration and hosting context" icon={FiGlobe}>
                     <DataRow label="Registrar" value={result.domainInfo.registrar} />
-                    <DataRow label="Domain age" value={`${formatNumber(result.domainInfo.ageDays)} days`} />
+                    <DataRow label="Domain age" value={result.domainInfo.ageDays == null ? 'Unknown' : `${formatNumber(result.domainInfo.ageDays)} days`} />
                     <DataRow label="IP address" value={result.domainInfo.ip} mono />
                     <DataRow label="Hosting ASN" value={`${result.domainInfo.asn} · ${result.domainInfo.org}`} />
                     <DataRow label="Country" value={`${result.domainInfo.country} (${result.domainInfo.countryCode})`} />
@@ -433,7 +455,7 @@ export default function ScanUrl() {
                       <div className="min-w-0 flex-1 space-y-1">
                         <DataRow label="Issuer" value={result.ssl.issuer} />
                         <DataRow label="Protocol" value={result.ssl.protocol} />
-                        <DataRow label="Expires in" value={`${result.ssl.daysRemaining} days`} />
+                        <DataRow label="Expires in" value={result.ssl.daysRemaining == null ? 'Unknown' : `${result.ssl.daysRemaining} days`} />
                         <DataRow label="Key" value={result.ssl.keyType} />
                       </div>
                     </div>
@@ -532,10 +554,18 @@ export default function ScanUrl() {
                   />
                 </SectionCard>
 
-                <Notice tone="neutral" icon={FiCpu} title="This result is simulated">
-                  No request left your browser. The verdict was generated from deterministic demo data in the frontend;
-                  the same components will render real API output once a scanning service is connected.
-                </Notice>
+                {result.live ? (
+                  result.limitations?.length ? (
+                    <Notice tone="warning" title="Some checks could not run">
+                      {result.limitations.join(' ')}
+                    </Notice>
+                  ) : null
+                ) : (
+                  <Notice tone="neutral" icon={FiCpu} title="This result is simulated">
+                    No request left your browser. The verdict was generated from deterministic demo data in the frontend
+                    because the scanning service could not be reached.
+                  </Notice>
+                )}
               </>
             ) : null}
 
@@ -588,13 +618,13 @@ export default function ScanUrl() {
                 <span className="font-mono text-[12px] font-semibold text-brand">{modulesRun}</span>
               </div>
               <p className="mt-2 text-[10.5px] leading-4 text-ink-3">
-                Toggles affect the displayed module count only — all results are simulated locally.
+                {live === false ? 'Toggles affect the displayed module count only — all results are simulated locally.' : 'Turning a module off skips that analysis.'}
               </p>
             </SectionCard>
 
-            <SectionCard title="Recent scans" description="From your demo workspace" action={<Link to="/dashboard" className="text-[11px] font-medium text-brand">View all</Link>} flush>
+            <SectionCard title="Recent scans" description={live === false ? 'From your demo workspace' : 'Latest results'} action={<Link to="/dashboard" className="text-[11px] font-medium text-brand">View all</Link>} flush>
               <ul className="divide-y divide-line/70">
-                {SCAN_HISTORY.slice(0, 6).map((scan) => (
+                {recentScans.slice(0, 6).map((scan) => (
                   <li key={scan.id}>
                     <button
                       type="button"
@@ -613,10 +643,11 @@ export default function ScanUrl() {
               </ul>
             </SectionCard>
 
-            <Notice tone="info" icon={FiInfo} title="Frontend-only build">
-              Detection is not real. The interface, contracts and states are production-shaped so a backend can be
-              attached without changing this page.
-            </Notice>
+            {live === false ? (
+              <Notice tone="info" icon={FiInfo} title="Scanner offline">
+                The backend could not be reached, so results are simulated. Start the API to run real scans.
+              </Notice>
+            ) : null}
           </aside>
         </div>
       </div>

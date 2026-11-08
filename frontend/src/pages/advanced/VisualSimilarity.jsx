@@ -23,7 +23,7 @@ export default function VisualSimilarity() {
   return (
     <>
       <ToolHeader feature={feature} index={4} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Compare visuals" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Compare visuals" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -143,10 +143,12 @@ export default function VisualSimilarity() {
               </ul>
             </SectionCard>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Visual comparison is simulated. A production implementation would render both pages headlessly and compare
               perceptual hashes, DOM structure and computed styles.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

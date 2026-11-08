@@ -71,8 +71,14 @@ export default function Signup() {
     setErrors(next);
     if (Object.keys(next).length) return;
 
-    await signup({ name: form.name.trim(), email: form.email, org: form.org.trim() });
-    toast.success('Workspace created', 'You are signed into the demo workspace.');
+    try {
+      await signup({ name: form.name.trim(), email: form.email, password: form.password, org: form.org.trim() });
+    } catch (failure) {
+      setErrors({ email: failure.message });
+      toast.error('Could not create the account', failure.message);
+      return;
+    }
+    toast.success('Workspace created', 'You are signed in.');
     navigate('/dashboard');
   };
 

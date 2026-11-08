@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiActivity, FiAlertTriangle, FiArrowRight, FiClock, FiCpu, FiDatabase, FiDownload, FiFilter,
@@ -20,11 +20,8 @@ import Tabs from '../components/ui/Tabs';
 import { AreaChart } from '../components/ui/Charts';
 import { Meter } from '../components/ui/Progress';
 import StatCard from '../components/ui/StatCard';
-import {
-  EMERGING_CAMPAIGNS, REPORTER_LEADERBOARD, THREAT_ACTIVITY_14D, THREAT_CATEGORIES,
-  THREAT_RECORDS, THREAT_STATS,
-} from '../data/threats';
-import { RECENT_COMMUNITY_REPORTS, REPORT_STATUSES } from '../data/reports';
+import { REPORT_STATUSES } from '../data/reports';
+import { useThreatData } from '../lib/useWorkspaceData';
 import { useToast } from '../context/ToastContext';
 import { cn, formatDate, formatDateTime, formatNumber, timeAgo } from '../lib/utils';
 
@@ -38,11 +35,6 @@ const SEVERITY_META = [
   { value: 'low', label: 'Low', active: 'border-low/40 bg-low/10 text-low' },
 ];
 
-const SEVERITY_COUNTS = THREAT_RECORDS.reduce(
-  (counts, record) => ({ ...counts, [record.severity]: (counts[record.severity] || 0) + 1 }),
-  { all: THREAT_RECORDS.length },
-);
-
 const SEVERITY_RANK = { critical: 0, high: 1, medium: 2, low: 3 };
 const SEVERITY_DOT = { critical: 'bg-critical', high: 'bg-high', medium: 'bg-medium', low: 'bg-low' };
 
@@ -51,13 +43,6 @@ const SORT_OPTIONS = [
   { value: 'oldest', label: 'Oldest activity' },
   { value: 'reports', label: 'Most reported' },
   { value: 'severity', label: 'Severity' },
-];
-
-const TYPE_TABS = [
-  { id: 'all', label: 'All indicators', count: THREAT_RECORDS.length },
-  { id: 'url', label: 'Malicious URLs', count: THREAT_RECORDS.filter((record) => record.type === 'url').length },
-  { id: 'domain', label: 'Suspicious domains', count: THREAT_RECORDS.filter((record) => record.type === 'domain').length },
-  { id: 'ip', label: 'Threat IPs', count: THREAT_RECORDS.filter((record) => record.type === 'ip').length },
 ];
 
 const TYPE_LABEL = { url: 'Malicious URL', domain: 'Suspicious domain', ip: 'Threat IP' };
@@ -88,6 +73,20 @@ function csvCell(value) {
 }
 
 export default function ThreatIntelligence() {
+  const {
+    EMERGING_CAMPAIGNS, RECENT_COMMUNITY_REPORTS, REPORTER_LEADERBOARD, THREAT_ACTIVITY_14D, THREAT_CATEGORIES,
+    THREAT_RECORDS, THREAT_STATS, feedState, reload, live,
+  } = useThreatData();
+  const SEVERITY_COUNTS = THREAT_RECORDS.reduce(
+    (counts, record) => ({ ...counts, [record.severity]: (counts[record.severity] || 0) + 1 }),
+    { all: THREAT_RECORDS.length },
+  );
+  const TYPE_TABS = [
+    { id: 'all', label: 'All indicators', count: THREAT_RECORDS.length },
+    { id: 'url', label: 'Malicious URLs', count: THREAT_RECORDS.filter((record) => record.type === 'url').length },
+    { id: 'domain', label: 'Suspicious domains', count: THREAT_RECORDS.filter((record) => record.type === 'domain').length },
+    { id: 'ip', label: 'Threat IPs', count: THREAT_RECORDS.filter((record) => record.type === 'ip').length },
+  ];
   const toast = useToast();
 
   const [query, setQuery] = useState('');
@@ -97,29 +96,8 @@ export default function ThreatIntelligence() {
   const [sort, setSort] = useState('recent');
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
-  const [feedState, setFeedState] = useState('loading');
-  const [reloadToken, setReloadToken] = useState(0);
 
-  /* Local demo corpus hydration: loading → ready, with a real validation error fallback. */
-  useEffect(() => {
-    let active = true;
-    const timer = window.setTimeout(() => {
-      if (!active) return;
-      const valid = Array.isArray(THREAT_RECORDS)
-        && THREAT_RECORDS.length > 0
-        && THREAT_RECORDS.every((record) => record && record.id && record.indicator && record.type);
-      setFeedState(valid ? 'ready' : 'error');
-    }, 420);
-    return () => {
-      active = false;
-      window.clearTimeout(timer);
-    };
-  }, [reloadToken]);
-
-  const retryFeed = () => {
-    setFeedState('loading');
-    setReloadToken((value) => value + 1);
-  };
+  const retryFeed = reload;
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -140,7 +118,7 @@ export default function ThreatIntelligence() {
       if (sort === 'oldest') return new Date(a.lastSeen) - new Date(b.lastSeen);
       return new Date(b.lastSeen) - new Date(a.lastSeen);
     });
-  }, [query, category, severity, type, sort]);
+  }, [THREAT_RECORDS, query, category, severity, type, sort]);
 
   const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const currentPage = Math.min(page, pages);
@@ -150,10 +128,10 @@ export default function ThreatIntelligence() {
 
   const recentActivity = useMemo(
     () => [...THREAT_RECORDS].sort((a, b) => new Date(b.lastSeen) - new Date(a.lastSeen)).slice(0, 5),
-    [],
+    [THREAT_RECORDS],
   );
 
-  const maxCategory = Math.max(...THREAT_CATEGORIES.map((item) => item.count));
+  const maxCategory = Math.max(1, ...THREAT_CATEGORIES.map((item) => item.count));
 
   const activeChips = [];
   if (query.trim()) {
@@ -205,7 +183,7 @@ export default function ThreatIntelligence() {
     setType('all');
     setSort('recent');
     setPage(1);
-    toast.info('Filters reset', `Showing all ${THREAT_RECORDS.length} classified records in the demo sample.`);
+    toast.info('Filters reset', `Showing all ${THREAT_RECORDS.length} classified records.`);
   };
 
   const changeDatabase = (nextType) => {
@@ -303,12 +281,12 @@ export default function ThreatIntelligence() {
         title="Search what the internet already knows is hostile."
         description="A searchable corpus of reported URLs, domains and IPs with categories, severity, first detection and community reporting history."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Threat Intelligence' }]}
-        demo
+        demo={!live}
         meta={
           <>
             <span className="inline-flex items-center gap-1.5"><FiDatabase className="text-[12px]" aria-hidden="true" /> {formatNumber(THREAT_STATS.totalIndicators)} indicators</span>
             <span className="inline-flex items-center gap-1.5"><FiUsers className="text-[12px]" aria-hidden="true" /> {formatNumber(THREAT_STATS.reporters)} community reporters</span>
-            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> Demo corpus</span>
+            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> {live ? 'Live database' : 'Demo corpus'}</span>
           </>
         }
         actions={<Button to="/report-threat" size="md" iconRight={FiArrowRight}>Submit a report</Button>}

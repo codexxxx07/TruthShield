@@ -22,7 +22,7 @@ export default function CertificateAnomalies() {
   return (
     <>
       <ToolHeader feature={feature} index={3} />
-      <DetectionWorkbench feature={feature} inputKind="domain" cta="Check certificate" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="domain" cta="Check certificate" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -125,9 +125,11 @@ export default function CertificateAnomalies() {
               </div>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Certificate parsing is simulated locally. No handshake or X.509 validation was performed.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

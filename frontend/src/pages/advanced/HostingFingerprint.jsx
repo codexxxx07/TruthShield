@@ -15,7 +15,7 @@ export default function HostingFingerprint() {
   return (
     <>
       <ToolHeader feature={feature} index={12} />
-      <DetectionWorkbench feature={feature} inputKind="domain" cta="Fingerprint host" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="domain" cta="Fingerprint host" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -154,9 +154,11 @@ export default function HostingFingerprint() {
                 : 'The host has a low abuse ratio and no bulletproof-hosting indicators. Continue routine monitoring.'}
             </Notice>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Hosting intelligence is simulated. No DNS lookup, port scan or IP reputation query was performed.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

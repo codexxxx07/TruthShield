@@ -1,0 +1,6 @@
+{
+ "_comment":"Lowest versions considered supported when this table was written. Update it as releases age.",
+ "server":{"nginx":"1.26.0","apache":"2.4.60","openssl":"3.0.14","php":"8.2.0","iis":"10.0","openresty":"1.25.3","litespeed":"6.0","tomcat":"9.0.90","express":"4.19.2"},
+ "library":{"jquery":"3.5.0","bootstrap":"4.6.2","angularjs":"1.8.3","moment":"2.29.4","lodash":"4.17.21","vue":"2.7.16","react":"16.14.0"},
+ "cms":{"wordpress":"6.4.0","drupal":"10.2.0","joomla":"5.0.0"}
+}

@@ -16,7 +16,7 @@ export default function Typosquatting() {
   return (
     <>
       <ToolHeader feature={feature} index={5} />
-      <DetectionWorkbench feature={feature} inputKind="domain" cta="Find lookalikes" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="domain" cta="Find lookalikes" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -157,10 +157,12 @@ export default function Typosquatting() {
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Domain permutation and registration data is simulated. Production checks would use WHOIS/RDAP and DNS
               resolution for each generated variant.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

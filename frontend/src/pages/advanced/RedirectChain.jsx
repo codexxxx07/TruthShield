@@ -14,7 +14,7 @@ export default function RedirectChain() {
   return (
     <>
       <ToolHeader feature={feature} index={7} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Trace redirects" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Trace redirects" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -137,9 +137,11 @@ export default function RedirectChain() {
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Redirect tracing is simulated. No request was issued and no remote server was contacted.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

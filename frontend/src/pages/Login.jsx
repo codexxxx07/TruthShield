@@ -37,8 +37,14 @@ export default function Login() {
     setErrors(next);
     if (Object.keys(next).length) return;
 
-    await login({ email: form.email, remember: form.remember });
-    toast.success('Welcome back', 'Signed into the demo workspace.');
+    try {
+      await login({ email: form.email, password: form.password, remember: form.remember });
+    } catch (failure) {
+      setErrors({ password: failure.message });
+      toast.error('Could not sign in', failure.message);
+      return;
+    }
+    toast.success('Welcome back', 'You are signed in.');
     navigate('/dashboard');
   };
 

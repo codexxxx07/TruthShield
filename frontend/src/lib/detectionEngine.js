@@ -5,14 +5,15 @@
  */
 import { createRng, hashString, clamp, daysBetween } from './utils';
 import { buildSecurityAssessment } from './mockEngine';
+import { api, withFallback } from './api';
 
 const ago = (days) => new Date(Date.now() - days * 86400000).toISOString();
 const ahead = (days) => new Date(Date.now() + days * 86400000).toISOString();
 const ipFrom = (rng) => `${rng.pick(['192.0.2', '198.51.100', '203.0.113'])}.${rng.int(2, 250)}`;
 
 export const DETECTION_SAMPLES = {
-  domain: ['yourbrand.com', 'paypal-secure-login.example', 'sbi-kyc-verify.example', 'secure-update-portal.example'],
-  url: ['https://paypal-secure-login.example/session/verify', 'https://sbi-kyc-verify.example/kyc/update-account', 'https://amazon-deals-outlet.example/deal/iphone-17'],
+  domain: ['github.com', 'paypal-secure-login.example', 'sbi-kyc-verify.example', 'secure-update-portal.example'],
+  url: ['https://github.com/login', 'https://paypal-secure-login.example/session/verify', 'https://sbi-kyc-verify.example/kyc/update-account', 'https://amazon-deals-outlet.example/deal/iphone-17'],
   upi: ['merchant@okhdfcbank', 'cashback-reward@ybl', 'shop.payments@paytm'],
 };
 
@@ -225,7 +226,7 @@ function typosquatting(target, rng) {
     { domain: `${core.slice(0, -1)}${core.slice(-1).repeat(2)}.${tld}`, distance: 1, technique: 'Character duplication', registered: false, ageDays: null, risk: 38 },
     { domain: `${core}-${rng.pick(['app', 'portal', 'account'])}.${rng.pick(['top', 'xyz', 'click'])}`, distance: 0, technique: 'TLD swap', registered: true, ageDays: 7, risk: 91 },
     { domain: `${core}.${rng.pick(['co', 'cm', 'net'])}`, distance: 0, technique: 'TLD impersonation', registered: rng.chance(0.5), ageDays: 240, risk: 57 },
-  ];
+  ].filter((item, index, all) => all.findIndex((other) => other.domain === item.domain) === index);
 
   const unicode = [
     { char: 'а', name: 'CYRILLIC SMALL LETTER A', codepoint: 'U+0430', looksLike: 'a', used: true },
@@ -570,11 +571,15 @@ const BUILDERS = {
   'upi-qr': upiQr,
 };
 
-export function runDetection(slug, target) {
+function simulateDetection(slug, target) {
   const builder = BUILDERS[slug];
   if (!builder) return null;
   const rng = createRng(`${slug}:${target.toLowerCase()}`);
   return { ...builder(target, rng), tool: slug };
+}
+
+export function runDetection(slug, target, options) {
+  return withFallback(() => api.detect(slug, target, options), () => simulateDetection(slug, target));
 }
 
 export function daysUntil(date) {

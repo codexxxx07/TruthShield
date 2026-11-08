@@ -19,7 +19,7 @@ export default function CertificateTransparency() {
   return (
     <>
       <ToolHeader feature={feature} index={1} />
-      <DetectionWorkbench feature={feature} inputKind="domain" cta="Start monitoring" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="domain" cta="Start monitoring" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -166,9 +166,11 @@ export default function CertificateTransparency() {
               </Notice>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Certificate transparency data is simulated for this demo. No CT log was queried.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

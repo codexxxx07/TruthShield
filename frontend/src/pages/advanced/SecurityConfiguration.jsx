@@ -15,7 +15,7 @@ export default function SecurityConfiguration() {
   return (
     <>
       <ToolHeader feature={feature} index={6} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Scan configuration" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Scan configuration" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -161,9 +161,11 @@ export default function SecurityConfiguration() {
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Configuration probing is simulated. No HTTP requests were made and no endpoints were actually tested.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

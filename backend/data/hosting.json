@@ -1,0 +1,13 @@
+{
+ "free_hosting_suffixes":["000webhostapp.com","netlify.app","vercel.app","pages.dev","workers.dev","r2.dev","github.io","gitlab.io","web.app","firebaseapp.com","weebly.com","weeblysite.com","wixsite.com","wix.com","blogspot.com","sites.google.com","glitch.me","repl.co","replit.app","replit.dev","herokuapp.com","onrender.com","fly.dev","surge.sh","ngrok.io","ngrok.app","ngrok-free.app","trycloudflare.com","duckdns.org","no-ip.org","hopto.org","webcindario.com","tripod.com","yolasite.com","godaddysites.com","mystrikingly.com","square.site","myshopify.com","framer.website","webflow.io","jimdofree.com","start.page","ipfs.io","dweb.link"],
+ "url_shorteners":["bit.ly","tinyurl.com","t.co","goo.gl","ow.ly","is.gd","buff.ly","rebrand.ly","cutt.ly","shorturl.at","rb.gy","tiny.cc","lnkd.in","s.id","qrco.de","v.gd"],
+ "abuse_flagged_asns":{
+  "210644":{"org":"Aeza International","basis":"Sanctioned by US OFAC in July 2025 for bulletproof hosting"},
+  "44477":{"org":"Stark Industries Solutions","basis":"Sanctioned by the EU in May 2025 for hosting malicious activity"}
+ },
+ "cdn_asns":{"13335":"Cloudflare","16509":"Amazon","14618":"Amazon","20940":"Akamai","16625":"Akamai","63949":"Akamai Connected Cloud","54113":"Fastly","15169":"Google","396982":"Google Cloud","8075":"Microsoft","8068":"Microsoft","32934":"Meta","36459":"GitHub","13414":"Twitter","2906":"Netflix"},
+ "cheap_vps_asns":{"14061":"DigitalOcean","47583":"Hostinger","204915":"Hostinger","16276":"OVH","24940":"Hetzner","63949":"Linode","20473":"Vultr","9009":"M247","51167":"Contabo","22612":"Namecheap"},
+ "high_abuse_tlds":["zip","mov","top","xyz","click","buzz","rest","work","live","icu","cyou","sbs","cfd","monster","quest","bond","autos","lat","tk","ml","ga","cf","gq","pw","country","kim","loan","men","stream","gdn","support","shop"],
+ "parking_nameservers":["dns-parking.com","parkingcrew.net","sedoparking.com","bodis.com","above.com","afternic.com"],
+ "privacy_markers":["redacted for privacy","privacy","whoisguard","withheld","domains by proxy","contact privacy","perfect privacy","data protected","not disclosed"]
+}

@@ -18,7 +18,7 @@ export default function Cloaking() {
   return (
     <>
       <ToolHeader feature={feature} index={8} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Run three-way render" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Run three-way render" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -145,10 +145,12 @@ export default function Cloaking() {
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Render comparison is simulated. A real implementation would use headless browsers with distinct user agents
               and compare DOM hashes, network logs and visible text.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

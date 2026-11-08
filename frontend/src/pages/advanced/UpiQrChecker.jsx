@@ -14,6 +14,7 @@ import Button from '../../components/ui/Button';
 import CopyButton from '../../components/ui/CopyButton';
 import { FEATURE_BY_SLUG } from '../../data/features';
 import { DETECTION_SAMPLES, runDetection } from '../../lib/detectionEngine';
+import { api, BackendUnavailable } from '../../lib/api';
 import { validateFile, validateUpi } from '../../lib/validation';
 import { cn, formatDate } from '../../lib/utils';
 
@@ -31,36 +32,43 @@ export default function UpiQrChecker() {
   const [decoded, setDecoded] = useState(null);
   const [phase, setPhase] = useState('scanning');
   const [result, setResult] = useState(null);
-  const timers = useRef([]);
+  const latestRun = useRef(0);
 
-  const run = (raw) => {
+  const check = async (target, options) => {
+    const runId = ++latestRun.current;
+    try {
+      const next = await runDetection(feature.slug, target, options);
+      if (runId !== latestRun.current) return;
+      setResult(next);
+      setPhase('done');
+    } catch (failure) {
+      if (runId !== latestRun.current) return;
+      setError(failure.message);
+      setPhase('idle');
+    }
+  };
+
+  const run = (raw, options) => {
     const parsed = validateUpi(raw);
     if (!parsed.ok) {
       setError(parsed.error);
       return;
     }
     setError('');
-    setValue(parsed.vpa);
+    // A payment link also carries the payee name, amount and note, so send it whole.
+    const isLink = /[?&]pa=/i.test(raw);
+    if (!isLink) setValue(parsed.vpa);
     setPhase('scanning');
     setResult(null);
-    timers.current.forEach((timer) => window.clearTimeout(timer));
-    timers.current = [];
-    timers.current.push(
-      window.setTimeout(() => {
-        setResult(runDetection(feature.slug, parsed.vpa));
-        setPhase('done');
-      }, 850),
-    );
+    check(isLink ? raw.trim() : parsed.vpa, options);
   };
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setResult(runDetection(feature.slug, DETECTION_SAMPLES.upi[0]));
-      setPhase('done');
-    }, 800);
+    // check() only sets state after its request resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    check(DETECTION_SAMPLES.upi[0]);
     return () => {
-      window.clearTimeout(timer);
-      timers.current.forEach((entry) => window.clearTimeout(entry));
+      latestRun.current += 1;
     };
   }, []);
 
@@ -74,12 +82,27 @@ export default function UpiQrChecker() {
     setFile(next);
     setDecoding(true);
     setDecoded(null);
-    window.setTimeout(() => {
-      const sample = DETECTION_SAMPLES.upi[(next.size + next.name.length) % DETECTION_SAMPLES.upi.length];
-      setDecoded({ vpa: sample, format: 'UPI QR (EMVCo)', payloadSize: 120 + (next.size % 180) });
-      setDecoding(false);
-      run(sample);
-    }, 850);
+    api.uploadQr(next).then(
+      (report) => {
+        setDecoded(report.decoded);
+        setDecoding(false);
+        setError('');
+        latestRun.current += 1;
+        setValue(report.vpa);
+        setResult(report);
+        setPhase('done');
+      },
+      (failure) => {
+        setDecoding(false);
+        if (failure instanceof BackendUnavailable) {
+          const sample = DETECTION_SAMPLES.upi[(next.size + next.name.length) % DETECTION_SAMPLES.upi.length];
+          setDecoded({ vpa: sample, format: 'UPI QR (EMVCo)', payloadSize: 120 + (next.size % 180), amountLocked: true });
+          run(sample);
+        } else {
+          setFileError(failure.message);
+        }
+      },
+    );
   };
 
   return (
@@ -169,7 +192,7 @@ export default function UpiQrChecker() {
                 <div className="mt-2 rounded-lg border border-line bg-surface-2/60 px-3 py-2">
                   <p className="text-[9.5px] uppercase tracking-[0.07em] text-ink-3">Decoded payload</p>
                   <p className="mt-0.5 font-mono text-[11px] text-ink">{decoded.vpa}</p>
-                  <p className="text-[9.5px] text-ink-3">{decoded.format} · {decoded.payloadSize} bytes · amount locked in payload</p>
+                  <p className="text-[9.5px] text-ink-3">{decoded.format} · {decoded.payloadSize} bytes · {decoded.amountLocked ? 'amount locked in payload' : 'no fixed amount'}</p>
                 </div>
               ) : null}
             </div>
@@ -180,14 +203,14 @@ export default function UpiQrChecker() {
           <div className="space-y-4 anim-fade">
             <div className="mb-1 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-line bg-surface-2/50 px-4 py-2.5">
               <div className="flex min-w-0 items-center gap-2">
-                <DemoBadge />
+                {result.live ? <Badge tone="safe" size="sm" dot>Live analysis</Badge> : <DemoBadge />}
                 <span className="truncate font-mono text-[11px] text-ink-2">{result.vpa}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CopyButton value={result.vpa} label="Copy VPA" compact />
                 <button
                   type="button"
-                  onClick={() => run(value)}
+                  onClick={() => run(value, { fresh: true })}
                   className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition hover:border-brand/30 hover:text-brand"
                 >
                   <FiRefreshCw className="text-[12px]" aria-hidden="true" /> Re-check
@@ -212,7 +235,7 @@ export default function UpiQrChecker() {
                       {result.score > 55 ? 'High-risk payment' : 'Low-risk payment'}
                     </Badge>
                     <Badge tone="neutral">{result.payee.type}</Badge>
-                    <Badge tone={result.payee.verified ? 'safe' : 'high'}>{result.payee.verified ? 'Merchant verified' : 'Unverified payee'}</Badge>
+                    <Badge tone={result.payee.verified ? 'safe' : result.live ? 'neutral' : 'high'}>{result.payee.verified ? 'Merchant verified' : result.live ? 'Owner not verifiable' : 'Unverified payee'}</Badge>
                   </div>
                   <p className="mt-2 text-[12.5px] leading-6 text-ink-2">{result.summary}</p>
                   <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -256,7 +279,7 @@ export default function UpiQrChecker() {
                   <DataRow label="UPI handle" value={result.vpa} mono />
                   <DataRow label="Display name" value={result.payee.name} />
                   <DataRow label="Account type" value={result.payee.type} />
-                  <DataRow label="Account age" value={`${result.payee.accountAgeDays} days`} />
+                  <DataRow label="Account age" value={result.payee.accountAgeDays == null ? 'Not available' : `${result.payee.accountAgeDays} days`} />
                   <DataRow label="Registered" value={result.merchant.registered ? 'Yes' : 'No'} />
                   <DataRow label="GSTIN" value={result.merchant.gstin || 'Not available'} mono />
                   <DataRow label="Category" value={result.merchant.category} />
@@ -323,14 +346,18 @@ export default function UpiQrChecker() {
               </SectionCard>
 
               <Notice tone={result.score > 55 ? 'critical' : 'safe'} icon={result.score > 55 ? FiAlertTriangle : FiShield} title={result.score > 55 ? 'Do not approve this collect request' : 'Payment looks consistent'}>
-                {result.score > 55
-                  ? 'The handle is unregistered, uses an individual account for a cashback promise and has confirmed scam reports. Approving this request will likely result in an irreversible loss.'
-                  : 'The payee is a registered merchant with a consistent history and no reports. Confirm the amount and note before approving.'}
+                {result.live
+                  ? (result.score > 55 ? `${result.summary} UPI payments cannot be reversed once approved.` : 'Check that the name shown in your UPI app matches who you intend to pay before approving.')
+                  : result.score > 55
+                    ? 'The handle is unregistered, uses an individual account for a cashback promise and has confirmed scam reports. Approving this request will likely result in an irreversible loss.'
+                    : 'The payee is a registered merchant with a consistent history and no reports. Confirm the amount and note before approving.'}
               </Notice>
             </div>
 
             <Notice tone="neutral" icon={FiCpu}>
-              UPI verification is simulated. No payment network, bank or QR decoder was contacted.
+              {result.live
+                ? result.limitations?.[0]
+                : 'UPI verification is simulated. No payment network, bank or QR decoder was contacted.'}
             </Notice>
           </div>
         ) : null}

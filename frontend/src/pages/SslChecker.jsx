@@ -13,7 +13,7 @@ import { ScoreRing, Meter, Spinner } from '../components/ui/Progress';
 import Tabs from '../components/ui/Tabs';
 import Notice from '../components/ui/Notice';
 import CopyButton from '../components/ui/CopyButton';
-import { buildSslReport } from '../lib/mockEngine';
+import { fetchSslReport, useLiveBackend } from '../lib/api';
 import { validateDomain } from '../lib/validation';
 import { clamp, cn, formatDate, formatDateTime } from '../lib/utils';
 
@@ -33,7 +33,22 @@ export default function SslChecker() {
   const [phase, setPhase] = useState('scanning');
   const [report, setReport] = useState(null);
   const [tab, setTab] = useState('certificate');
-  const timers = useRef([]);
+  const latestRun = useRef(0);
+  const live = useLiveBackend();
+
+  const load = async (domain) => {
+    const runId = ++latestRun.current;
+    try {
+      const next = await fetchSslReport(domain);
+      if (runId !== latestRun.current) return;
+      setReport(next);
+      setPhase('done');
+    } catch (failure) {
+      if (runId !== latestRun.current) return;
+      setError(failure.message);
+      setPhase('idle');
+    }
+  };
 
   const runCheck = (raw) => {
     const parsed = validateDomain(raw);
@@ -41,24 +56,21 @@ export default function SslChecker() {
       setError(parsed.error);
       return;
     }
-    timers.current.forEach((timer) => window.clearTimeout(timer));
-    timers.current = [];
     setError('');
     setValue(parsed.domain);
     setPhase('scanning');
     setReport(null);
-    timers.current.push(
-      window.setTimeout(() => {
-        setReport(buildSslReport(parsed.domain));
-        setPhase('done');
-      }, 950),
-    );
+    load(parsed.domain);
   };
 
   useEffect(() => {
     const domain = searchParams.get('domain') || SAMPLE_DOMAINS[0];
-    timers.current.push(window.setTimeout(() => setReport(buildSslReport(domain)), 900));
-    return () => timers.current.forEach((timer) => window.clearTimeout(timer));
+    // load() only sets state after its request resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load(domain);
+    return () => {
+      latestRun.current += 1;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -73,12 +85,12 @@ export default function SslChecker() {
         title="Read the certificate, not just the padlock."
         description="Inspect issuer trust, chain integrity, key strength, certificate transparency logging and revocation status for any domain."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'SSL Checker' }]}
-        demo
+        demo={live === false}
         meta={
           <>
             <span className="inline-flex items-center gap-1.5"><FiLock className="text-[12px]" aria-hidden="true" /> Chain validation</span>
             <span className="inline-flex items-center gap-1.5"><FiLink2 className="text-[12px]" aria-hidden="true" /> CT log presence</span>
-            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> Simulated certificate</span>
+            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> {live === false ? 'Simulated certificate' : 'Real TLS handshake'}</span>
           </>
         }
         actions={<Button to="/advanced/ca-reputation" variant="secondary" size="md" iconRight={FiArrowRight}>CA reputation</Button>}
@@ -165,7 +177,7 @@ export default function SslChecker() {
                       {report.health === 'healthy' ? 'Healthy certificate' : report.health === 'attention' ? 'Needs attention' : 'At risk'}
                     </Badge>
                     <Badge tone="neutral" icon={FiLock}>{report.protocol}</Badge>
-                    <DemoBadge />
+                    {report.live ? <Badge tone="safe" dot>Live analysis</Badge> : <DemoBadge />}
                   </div>
                   <p className="mt-2 break-all font-mono text-[13px] text-ink">{report.domain}</p>
                   <p className="mt-1 text-[12px] text-ink-2">
@@ -404,15 +416,16 @@ export default function SslChecker() {
                   ))}
                 </ul>
                 <div className="mt-4 flex items-center gap-2 text-[10.5px] text-ink-3">
-                  <FiClock className="text-[11px]" aria-hidden="true" /> Simulated in-browser check, 950 ms
+                  <FiClock className="text-[11px]" aria-hidden="true" /> {report.live ? 'Live server-side check' : 'Simulated in-browser check, 950 ms'}
                 </div>
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu} title="Simulated certificate data">
-              This report is generated from seeded demo data. No TLS handshake was performed. Production use requires a
-              server-side certificate inspection service.
-            </Notice>
+            {!report.live ? (
+              <Notice tone="neutral" icon={FiCpu} title="Simulated certificate data">
+                This report is generated from seeded demo data because the scanning service could not be reached.
+              </Notice>
+            ) : null}
           </div>
         ) : null}
       </div>

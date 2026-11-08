@@ -15,7 +15,7 @@ export default function CaReputation() {
   return (
     <>
       <ToolHeader feature={feature} index={2} />
-      <DetectionWorkbench feature={feature} inputKind="domain" cta="Score this CA" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="domain" cta="Score this CA" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -122,7 +122,7 @@ export default function CaReputation() {
                 ))}
               </ol>
               <div className="mt-3 flex items-center gap-2 text-[10.5px] text-ink-3">
-                <FiClock className="text-[11px]" aria-hidden="true" /> Incident records are simulated for this demo.
+                <FiClock className="text-[11px]" aria-hidden="true" /> {result.live ? 'Public incidents from the curated CA reputation database.' : 'Incident records are simulated for this demo.'}
               </div>
             </SectionCard>
 
@@ -132,10 +132,12 @@ export default function CaReputation() {
                 : 'The authority has a history of incidents or slower revocation publication. Prefer short-lived certificates and monitor CT logs for this domain.'}
             </Notice>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               Reputation scoring is simulated. In production this module would consume CA/Browser Forum records, audit
               statements and CT incident disclosures.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

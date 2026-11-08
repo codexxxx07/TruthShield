@@ -22,22 +22,13 @@ import EmptyState from '../components/ui/EmptyState';
 import Notice from '../components/ui/Notice';
 import { AreaChart, DonutChart } from '../components/ui/Charts';
 import { Gauge, ScoreRing, Meter } from '../components/ui/Progress';
-import {
-  ACTIVITY_FEED, DAILY_DETECTIONS, OVERVIEW_STATS, RECENT_REPORTS, RISK_BREAKDOWN, SCAN_HISTORY,
-  THREAT_DISTRIBUTION, WATCHLIST,
-} from '../data/dashboard';
+import { useDashboardData } from '../lib/useWorkspaceData';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { REPORT_STATUSES } from '../data/reports';
 import { normalizeUrl } from '../lib/validation';
 import { cn, formatDate, formatDateTime, formatNumber, timeAgo, truncateMiddle } from '../lib/utils';
 
-const TABS = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'scans', label: 'Scan history', count: SCAN_HISTORY.length },
-  { id: 'reports', label: 'Reports', count: RECENT_REPORTS.length },
-  { id: 'activity', label: 'Activity' },
-];
 
 const ACTIVITY_ICON = {
   alert: FiAlertTriangle,
@@ -62,6 +53,23 @@ const EVENT_STREAM = [
 ];
 
 export default function Dashboard() {
+  const {
+    ACTIVITY_FEED, DAILY_DETECTIONS, OVERVIEW_STATS, RECENT_REPORTS, RISK_BREAKDOWN, SCAN_HISTORY,
+    THREAT_DISTRIBUTION, WATCHLIST, live,
+  } = useDashboardData();
+  const TABS = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'scans', label: 'Scan history', count: SCAN_HISTORY.length },
+    { id: 'reports', label: 'Reports', count: RECENT_REPORTS.length },
+    { id: 'activity', label: 'Activity' },
+  ];
+  const eventLines = live
+    ? SCAN_HISTORY.slice(0, 6).reverse().map((scan) => ({
+        time: new Date(scan.scannedAt).toLocaleTimeString('en-GB'),
+        level: scan.verdict === 'malicious' ? 'err' : scan.verdict === 'suspicious' ? 'warn' : 'ok',
+        text: `verdict=${scan.verdict} risk=${scan.score}/100 scan=${scan.id} target=${scan.target}`,
+      }))
+    : EVENT_STREAM;
   const { user } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
@@ -74,7 +82,7 @@ export default function Dashboard() {
   const [quickTarget, setQuickTarget] = useState('');
   const [quickError, setQuickError] = useState('');
 
-  const sources = useMemo(() => ['all', ...new Set(SCAN_HISTORY.map((scan) => scan.source))], []);
+  const sources = useMemo(() => ['all', ...new Set(SCAN_HISTORY.map((scan) => scan.source))], [SCAN_HISTORY]);
 
   const filteredScans = useMemo(() => {
     const needle = scanQuery.trim().toLowerCase();
@@ -84,7 +92,7 @@ export default function Dashboard() {
       if (sourceFilter !== 'all' && scan.source !== sourceFilter) return false;
       return true;
     });
-  }, [scanQuery, verdictFilter, sourceFilter]);
+  }, [SCAN_HISTORY, scanQuery, verdictFilter, sourceFilter]);
 
   const pages = Math.max(1, Math.ceil(filteredScans.length / 8));
   const currentPage = Math.min(page, pages);
@@ -134,9 +142,9 @@ export default function Dashboard() {
       <PageHeader
         eyebrow="Workspace"
         title={`Security operations, ${user ? user.name.split(' ')[0] : 'analyst'}.`}
-        description="Every scan, report and signal from your workspace in one place. All figures are demo data rendered from the same components used on the public pages."
+        description={live ? 'Every scan, report and signal from your workspace in one place.' : 'Every scan, report and signal from your workspace in one place. All figures are demo data rendered from the same components used on the public pages.'}
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Dashboard' }]}
-        demo
+        demo={!live}
         compact
         meta={
           <>
@@ -173,13 +181,13 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-4">
-          <OpsStrip />
+          {!live ? <OpsStrip /> : null}
         </div>
 
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Tabs items={TABS} value={tab} onChange={(next) => { setTab(next); setPage(1); }} variant="pill" ariaLabel="Dashboard sections" />
           <div className="flex items-center gap-2">
-            <Badge tone="neutral" dot>Simulated workspace</Badge>
+            <Badge tone={live ? 'safe' : 'neutral'} dot>{live ? 'Live workspace' : 'Simulated workspace'}</Badge>
             <Button
               variant="ghost"
               size="sm"
@@ -231,7 +239,7 @@ export default function Dashboard() {
                 <div className="flex-1 p-3">
                   <TerminalLog
                     title="truthshield@mesh · trace"
-                    lines={EVENT_STREAM}
+                    lines={eventLines}
                     live
                     className="flex h-full flex-col"
                     bodyClassName="min-h-[214px] flex-1"
@@ -441,7 +449,7 @@ export default function Dashboard() {
                   </button>
                 ) : null}
                 <span className="ml-auto inline-flex items-center gap-1.5 text-[10.5px] text-ink-3">
-                  <FiCpu className="text-[11px]" aria-hidden="true" /> simulated records
+                  <FiCpu className="text-[11px]" aria-hidden="true" /> {live ? 'live records' : 'simulated records'}
                 </span>
               </div>
             </Card>

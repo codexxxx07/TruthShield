@@ -5,7 +5,7 @@
 
 const BLOCKED_PROTOCOLS = ['javascript:', 'data:', 'file:', 'ftp:'];
 const TLD_RE = /^[a-z]{2,24}$/i;
-const LABEL_RE = /^(?!-)[a-z0-9-]{1,63}(?<!-)$/i;
+const LABEL_RE = /^(?!-)[\p{L}\p{M}\p{N}-]{1,63}(?<!-)$/iu;
 
 export function normalizeUrl(raw = '') {
   const trimmed = String(raw).trim();

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FiCpu, FiGlobe, FiPlay, FiRefreshCw, FiCreditCard, FiLock } from 'react-icons/fi';
 import Badge, { DemoBadge } from '../ui/Badge';
+import Notice from '../ui/Notice';
 import Button from '../ui/Button';
 import CopyButton from '../ui/CopyButton';
 import TerminalLog from '../ui/TerminalLog';
@@ -68,6 +69,7 @@ export default function DetectionWorkbench({
   const [target, setTarget] = useState('');
   const timers = useRef([]);
   const started = useRef(false);
+  const latestRun = useRef(0);
   const Icon = meta.icon;
 
   const clearTimers = () => {
@@ -78,7 +80,7 @@ export default function DetectionWorkbench({
   useEffect(() => () => clearTimers(), []);
 
   const run = useCallback(
-    (raw) => {
+    async (raw, options) => {
       const parsed = parseTarget(inputKind, raw);
       if (!parsed.ok) {
         setError(parsed.error);
@@ -93,16 +95,22 @@ export default function DetectionWorkbench({
       setStage(0);
       setPhase('scanning');
 
-      STAGES.forEach((_, index) => {
-        timers.current.push(window.setTimeout(() => setStage(index + 1), 340 * (index + 1)));
+      const runId = ++latestRun.current;
+      STAGES.slice(0, -1).forEach((_, index) => {
+        timers.current.push(window.setTimeout(() => setStage(index + 1), 700 * (index + 1)));
       });
-      timers.current.push(
-        window.setTimeout(() => {
-          const data = analyze ? analyze(parsed.value) : runDetection(feature.slug, parsed.value);
-          setResult(data);
-          setPhase('done');
-        }, 340 * STAGES.length + 240),
-      );
+      try {
+        const data = await (analyze ? analyze(parsed.value, options) : runDetection(feature.slug, parsed.value, options));
+        if (runId !== latestRun.current) return;
+        clearTimers();
+        setResult(data);
+        setPhase('done');
+      } catch (failure) {
+        if (runId !== latestRun.current) return;
+        clearTimers();
+        setError(failure.message);
+        setPhase('idle');
+      }
     },
     [analyze, feature, inputKind, result],
   );
@@ -227,7 +235,7 @@ export default function DetectionWorkbench({
         <div className="anim-fade">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface-2/50 px-4 py-2.5">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
-              <DemoBadge />
+              {result.live ? <Badge tone="safe" size="sm" dot>Live analysis</Badge> : <DemoBadge />}
               <span className="truncate font-mono text-[11px] text-ink-2">{target}</span>
               <span className="hidden text-[10.5px] text-ink-3 sm:inline">{formatDateTime(new Date())}</span>
             </div>
@@ -236,7 +244,7 @@ export default function DetectionWorkbench({
               <CopyButton value={`${window.location.origin}${window.location.pathname}?target=${encodeURIComponent(target)}`} label="Copy link" compact />
               <button
                 type="button"
-                onClick={() => run(value)}
+                onClick={() => run(value, { fresh: true })}
                 className="inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition hover:border-brand/30 hover:text-brand"
               >
                 <FiRefreshCw className="text-[12px]" aria-hidden="true" /> Run again
@@ -244,6 +252,11 @@ export default function DetectionWorkbench({
             </div>
           </div>
           {children(result)}
+          {result.limitations?.length ? (
+            <Notice tone="warning" title="Partial result" className="mt-4">
+              {result.limitations.join(' ')}
+            </Notice>
+          ) : null}
           {notice ? <div className="mt-4">{notice}</div> : null}
           {footer ? <div className="mt-4">{footer}</div> : null}
         </div>

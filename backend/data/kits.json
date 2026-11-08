@@ -1,0 +1,9 @@
+[
+ {"kit":"PHP credential relay","family":"Credential harvester","markers":{"action:login.php":3,"action:post.php":4,"action:next.php":4,"action:verify.php":3,"action:submit.php":2,"action:auth.php":2,"file:antibot":6,"file:blocker":5,"text:antibots":5,"input:password":2,"input:email":1,"structure:single-form":1}},
+ {"kit":"Bank KYC and OTP flow","family":"Banking KYC kit","markers":{"text:kyc":4,"text:otp":3,"text:one time password":3,"text:net banking":3,"text:pan card":4,"text:aadhaar":3,"text:atm pin":6,"text:account blocked":4,"text:mpin":5,"input:otp":5,"input:pan":4,"input:aadhaar":4,"input:mpin":6,"action:otp.php":6,"action:kyc":4,"file:step":2}},
+ {"kit":"Card and CVV harvester","family":"Payment harvester","markers":{"input:cvv":6,"input:card":4,"input:expiry":3,"input:cardnumber":5,"text:card number":2,"text:cvv":3,"text:expiry date":2,"action:card.php":6,"action:payment.php":3,"text:billing address":1}},
+ {"kit":"Telegram exfiltration relay","family":"Bot-exfil harvester","markers":{"js:api.telegram.org/bot":10,"js:sendmessage?chat_id":8,"js:chat_id":3,"js:discord.com/api/webhooks":10,"input:password":1}},
+ {"kit":"Crypto wallet drainer","family":"Wallet drainer","markers":{"text:seed phrase":6,"text:recovery phrase":6,"text:connect wallet":3,"text:12 word":4,"text:airdrop":3,"js:eth_sendtransaction":3,"js:setapprovalforall":6,"js:wallet_requestpermissions":2,"input:seed":6,"input:mnemonic":6}},
+ {"kit":"Microsoft 365 login clone","family":"Enterprise credential phish","markers":{"text:sign in to your account":3,"text:microsoft":1,"text:office 365":2,"text:stay signed in":2,"file:office":1,"input:loginfmt":6,"input:passwd":6,"js:aadcdn":2,"input:password":1}},
+ {"kit":"Delivery fee lure","family":"Parcel smishing kit","markers":{"text:parcel":2,"text:redelivery":5,"text:delivery fee":5,"text:customs":1,"text:tracking number":1,"input:card":3,"input:cvv":3}}
+]

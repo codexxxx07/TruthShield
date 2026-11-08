@@ -14,7 +14,7 @@ import Notice from '../components/ui/Notice';
 import Accordion from '../components/ui/Accordion';
 import EmptyState from '../components/ui/EmptyState';
 import TerminalLog from '../components/ui/TerminalLog';
-import { buildSecurityAssessment } from '../lib/mockEngine';
+import { fetchAssessment, useLiveBackend } from '../lib/api';
 import { validateDomain } from '../lib/validation';
 import { clamp, cn, formatDateTime } from '../lib/utils';
 
@@ -50,7 +50,22 @@ export default function SecurityAnalysis() {
   const [phase, setPhase] = useState('scanning');
   const [report, setReport] = useState(null);
   const [severityFilter, setSeverityFilter] = useState('all');
-  const timers = useRef([]);
+  const latestRun = useRef(0);
+  const live = useLiveBackend();
+
+  const load = async (domain) => {
+    const runId = ++latestRun.current;
+    try {
+      const next = await fetchAssessment(domain);
+      if (runId !== latestRun.current) return;
+      setReport(next);
+      setPhase('done');
+    } catch (failure) {
+      if (runId !== latestRun.current) return;
+      setError(failure.message);
+      setPhase('idle');
+    }
+  };
 
   const runAssessment = (raw) => {
     const parsed = validateDomain(raw);
@@ -58,25 +73,22 @@ export default function SecurityAnalysis() {
       setError(parsed.error);
       return;
     }
-    timers.current.forEach((timer) => window.clearTimeout(timer));
-    timers.current = [];
     setError('');
     setValue(parsed.domain);
     setPhase('scanning');
     setReport(null);
-    timers.current.push(
-      window.setTimeout(() => {
-        setReport(buildSecurityAssessment(parsed.domain));
-        setPhase('done');
-      }, 1100),
-    );
+    load(parsed.domain);
   };
 
   useEffect(() => {
     const domain = searchParams.get('domain');
     const target = domain || SAMPLE_DOMAINS[0];
-    timers.current.push(window.setTimeout(() => setReport(buildSecurityAssessment(target)), 1050));
-    return () => timers.current.forEach((timer) => window.clearTimeout(timer));
+    // load() only sets state after its request resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    load(target);
+    return () => {
+      latestRun.current += 1;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -91,12 +103,12 @@ export default function SecurityAnalysis() {
         title="A full security assessment of any website."
         description="Headers, transport, exposure and misconfiguration checks graded against a hardened baseline — grouped by severity, with impact and remediation for every finding."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Security Analysis' }]}
-        demo
+        demo={live === false}
         meta={
           <>
             <span className="inline-flex items-center gap-1.5"><FiShield className="text-[12px]" aria-hidden="true" /> 7-point header baseline</span>
             <span className="inline-flex items-center gap-1.5"><FiServer className="text-[12px]" aria-hidden="true" /> Exposure probing</span>
-            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> Simulated results</span>
+            <span className="inline-flex items-center gap-1.5"><FiCpu className="text-[12px]" aria-hidden="true" /> {live === false ? 'Simulated results' : 'Live probing'}</span>
           </>
         }
         actions={<Button to="/report-threat" variant="secondary" size="md" iconRight={FiArrowRight}>Report an issue</Button>}
@@ -195,7 +207,7 @@ export default function SecurityAnalysis() {
                       Grade {report.grade}
                     </Badge>
                     <Badge tone="neutral">{report.domain}</Badge>
-                    <DemoBadge />
+                    {report.live ? <Badge tone="safe" dot>Live analysis</Badge> : <DemoBadge />}
                   </div>
                   <p className="mt-2 text-[12.5px] leading-6 text-ink-2">
                     {report.score > 80
@@ -207,7 +219,7 @@ export default function SecurityAnalysis() {
                   <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[10.5px] text-ink-3">
                     <span>{formatDateTime(report.assessedAt)}</span>
                     <span>Header score {report.headerScore}/100</span>
-                    <span>{report.latencyMs} ms simulated</span>
+                    <span>{report.latencyMs} ms{report.live ? ' response time' : ' simulated'}</span>
                   </div>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {SEVERITY_ORDER.map((severity) => (
@@ -389,11 +401,18 @@ export default function SecurityAnalysis() {
               </SectionCard>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu} title="Simulated assessment">
-              Headers, endpoints and software versions are demo values generated in the browser. No request was made to{' '}
-              <span className="code-inline">{report.domain}</span>. Wiring a real scanner only requires replacing{' '}
-              <span className="code-inline">buildSecurityAssessment()</span>.
-            </Notice>
+            {report.live ? (
+              report.reachable === false ? (
+                <Notice tone="warning" title="Site could not be reached">
+                  {report.domain} did not respond, so headers and exposed paths were not checked and the grade is not meaningful.
+                </Notice>
+              ) : null
+            ) : (
+              <Notice tone="neutral" icon={FiCpu} title="Simulated assessment">
+                The scanning service could not be reached, so these are demo values generated in the browser. No request was made to{' '}
+                <span className="code-inline">{report.domain}</span>.
+              </Notice>
+            )}
 
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line bg-surface-2/40 px-4 py-3">
               <p className="text-[11.5px] text-ink-3">Need the certificate view for this domain?</p>

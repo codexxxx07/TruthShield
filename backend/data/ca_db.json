@@ -1,0 +1,730 @@
+[
+ {
+  "key": "let's encrypt",
+  "match": [
+   "let's encrypt",
+   "isrg"
+  ],
+  "name": "Let's Encrypt",
+  "since": 2015,
+  "type": "Non-profit ACME CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 86,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "abuse_note": "Free automated DV issuance; widely used by legitimate and phishing sites alike.",
+  "revocation_sla": "Under 24 hours",
+  "incidents": [
+   {
+    "year": 2020,
+    "title": "CAA re-check bug",
+    "severity": "medium",
+    "summary": "A CAA checking bug led to the revocation of about 3 million certificates.",
+    "status": "resolved"
+   }
+  ]
+ },
+ {
+  "key": "digicert",
+  "match": [
+   "digicert",
+   "geotrust",
+   "rapidssl",
+   "thawte"
+  ],
+  "name": "DigiCert Inc",
+  "since": 2003,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "United States",
+  "base": 95,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": [
+   {
+    "year": 2024,
+    "title": "CNAME validation defect",
+    "severity": "medium",
+    "summary": "A domain-validation defect required about 83,000 certificates to be revoked at short notice.",
+    "status": "resolved"
+   }
+  ]
+ },
+ {
+  "key": "sectigo",
+  "match": [
+   "sectigo",
+   "comodo",
+   "usertrust"
+  ],
+  "name": "Sectigo Limited",
+  "since": 1998,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "United Kingdom",
+  "base": 82,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": [
+   {
+    "year": 2011,
+    "title": "Reseller compromise (as Comodo)",
+    "severity": "high",
+    "summary": "A compromised reseller account was used to issue fraudulent certificates for major web domains.",
+    "status": "resolved"
+   },
+   {
+    "year": 2020,
+    "title": "AddTrust root expiry",
+    "severity": "low",
+    "summary": "The expiry of a legacy cross-signed root caused client compatibility outages.",
+    "status": "closed"
+   }
+  ]
+ },
+ {
+  "key": "globalsign",
+  "match": [
+   "globalsign"
+  ],
+  "name": "GlobalSign nv-sa",
+  "since": 1996,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "Belgium",
+  "base": 92,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": [
+   {
+    "year": 2016,
+    "title": "Cross-certificate revocation error",
+    "severity": "low",
+    "summary": "A mistaken revocation of a cross-certificate caused validation failures for many sites.",
+    "status": "resolved"
+   }
+  ]
+ },
+ {
+  "key": "google trust services",
+  "match": [
+   "google trust services",
+   "gts"
+  ],
+  "name": "Google Trust Services",
+  "since": 2017,
+  "type": "Platform CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 95,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "amazon",
+  "match": [
+   "amazon"
+  ],
+  "name": "Amazon Trust Services",
+  "since": 2015,
+  "type": "Platform CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 94,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "microsoft",
+  "match": [
+   "microsoft"
+  ],
+  "name": "Microsoft Corporation",
+  "since": 2020,
+  "type": "Platform CA",
+  "tier": "Organisation Validated",
+  "country": "United States",
+  "base": 92,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "apple",
+  "match": [
+   "apple public"
+  ],
+  "name": "Apple Inc.",
+  "since": 2014,
+  "type": "Platform CA",
+  "tier": "Organisation Validated",
+  "country": "United States",
+  "base": 92,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "zerossl",
+  "match": [
+   "zerossl"
+  ],
+  "name": "ZeroSSL",
+  "since": 2020,
+  "type": "ACME CA",
+  "tier": "Domain Validated",
+  "country": "Austria",
+  "base": 70,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "abuse_note": "Free automated DV issuance with low-friction signup.",
+  "revocation_sla": "Under 72 hours",
+  "incidents": []
+ },
+ {
+  "key": "godaddy",
+  "match": [
+   "godaddy",
+   "starfield"
+  ],
+  "name": "GoDaddy.com, Inc.",
+  "since": 2005,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 84,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": [
+   {
+    "year": 2017,
+    "title": "DNS validation bug",
+    "severity": "medium",
+    "summary": "A validation bug led to the revocation of about 8,850 certificates.",
+    "status": "resolved"
+   }
+  ]
+ },
+ {
+  "key": "entrust",
+  "match": [
+   "entrust",
+   "affirmtrust"
+  ],
+  "name": "Entrust",
+  "since": 1994,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "United States",
+  "base": 42,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2024,
+   "by": "Google Chrome and Mozilla",
+   "note": "New certificates distrusted after repeated compliance failures."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2024,
+    "title": "Distrusted by browsers",
+    "severity": "critical",
+    "summary": "Chrome and Mozilla stopped trusting newly issued certificates after a pattern of compliance failures.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "chunghwa",
+  "match": [
+   "chunghwa"
+  ],
+  "name": "Chunghwa Telecom",
+  "since": 2003,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "Taiwan",
+  "base": 45,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2025,
+   "by": "Google Chrome",
+   "note": "New certificates distrusted from Chrome 139 over compliance concerns."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2025,
+    "title": "Distrusted by Chrome",
+    "severity": "high",
+    "summary": "Chrome announced distrust of newly issued certificates following compliance concerns.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "netlock",
+  "match": [
+   "netlock"
+  ],
+  "name": "NetLock",
+  "since": 1996,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "Hungary",
+  "base": 45,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2025,
+   "by": "Google Chrome",
+   "note": "New certificates distrusted from Chrome 139 over compliance concerns."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2025,
+    "title": "Distrusted by Chrome",
+    "severity": "high",
+    "summary": "Chrome announced distrust of newly issued certificates following compliance concerns.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "symantec",
+  "match": [
+   "symantec",
+   "verisign"
+  ],
+  "name": "Symantec (legacy)",
+  "since": 1995,
+  "type": "Retired commercial CA",
+  "tier": "Organisation Validated",
+  "country": "United States",
+  "base": 10,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "distrusted"
+  },
+  "distrusted": {
+   "year": 2018,
+   "by": "Google Chrome and Mozilla",
+   "note": "Distrusted after repeated misissuance."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2017,
+    "title": "Misissuance investigation",
+    "severity": "critical",
+    "summary": "Browsers found repeated misissuance and scheduled complete distrust of the Symantec PKI.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "wosign",
+  "match": [
+   "wosign",
+   "startcom"
+  ],
+  "name": "WoSign / StartCom",
+  "since": 2005,
+  "type": "Retired commercial CA",
+  "tier": "Domain Validated",
+  "country": "China",
+  "base": 5,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "distrusted"
+  },
+  "distrusted": {
+   "year": 2016,
+   "by": "Apple, Google and Mozilla",
+   "note": "Distrusted for backdating and misissuance."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2016,
+    "title": "Backdated SHA-1 certificates",
+    "severity": "critical",
+    "summary": "Investigators found backdated certificates and undisclosed acquisition of StartCom.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "diginotar",
+  "match": [
+   "diginotar"
+  ],
+  "name": "DigiNotar",
+  "since": 1998,
+  "type": "Defunct CA",
+  "tier": "Organisation Validated",
+  "country": "Netherlands",
+  "base": 0,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "distrusted"
+  },
+  "distrusted": {
+   "year": 2011,
+   "by": "All major browsers",
+   "note": "Removed after a total compromise."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2011,
+    "title": "Complete CA compromise",
+    "severity": "critical",
+    "summary": "Attackers issued fraudulent certificates, including for google.com; the CA went bankrupt.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "trustcor",
+  "match": [
+   "trustcor"
+  ],
+  "name": "TrustCor Systems",
+  "since": 2014,
+  "type": "Retired commercial CA",
+  "tier": "Domain Validated",
+  "country": "Panama",
+  "base": 8,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "distrusted"
+  },
+  "distrusted": {
+   "year": 2022,
+   "by": "Mozilla and Microsoft",
+   "note": "Removed over ownership ties and transparency concerns."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2022,
+    "title": "Removed from root stores",
+    "severity": "critical",
+    "summary": "Mozilla and others removed the roots after reporting on ties to a surveillance-linked company.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "e-tugra",
+  "match": [
+   "e-tugra",
+   "e-tuğra"
+  ],
+  "name": "e-Tugra",
+  "since": 2005,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "Turkey",
+  "base": 12,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2023,
+   "by": "Mozilla and Google Chrome",
+   "note": "Distrusted after a security breach and inadequate response."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2022,
+    "title": "Security breach",
+    "severity": "critical",
+    "summary": "A researcher found severe weaknesses in the CA's systems, and the response was judged inadequate.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "camerfirma",
+  "match": [
+   "camerfirma"
+  ],
+  "name": "AC Camerfirma",
+  "since": 2000,
+  "type": "Commercial CA",
+  "tier": "Organisation Validated",
+  "country": "Spain",
+  "base": 12,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2021,
+   "by": "Google Chrome and Mozilla",
+   "note": "Distrusted after a long record of compliance failures."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2021,
+    "title": "Compliance failures",
+    "severity": "critical",
+    "summary": "Browsers removed trust after years of unresolved incidents.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "cnnic",
+  "match": [
+   "cnnic"
+  ],
+  "name": "CNNIC",
+  "since": 2009,
+  "type": "National CA",
+  "tier": "Domain Validated",
+  "country": "China",
+  "base": 8,
+  "stores": {
+   "Chrome Root Store": "distrusted",
+   "Apple": "distrusted",
+   "Microsoft": "included"
+  },
+  "distrusted": {
+   "year": 2015,
+   "by": "Google Chrome and Mozilla",
+   "note": "Distrusted after an intermediate was used to intercept traffic."
+  },
+  "revocation_sla": "Unknown",
+  "incidents": [
+   {
+    "year": 2015,
+    "title": "Unauthorised intermediate",
+    "severity": "critical",
+    "summary": "An intermediate issued to MCS Holdings was used to mint certificates for Google domains.",
+    "status": "enforced"
+   }
+  ]
+ },
+ {
+  "key": "cloudflare",
+  "match": [
+   "cloudflare"
+  ],
+  "name": "Cloudflare, Inc.",
+  "since": 2014,
+  "type": "Platform CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 90,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "ssl.com",
+  "match": [
+   "ssl.com",
+   "ssl corp"
+  ],
+  "name": "SSL.com",
+  "since": 2002,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 84,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "emudhra",
+  "match": [
+   "emudhra",
+   "emsign"
+  ],
+  "name": "eMudhra (emSign)",
+  "since": 2008,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "India",
+  "base": 82,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "actalis",
+  "match": [
+   "actalis"
+  ],
+  "name": "Actalis S.p.A.",
+  "since": 2002,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "Italy",
+  "base": 84,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "identrust",
+  "match": [
+   "identrust"
+  ],
+  "name": "IdenTrust",
+  "since": 1999,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "United States",
+  "base": 85,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "swisssign",
+  "match": [
+   "swisssign"
+  ],
+  "name": "SwissSign AG",
+  "since": 2001,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "Switzerland",
+  "base": 86,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "certum",
+  "match": [
+   "certum",
+   "asseco",
+   "unizeto"
+  ],
+  "name": "Certum (Asseco)",
+  "since": 1998,
+  "type": "Commercial CA",
+  "tier": "Domain Validated",
+  "country": "Poland",
+  "base": 82,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ },
+ {
+  "key": "harica",
+  "match": [
+   "harica",
+   "hellenic academic"
+  ],
+  "name": "HARICA",
+  "since": 2011,
+  "type": "Academic CA",
+  "tier": "Domain Validated",
+  "country": "Greece",
+  "base": 84,
+  "stores": {
+   "Chrome Root Store": "included",
+   "Apple": "included",
+   "Microsoft": "included"
+  },
+  "revocation_sla": "Under 24 hours",
+  "incidents": []
+ }
+]

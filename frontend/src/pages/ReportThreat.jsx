@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiAlertTriangle, FiArrowRight, FiCheck, FiCheckCircle, FiClock, FiCpu, FiFileText, FiGlobe,
@@ -7,6 +7,7 @@ import {
 import PageHeader from '../components/ui/PageHeader';
 import Button from '../components/ui/Button';
 import Badge, { DemoBadge } from '../components/ui/Badge';
+import { api, BackendUnavailable, useLiveBackend } from '../lib/api';
 import { Card, SectionCard } from '../components/ui/Card';
 import { Field, Input, Textarea, Checkbox } from '../components/ui/Field';
 import FileDrop from '../components/ui/FileDrop';
@@ -100,7 +101,13 @@ export default function ReportThreat() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(null);
+  const [communityReports, setCommunityReports] = useState(RECENT_COMMUNITY_REPORTS);
   const toast = useToast();
+  const live = useLiveBackend();
+
+  useEffect(() => {
+    if (live) api.threats().then((data) => setCommunityReports(data.communityReports), () => {});
+  }, [live]);
 
   const update = (key, value) => {
     setForm((current) => ({ ...current, [key]: value }));
@@ -127,25 +134,42 @@ export default function ReportThreat() {
     return Object.keys(next).length === 0;
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     if (!validate()) {
       toast.error('Check the highlighted fields', 'A few details are missing or invalid.');
       return;
     }
     setSubmitting(true);
-    window.setTimeout(() => {
-      setSubmitting(false);
-      setSubmitted({
-        id: makeId('RPT'),
-        url: normalizeUrl(form.url).url,
-        category: form.category,
-        description: form.description,
-        evidence: file ? file.name : null,
-        submittedAt: new Date().toISOString(),
-      });
+    const url = normalizeUrl(form.url).url;
+    const payload = new FormData();
+    payload.append('url', url);
+    payload.append('category', form.category);
+    payload.append('description', form.description);
+    payload.append('details', form.details);
+    payload.append('email', form.email.trim());
+    if (file) payload.append('evidence', file);
+    try {
+      const saved = await api.report(payload);
+      setSubmitted({ ...saved, category: form.category });
       toast.success('Report submitted', 'Your submission is queued for triage.');
-    }, 1100);
+    } catch (failure) {
+      if (failure instanceof BackendUnavailable) {
+        setSubmitted({
+          id: makeId('RPT'),
+          url,
+          category: form.category,
+          description: form.description,
+          evidence: file ? file.name : null,
+          submittedAt: new Date().toISOString(),
+        });
+        toast.info('Saved in this demo only', 'The server could not be reached, so this report was not stored.');
+      } else {
+        toast.error('Could not submit the report', failure.message);
+      }
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const reset = () => {
@@ -346,14 +370,16 @@ export default function ReportThreat() {
           <aside className="space-y-4">
             <SectionCard title="Report lifecycle" description="What happens after submission" icon={FiShield}>
               <StatusTracker activeIndex={submitted ? 0 : 0} />
-              <div className="mt-4 grid grid-cols-3 gap-2 border-t border-line pt-3">
-                {REPORT_IMPACT.map((item) => (
-                  <div key={item.label}>
-                    <p className="text-[13px] font-semibold tabular text-ink">{item.value}</p>
-                    <p className="mt-0.5 text-[9.5px] leading-3 text-ink-3">{item.label}</p>
-                  </div>
-                ))}
-              </div>
+              {live === false ? (
+                <div className="mt-4 grid grid-cols-3 gap-2 border-t border-line pt-3">
+                  {REPORT_IMPACT.map((item) => (
+                    <div key={item.label}>
+                      <p className="text-[13px] font-semibold tabular text-ink">{item.value}</p>
+                      <p className="mt-0.5 text-[9.5px] leading-3 text-ink-3">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
             </SectionCard>
 
             <SectionCard title="What makes a good report" description="Improves confirmation speed" icon={FiInfo}>
@@ -373,9 +399,9 @@ export default function ReportThreat() {
               </ul>
             </SectionCard>
 
-            <SectionCard title="Recent community reports" description="Last 12 hours" icon={FiUsers} flush>
+            <SectionCard title="Recent community reports" description={live === false ? 'Last 12 hours' : 'Latest submissions'} icon={FiUsers} flush>
               <ul className="divide-y divide-line/70">
-                {RECENT_COMMUNITY_REPORTS.map((report) => {
+                {communityReports.map((report) => {
                   const status = REPORT_STATUSES.find((entry) => entry.id === report.status);
                   return (
                     <li key={report.id} className="flex items-start gap-2.5 px-4 py-2.5">
@@ -400,7 +426,7 @@ export default function ReportThreat() {
               Do not include passwords, OTPs or full card numbers in a report. Redact them in screenshots before uploading.
             </Notice>
 
-            <DemoBadge className="w-full justify-center" />
+            {live === false ? <DemoBadge className="w-full justify-center" /> : null}
           </aside>
         </div>
       </div>

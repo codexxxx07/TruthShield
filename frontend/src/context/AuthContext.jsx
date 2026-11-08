@@ -1,21 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { readStorage, removeStorage, sleep, writeStorage } from '../lib/utils';
+import { api, setToken } from '../lib/api';
+import { readStorage, removeStorage, writeStorage } from '../lib/utils';
 
-/**
- * FRONTEND-ONLY MOCK SESSION.
- * Real credential verification, MFA and session tokens belong on a server.
- * Everything here is a local UI demo — no password ever leaves the browser.
- */
+/** Session state. Credentials are verified by the API, which returns a signed token. */
 const AuthContext = createContext(null);
-
-const DEMO_USER = {
-  id: 'usr_demo_01',
-  name: 'Aarav Mehta',
-  email: 'analyst@truthshield.demo',
-  org: 'Northline Security',
-  role: 'Security Analyst',
-  plan: 'Enterprise trial',
-};
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readStorage('truthshield:session', null));
@@ -26,26 +14,37 @@ export function AuthProvider({ children }) {
     else removeStorage('truthshield:session');
   }, [user]);
 
-  const login = useCallback(async ({ email, remember }) => {
-    setBusy(true);
-    await sleep(900);
-    const name = email.split('@')[0].replace(/[._-]+/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
-    const session = { ...DEMO_USER, name: name || DEMO_USER.name, email, remember: Boolean(remember) };
+  const beginSession = useCallback((token, profile, remember) => {
+    setToken(token);
+    const session = { ...profile, remember: Boolean(remember) };
     setUser(session);
-    setBusy(false);
     return session;
   }, []);
 
-  const signup = useCallback(async ({ name, email, org }) => {
+  const login = useCallback(async ({ email, password, remember }) => {
     setBusy(true);
-    await sleep(1100);
-    const session = { ...DEMO_USER, name, email, org: org || 'Personal workspace', plan: 'Free workspace' };
-    setUser(session);
-    setBusy(false);
-    return session;
-  }, []);
+    try {
+      const { token, user: profile } = await api.login(email, password);
+      return beginSession(token, profile, remember);
+    } finally {
+      setBusy(false);
+    }
+  }, [beginSession]);
 
-  const logout = useCallback(() => setUser(null), []);
+  const signup = useCallback(async ({ name, email, password, org }) => {
+    setBusy(true);
+    try {
+      const { token, user: profile } = await api.signup({ name, email, password, org: org || null });
+      return beginSession(token, profile, true);
+    } finally {
+      setBusy(false);
+    }
+  }, [beginSession]);
+
+  const logout = useCallback(() => {
+    setToken(null);
+    setUser(null);
+  }, []);
 
   const value = useMemo(() => ({ user, busy, login, signup, logout, isAuthenticated: Boolean(user) }), [user, busy, login, signup, logout]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

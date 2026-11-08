@@ -15,7 +15,7 @@ export default function JavaScriptBehaviour() {
   return (
     <>
       <ToolHeader feature={feature} index={11} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Run sandbox" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Run sandbox" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => (
           <div className="space-y-4">
             <Card className="overflow-hidden">
@@ -128,9 +128,11 @@ export default function JavaScriptBehaviour() {
               </Notice>
             </div>
 
-            <Notice tone="neutral" icon={FiCpu}>
+            {!result.live ? (
+              <Notice tone="neutral" icon={FiCpu}>
               JavaScript execution is simulated. No code from the target was executed in your browser.
             </Notice>
+            ) : null}
           </div>
         )}
       </DetectionWorkbench>

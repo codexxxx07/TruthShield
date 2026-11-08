@@ -23,7 +23,7 @@ export default function PhishingKits() {
   return (
     <>
       <ToolHeader feature={feature} index={9} />
-      <DetectionWorkbench feature={feature} inputKind="url" cta="Fingerprint page" analyze={(target) => runDetection(feature.slug, target)}>
+      <DetectionWorkbench feature={feature} inputKind="url" cta="Fingerprint page" analyze={(target, options) => runDetection(feature.slug, target, options)}>
         {(result) => {
           const nodesById = Object.fromEntries(result.cluster.nodes.map((node) => [node.id, node]));
 
@@ -154,10 +154,12 @@ export default function PhishingKits() {
                 </Notice>
               </div>
 
-              <Notice tone="neutral" icon={FiCpu}>
+              {!result.live ? (
+                <Notice tone="neutral" icon={FiCpu}>
                 Kit fingerprinting is simulated. Production matching would hash static assets, form structures and
                 obfuscated relay scripts against a maintained corpus.
               </Notice>
+              ) : null}
             </div>
           );
         }}
