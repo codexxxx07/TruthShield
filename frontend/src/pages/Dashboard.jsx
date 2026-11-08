@@ -7,8 +7,11 @@ import {
 } from 'react-icons/fi';
 import PageHeader from '../components/ui/PageHeader';
 import Button from '../components/ui/Button';
-import Badge, { SeverityBadge, VerdictBadge } from '../components/ui/Badge';
+import Badge, { SeverityBadge, VerdictBadge, DemoBadge } from '../components/ui/Badge';
 import { Card, SectionCard, DataRow } from '../components/ui/Card';
+import OpsStrip from '../components/ui/OpsStrip';
+import NetworkTopology from '../components/ui/NetworkTopology';
+import TerminalLog from '../components/ui/TerminalLog';
 import { SearchInput, Select } from '../components/ui/Field';
 import Tabs from '../components/ui/Tabs';
 import StatCard from '../components/ui/StatCard';
@@ -47,6 +50,16 @@ const ACTIVITY_ICON = {
 };
 
 const STATUS_TONE = { 'under review': 'high', confirmed: 'critical', triaged: 'medium', rejected: 'neutral', submitted: 'low' };
+
+const EVENT_STREAM = [
+  { time: '09:41:12', level: 'ok', text: 'tls.handshake tls1.3 · sni=paypal-secure-login.example' },
+  { time: '09:41:13', level: 'info', text: 'dns.resolve a=185.220.101.4 · ttl=60 · asn=64500' },
+  { time: '09:41:14', level: 'warn', text: 'domain.age 9d below policy floor (180d)' },
+  { time: '09:41:15', level: 'err', text: 'brand.clone paypal 0.96 · favicon match 0.91' },
+  { time: '09:41:16', level: 'err', text: 'kit.fingerprint "16shop" confidence=0.94' },
+  { time: '09:41:17', level: 'ok', text: 'intel.consensus 4/5 sources malicious' },
+  { time: '09:41:18', level: 'ok', text: 'verdict=malicious risk=94/100 scan=TS-9F21C4' },
+];
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -159,6 +172,10 @@ export default function Dashboard() {
           ))}
         </div>
 
+        <div className="mt-4">
+          <OpsStrip />
+        </div>
+
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <Tabs items={TABS} value={tab} onChange={(next) => { setTab(next); setPage(1); }} variant="pill" ariaLabel="Dashboard sections" />
           <div className="flex items-center gap-2">
@@ -175,7 +192,59 @@ export default function Dashboard() {
         </div>
 
         {tab === 'overview' ? (
-          <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+          <>
+            <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
+              <Card className="top-sheen overflow-hidden">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-3.5">
+                  <div>
+                    <p className="text-[13px] font-semibold text-ink">Global sensor mesh</p>
+                    <p className="mt-0.5 text-[11.5px] text-ink-3">Edge nodes, hostile clusters and core routing</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge tone="safe" dot>mesh healthy</Badge>
+                    <DemoBadge />
+                  </div>
+                </div>
+                <NetworkTopology className="px-2 py-2" />
+                <div className="grid grid-cols-3 divide-x divide-line/60 border-t border-line bg-surface-2/30">
+                  {[
+                    { label: 'Edges online', value: '7 / 7' },
+                    { label: 'Observed clusters', value: '1' },
+                    { label: 'Median RTT', value: '38 ms' },
+                  ].map((item) => (
+                    <div key={item.label} className="px-4 py-2.5">
+                      <p className="hud-label">{item.label}</p>
+                      <p className="mt-1 font-mono text-[12px] text-ink">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="top-sheen flex flex-col overflow-hidden">
+                <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3.5">
+                  <div>
+                    <p className="text-[13px] font-semibold text-ink">Event stream</p>
+                    <p className="mt-0.5 text-[11.5px] text-ink-3">Latest pipeline trace</p>
+                  </div>
+                  <Badge tone="neutral" size="sm">7 events</Badge>
+                </div>
+                <div className="flex-1 p-3">
+                  <TerminalLog
+                    title="truthshield@mesh · trace"
+                    lines={EVENT_STREAM}
+                    live
+                    className="flex h-full flex-col"
+                    bodyClassName="min-h-[214px] flex-1"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-3 border-t border-line bg-surface-2/30 px-4 py-2">
+                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-ink-3">buffer 7/512 · demo</span>
+                  <span className="font-mono text-[9px] uppercase tracking-[0.1em] text-safe">stream nominal</span>
+                </div>
+              </Card>
+            </div>
+
+            <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
             <div className="min-w-0 space-y-4">
               <Card className="top-sheen p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
@@ -334,6 +403,7 @@ export default function Dashboard() {
               </SectionCard>
             </div>
           </div>
+          </>
         ) : null}
 
         {tab === 'scans' ? (

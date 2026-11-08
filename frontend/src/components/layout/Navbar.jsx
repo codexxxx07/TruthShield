@@ -263,8 +263,8 @@ export default function Navbar() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <span className="hidden items-center gap-1.5 rounded-md border border-line bg-surface-2/40 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-3 2xl:inline-flex">
-            <span className="status-dot text-safe" aria-hidden="true" /> SOC online
+          <span className="hidden items-center gap-1.5 rounded border border-line bg-surface-2/40 px-2 py-1 font-mono text-[8.5px] uppercase tracking-[0.14em] text-ink-3 2xl:inline-flex">
+            <span className="status-dot text-safe" aria-hidden="true" /> Session secure
           </span>
           <ThemeToggle />
           {user ? (

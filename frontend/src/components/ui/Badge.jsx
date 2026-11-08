@@ -4,11 +4,11 @@ import { cn } from '../../lib/utils';
 const TONES = {
   neutral: 'border-line bg-surface-3 text-ink-2',
   brand: 'border-brand/30 bg-brand/10 text-brand shadow-[inset_0_0_14px_-8px_var(--brand-glow)]',
-  safe: 'border-safe/30 bg-safe/10 text-safe shadow-[inset_0_0_14px_-8px_rgba(0,255,163,0.45)]',
+  safe: 'border-safe/30 bg-safe/10 text-safe shadow-[inset_0_0_14px_-8px_rgba(0,255,156,0.45)]',
   low: 'border-low/30 bg-low/10 text-low',
-  medium: 'border-medium/35 bg-medium/10 text-medium shadow-[inset_0_0_14px_-8px_rgba(255,209,102,0.4)]',
+  medium: 'border-medium/35 bg-medium/10 text-medium shadow-[inset_0_0_14px_-8px_rgba(255,176,32,0.4)]',
   high: 'border-high/35 bg-high/10 text-high',
-  critical: 'border-critical/35 bg-critical/10 text-critical shadow-[inset_0_0_14px_-8px_rgba(255,56,100,0.5)]',
+  critical: 'border-critical/35 bg-critical/10 text-critical shadow-[inset_0_0_14px_-8px_rgba(255,69,96,0.5)]',
   info: 'border-info/30 bg-info/10 text-info',
 };
 

@@ -8,7 +8,7 @@ const PLATFORM = [
   { to: '/analysis', label: 'Security analysis' },
   { to: '/ssl-checker', label: 'SSL checker' },
   { to: '/threat-intelligence', label: 'Threat intelligence' },
-  { to: '/dashboard', label: 'Workspace dashboard' },
+  { to: '/dashboard', label: 'SOC dashboard' },
 ];
 
 const COMPANY = [
@@ -19,22 +19,39 @@ const COMPANY = [
   { to: '/signup', label: 'Create account' },
 ];
 
+const TELEMETRY = [
+  { label: 'Sensors', value: '13 / 13' },
+  { label: 'Playbooks', value: '42' },
+  { label: 'Queue depth', value: '12' },
+  { label: 'Demo uptime', value: '99.98%' },
+];
+
 export default function Footer() {
   return (
-    <footer className="relative mt-auto overflow-hidden border-t border-line bg-surface/30">
-      <span className="accent-rail absolute inset-x-0 top-0 opacity-60" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 circuit-grid opacity-40" aria-hidden="true" />
-      <div className="pointer-events-none absolute inset-0 dot-grid opacity-30" aria-hidden="true" />
-      <div className="pointer-events-none absolute -top-24 left-1/4 h-48 w-[420px] aurora aurora-brand opacity-40" aria-hidden="true" />
+    <footer className="relative mt-auto overflow-hidden border-t border-line bg-surface/25">
+      <span className="accent-rail absolute inset-x-0 top-0 opacity-45" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 circuit-grid opacity-30" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 dot-grid opacity-20" aria-hidden="true" />
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-48 w-[420px] aurora aurora-brand opacity-30" aria-hidden="true" />
       <div className="shell relative">
-        <div className="grid gap-10 py-12 lg:grid-cols-[1.4fr_1fr_1.4fr_1fr] lg:gap-8 lg:py-14">
+        {/* Telemetry strip */}
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-b-none border-x border-b border-line bg-line/60 sm:grid-cols-4">
+          {TELEMETRY.map((item) => (
+            <div key={item.label} className="flex items-center justify-between gap-3 bg-bg-soft/80 px-4 py-2">
+              <span className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-3">{item.label}</span>
+              <span className="font-mono text-[10.5px] tabular text-ink-2">{item.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-10 py-11 lg:grid-cols-[1.4fr_1fr_1.4fr_1fr] lg:gap-8 lg:py-12">
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-[12.5px] leading-6 text-ink-2">
-              A trust layer for the open web — combining certificate intelligence, brand protection and
-              behavioural analysis into one explainable verdict.
+              A trust layer for the open web — certificate intelligence, brand protection and behavioural analysis
+              combined into one explainable verdict.
             </p>
-            <div className="neon-chip mt-4 border-safe/30 bg-safe/[0.08] text-safe shadow-[inset_0_0_16px_-8px_rgba(0,255,163,0.5)]">
+            <div className="neon-chip mt-4 rounded-[4px] border-safe/30 bg-safe/[0.07] text-safe">
               <span className="status-dot text-safe" aria-hidden="true" />
               All demo systems operational
             </div>
@@ -88,15 +105,15 @@ export default function Footer() {
         <div className="cyber-divider" />
 
         <div className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[11.5px] text-ink-3">
-            © 2026 TruthShield Labs · Built as a frontend product demonstration.
+          <p className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-ink-3">
+            © 2026 TruthShield Labs · Build 3.0.0 · Node LON-01
           </p>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-ink-3">
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[9px] uppercase tracking-[0.08em] text-ink-3">
             <span className="inline-flex items-center gap-1.5">
-              <FiCheckCircle className="text-[11px] text-safe" aria-hidden="true" />
-              No live scanning service connected
+              <FiCheckCircle className="text-[10px] text-safe" aria-hidden="true" />
+              No live scanning connected
             </span>
-            <span className="font-mono uppercase tracking-[0.08em]">build 2.4.0 · demo</span>
+            <span className="rounded border border-line bg-surface-2/50 px-1.5 py-[1px]">Unclassified // demo data</span>
           </div>
         </div>
       </div>

@@ -346,6 +346,98 @@
   animation-delay: 0.5s;
 }
 
+/* ---------------------------------------------------------------
+   Security-operations motion: telemetry, packet flow and alerts.
+--------------------------------------------------------------- */
+@keyframes cyber-backdrop-sweep {
+  0% {
+    transform: translate3d(0, -30%, 0);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate3d(0, 620%, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes soc-dash {
+  to {
+    stroke-dashoffset: -36;
+  }
+}
+
+@keyframes soc-node-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes soc-alert-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes soc-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes soc-scan-line {
+  0% {
+    transform: translate3d(0, -12px, 0);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(0, 260px, 0);
+    opacity: 0;
+  }
+}
+
+.anim-dash {
+  animation: soc-dash 1.8s linear infinite;
+}
+.anim-node-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: soc-node-pulse 3s ease-in-out infinite;
+}
+.anim-alert-pulse {
+  animation: soc-alert-pulse 1.7s ease-in-out infinite;
+}
+.anim-caret {
+  animation: soc-caret 1.1s steps(1, end) infinite;
+}
+.anim-scan-line {
+  animation: soc-scan-line 4.2s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

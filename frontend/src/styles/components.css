@@ -1,13 +1,13 @@
 /* ---------------------------------------------------------------
-   Reusable surface + effect classes. Component layout stays in
-   Tailwind utilities; these hold the visual treatments that are
-   awkward to express inline (masks, layered glows, patterns).
-   Cyberpunk identity lives here so every page inherits it.
+   Reusable surface + effect classes. Layout stays in Tailwind
+   utilities; this file holds the visual treatments that are awkward
+   to express inline (masks, layered glows, patterns). The security
+   operations identity lives here so every page inherits it.
 --------------------------------------------------------------- */
 @layer components {
 
 /* ---------------------------------------------------------------
-   Ambient backdrop — fixed grid, scanlines and neon atmosphere.
+   Ambient backdrop — technical grid, scanlines and restrained bloom.
    Rendered once per layout, behind all content.
 --------------------------------------------------------------- */
 .cyber-backdrop {
@@ -24,10 +24,10 @@
   background-image:
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 8%, transparent 74%);
-  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 8%, transparent 74%);
-  animation: cyber-grid-drift 26s linear infinite;
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 76% 60% at 50% 0%, #000 8%, transparent 76%);
+  -webkit-mask-image: radial-gradient(ellipse 76% 60% at 50% 0%, #000 8%, transparent 76%);
+  animation: cyber-grid-drift 30s linear infinite;
   will-change: transform;
 }
 
@@ -35,50 +35,59 @@
   position: absolute;
   inset: 0;
   background: repeating-linear-gradient(0deg, transparent 0 3px, var(--scanline) 3px 4px);
-  opacity: 0.6;
-  mix-blend-mode: overlay;
+  opacity: 0.55;
 }
 
 .cyber-backdrop__glow {
   position: absolute;
   border-radius: 999px;
-  filter: blur(120px);
+  filter: blur(130px);
   will-change: opacity;
 }
 .cyber-backdrop__glow--cyan {
-  top: -14rem;
-  left: 6%;
-  height: 34rem;
+  top: -16rem;
+  left: 4%;
+  height: 32rem;
   width: 44rem;
   background: var(--glow-cyan);
-  opacity: 0.5;
-  animation: cyber-breathe 11s ease-in-out infinite;
+  opacity: 0.26;
+  animation: cyber-breathe 13s ease-in-out infinite;
 }
 .cyber-backdrop__glow--purple {
-  top: 4%;
-  right: -12rem;
-  height: 30rem;
-  width: 38rem;
+  top: 6%;
+  right: -14rem;
+  height: 28rem;
+  width: 36rem;
   background: var(--glow-purple);
-  opacity: 0.42;
-  animation: cyber-breathe 14s ease-in-out infinite reverse;
+  opacity: 0.22;
+  animation: cyber-breathe 16s ease-in-out infinite reverse;
 }
 .cyber-backdrop__glow--magenta {
-  bottom: -16rem;
-  left: 32%;
-  height: 26rem;
-  width: 34rem;
+  bottom: -18rem;
+  left: 34%;
+  height: 24rem;
+  width: 32rem;
   background: var(--glow-magenta);
-  opacity: 0.22;
+  opacity: 0.1;
 }
 
 .cyber-backdrop__beam {
   position: absolute;
   inset: 0 0 auto 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--neon) 18%, var(--accent) 50%, var(--hot) 82%, transparent);
-  opacity: 0.55;
-  box-shadow: 0 0 26px 1px var(--glow-cyan);
+  background: linear-gradient(90deg, transparent, var(--neon) 20%, var(--accent) 52%, var(--hot) 84%, transparent);
+  opacity: 0.35;
+  box-shadow: 0 0 20px 1px var(--glow-cyan);
+}
+
+/* A single slow vertical sweep adds life without visual noise */
+.cyber-backdrop__sweep {
+  position: absolute;
+  inset: -20% 0 auto 0;
+  height: 18rem;
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--neon) 3%, transparent), transparent);
+  animation: cyber-backdrop-sweep 18s linear infinite;
+  will-change: transform;
 }
 
 /* ---------------------------------------------------------------
@@ -87,41 +96,39 @@
 .card {
   position: relative;
   background:
-    linear-gradient(180deg, color-mix(in oklab, var(--surface) 94%, var(--neon) 6%) 0%, var(--surface) 46%);
+    linear-gradient(180deg, color-mix(in oklab, var(--surface) 96%, var(--neon) 4%) 0%, var(--surface) 42%);
   border: 1px solid var(--line);
-  border-radius: var(--radius-card, 16px);
+  border-radius: var(--radius-card, 12px);
   box-shadow: var(--shadow-sm);
 }
 
 .card-flat {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-card, 16px);
+  border-radius: var(--radius-card, 12px);
 }
 
 .card-inset {
-  background:
-    linear-gradient(180deg, color-mix(in oklab, var(--surface-2) 92%, var(--neon) 8%) 0%, var(--surface-2) 100%);
+  background: color-mix(in oklab, var(--surface-2) 82%, transparent);
   border: 1px solid var(--line);
-  border-radius: 12px;
+  border-radius: 10px;
 }
 
 .card-lift {
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease,
-    box-shadow 0.35s ease, background-color 0.35s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease,
+    box-shadow 0.3s ease, background-color 0.3s ease;
 }
 .card-lift:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in oklab, var(--neon) 42%, var(--line));
-  box-shadow: var(--shadow-md), 0 0 34px -18px var(--brand-glow);
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--neon) 36%, var(--line));
+  box-shadow: var(--shadow-md), 0 0 30px -22px var(--brand-glow);
 }
 
 .glass {
   background: var(--glass);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
   border: 1px solid var(--glass-border);
-  box-shadow: inset 0 1px 0 var(--card-sheen);
 }
 
 .hairline {
@@ -130,7 +137,7 @@
   background: var(--line);
 }
 
-/* Futuristic section divider: gradient rail with a glowing node */
+/* Technical section divider: signal rail with a glowing node */
 .cyber-divider {
   position: relative;
   height: 1px;
@@ -138,23 +145,23 @@
   background: linear-gradient(
     90deg,
     transparent,
-    color-mix(in oklab, var(--neon) 30%, var(--line-strong)) 18%,
+    color-mix(in oklab, var(--neon) 26%, var(--line-strong)) 18%,
     var(--neon) 50%,
-    color-mix(in oklab, var(--accent) 40%, var(--line-strong)) 82%,
+    color-mix(in oklab, var(--accent) 38%, var(--line-strong)) 82%,
     transparent
   );
-  opacity: 0.65;
+  opacity: 0.55;
 }
 .cyber-divider::after {
   content: "";
   position: absolute;
   left: 50%;
   top: 50%;
-  height: 5px;
-  width: 5px;
+  height: 4px;
+  width: 4px;
   transform: translate(-50%, -50%) rotate(45deg);
   background: var(--neon);
-  box-shadow: 0 0 12px 1px var(--glow-cyan);
+  box-shadow: 0 0 10px 1px var(--glow-cyan);
 }
 
 .dashed-rule {
@@ -223,27 +230,15 @@
     linear-gradient(var(--neon), var(--neon)),
     linear-gradient(var(--neon), var(--neon)),
     linear-gradient(var(--neon), var(--neon)),
-    linear-gradient(var(--neon), var(--neon)),
-    linear-gradient(var(--neon), var(--neon)),
-    linear-gradient(var(--neon), var(--neon)),
-    linear-gradient(var(--neon), var(--neon)),
     linear-gradient(var(--neon), var(--neon));
-  background-size: 14px 1px, 1px 14px, 14px 1px, 1px 14px, 14px 1px, 1px 14px, 14px 1px, 1px 14px;
-  background-position:
-    left top,
-    left top,
-    right top,
-    right top,
-    left bottom,
-    left bottom,
-    right bottom,
-    right bottom;
+  background-size: 10px 1px, 1px 10px, 10px 1px, 1px 10px;
+  background-position: left top, left top, right bottom, right bottom;
   background-repeat: no-repeat;
-  opacity: 0.45;
+  opacity: 0.26;
   transition: opacity 0.3s ease;
 }
 .hud-corners:hover::before {
-  opacity: 0.8;
+  opacity: 0.55;
 }
 
 .scanlines {
@@ -255,8 +250,7 @@
   inset: 0;
   pointer-events: none;
   background: repeating-linear-gradient(0deg, transparent 0 2px, var(--scanline) 2px 3px);
-  opacity: 0.7;
-  mix-blend-mode: overlay;
+  opacity: 0.6;
 }
 
 /* Animated sweep used on scanners and live panels */
@@ -271,13 +265,13 @@
   pointer-events: none;
   background: linear-gradient(
     100deg,
-    transparent 20%,
-    color-mix(in oklab, var(--neon) 12%, transparent) 48%,
-    color-mix(in oklab, var(--neon) 22%, transparent) 50%,
-    transparent 78%
+    transparent 30%,
+    color-mix(in oklab, var(--neon) 7%, transparent) 48%,
+    color-mix(in oklab, var(--neon) 13%, transparent) 50%,
+    transparent 72%
   );
   transform: translate3d(-120%, 0, 0);
-  animation: cyber-sweep-x 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: cyber-sweep-x 7.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 
 /* Glowing status dot with a ping ring */
@@ -295,8 +289,8 @@
   inset: -3px;
   border-radius: 999px;
   border: 1px solid currentColor;
-  opacity: 0.35;
-  animation: ts-ping-ring 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.3;
+  animation: ts-ping-ring 3s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .hud-label {
@@ -308,58 +302,85 @@
   color: var(--ink-3);
 }
 
+/* Key/value metadata cell used across operational panels */
+.tech-cell {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--surface-2) 55%, transparent);
+  padding: 0.5rem 0.65rem;
+}
+.tech-cell dt {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tech-cell dd {
+  margin: 0.15rem 0 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 11.5px;
+  color: var(--ink);
+}
+
+/* Thin signal rails used by panel headers */
+.signal-rule {
+  height: 1px;
+  background: linear-gradient(90deg, var(--neon), color-mix(in oklab, var(--accent) 50%, transparent), transparent);
+  opacity: 0.32;
+}
+
 /* ---------------------------------------------------------------
    Atmosphere
 --------------------------------------------------------------- */
 .aurora {
   position: absolute;
   border-radius: 999px;
-  filter: blur(100px);
+  filter: blur(110px);
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 .dark .aurora {
-  opacity: 0.45;
+  opacity: 0.26;
 }
 
 .aurora-brand {
-  background: radial-gradient(circle, var(--glow-cyan), transparent 68%);
-}
-.aurora-accent {
-  background: radial-gradient(circle, var(--glow-purple), transparent 68%);
-}
-.aurora-hot {
   background: radial-gradient(circle, var(--glow-magenta), transparent 68%);
 }
+.aurora-accent {
+  background: radial-gradient(circle, var(--glow-cyan), transparent 68%);
+}
+.aurora-hot {
+  background: radial-gradient(circle, var(--glow-purple), transparent 68%);
+}
 .aurora-critical {
-  background: radial-gradient(circle, rgba(255, 56, 100, 0.22), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 69, 96, 0.16), transparent 68%);
 }
 .aurora-safe {
-  background: radial-gradient(circle, rgba(0, 255, 163, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(0, 255, 156, 0.12), transparent 68%);
 }
 
 .glow-brand {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 32%, transparent),
-    0 18px 60px -22px var(--brand-glow);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 26%, transparent),
+    0 18px 50px -30px var(--brand-glow);
 }
 
 .section-glow {
   position: relative;
   background-image: radial-gradient(
-    ellipse 60% 52% at 50% 0%,
-    color-mix(in oklab, var(--neon) 5%, transparent),
+    ellipse 58% 48% at 50% 0%,
+    color-mix(in oklab, var(--neon) 4%, transparent),
     transparent 72%
   );
 }
 
 .text-gradient {
   background: linear-gradient(
-    98deg,
+    96deg,
     var(--ink) 0%,
-    color-mix(in oklab, var(--ink) 62%, var(--neon)) 30%,
-    var(--neon) 58%,
-    var(--accent) 82%,
-    var(--hot) 100%
+    color-mix(in oklab, var(--ink) 60%, var(--neon)) 34%,
+    var(--neon) 66%,
+    var(--accent) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -367,18 +388,18 @@
 }
 
 .title-glow {
-  text-shadow: 0 0 46px color-mix(in oklab, var(--neon) 18%, transparent);
+  text-shadow: 0 0 42px color-mix(in oklab, var(--neon) 13%, transparent);
 }
 
 /* Hero scanner shell */
 .scanner-shell {
   position: relative;
   overflow: hidden;
-  background: color-mix(in oklab, var(--surface) 90%, transparent);
-  border: 1px solid color-mix(in oklab, var(--neon) 26%, var(--line-strong));
-  border-radius: 14px;
-  box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in oklab, var(--neon) 5%, transparent),
-    0 0 40px -22px var(--brand-glow);
+  background: color-mix(in oklab, var(--surface) 92%, transparent);
+  border: 1px solid color-mix(in oklab, var(--neon) 24%, var(--line-strong));
+  border-radius: 10px;
+  box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in oklab, var(--neon) 4%, transparent),
+    0 0 32px -24px var(--brand-glow);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 .scanner-shell::after {
@@ -388,34 +409,34 @@
   pointer-events: none;
   background: linear-gradient(
     100deg,
-    transparent 30%,
-    color-mix(in oklab, var(--neon) 10%, transparent) 50%,
-    transparent 70%
+    transparent 34%,
+    color-mix(in oklab, var(--neon) 6%, transparent) 50%,
+    transparent 68%
   );
   transform: translate3d(-120%, 0, 0);
-  animation: cyber-sweep-x 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: cyber-sweep-x 8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 .scanner-shell:focus-within {
-  border-color: color-mix(in oklab, var(--neon) 62%, var(--line-strong));
-  box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in oklab, var(--neon) 12%, transparent),
-    0 0 54px -20px var(--brand-glow);
+  border-color: color-mix(in oklab, var(--neon) 58%, var(--line-strong));
+  box-shadow: var(--shadow-md), 0 0 0 3px color-mix(in oklab, var(--neon) 10%, transparent),
+    0 0 44px -22px var(--brand-glow);
 }
 
 /* Meters (dynamic width comes from a --value custom property) */
 .meter {
   height: 6px;
   width: 100%;
-  background: color-mix(in oklab, var(--surface-3) 74%, var(--bg));
+  background: color-mix(in oklab, var(--surface-3) 70%, var(--bg));
   border-radius: 99px;
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 2px rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 .meter-fill {
   height: 100%;
   border-radius: 99px;
   width: var(--value, 0%);
   background: var(--meter-color, var(--brand));
-  box-shadow: 0 0 12px -2px var(--meter-color, var(--brand));
+  box-shadow: 0 0 10px -3px var(--meter-color, var(--brand));
   transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .meter-fill[data-animate="true"] {
@@ -429,10 +450,10 @@
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    color-mix(in oklab, var(--neon) 30%, transparent) 40deg,
-    transparent 84deg
+    color-mix(in oklab, var(--neon) 22%, transparent) 30deg,
+    transparent 64deg
   );
-  animation: ts-sweep 6s linear infinite;
+  animation: ts-sweep 7s linear infinite;
 }
 
 .skeleton {
@@ -444,7 +465,7 @@
   );
   background-size: 200% 100%;
   animation: ts-shimmer 1.6s ease-in-out infinite;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 /* Subtle inset top highlight used on premium panels */
@@ -454,10 +475,10 @@
 .top-sheen::before {
   content: "";
   position: absolute;
-  inset: 0 12% auto 12%;
+  inset: 0 14% auto 14%;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--neon), var(--accent), transparent);
-  opacity: 0.5;
+  opacity: 0.32;
 }
 
 /* ---------------------------------------------------------------
@@ -468,46 +489,43 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 10px;
-  border-radius: 8px;
+  padding: 7px 9px;
+  border-radius: 6px;
   font-size: 12.5px;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   color: var(--ink-2);
   transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
 }
 .nav-link:hover {
   color: var(--ink);
-  background: color-mix(in oklab, var(--neon) 7%, transparent);
-  text-shadow: 0 0 18px color-mix(in oklab, var(--neon) 40%, transparent);
+  background: color-mix(in oklab, var(--neon) 5%, transparent);
 }
 .nav-link[data-active="true"] {
   color: var(--neon);
-  background: color-mix(in oklab, var(--neon) 9%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--neon) 18%, transparent);
+  background: color-mix(in oklab, var(--neon) 7%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--neon) 15%, transparent);
 }
 .nav-link[data-active="true"]::after {
   content: "";
   position: absolute;
-  left: 10px;
-  right: 10px;
+  left: 9px;
+  right: 9px;
   bottom: 1px;
-  height: 2px;
-  border-radius: 2px;
+  height: 1px;
   background: linear-gradient(90deg, transparent, var(--neon), transparent);
-  box-shadow: 0 0 10px var(--glow-cyan);
+  box-shadow: 0 0 8px var(--brand-glow);
   opacity: 0.9;
 }
 
 /* Fine link with animated underline */
 .link-quiet {
   color: var(--ink-2);
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition: color 0.2s ease;
 }
 .link-quiet:hover {
   color: var(--neon);
-  text-shadow: 0 0 16px color-mix(in oklab, var(--neon) 34%, transparent);
 }
 
 /* Text link with arrow that leans forward */
@@ -521,21 +539,21 @@
 /* Code / terminal surfaces */
 .terminal {
   background:
-    radial-gradient(ellipse 90% 80% at 50% 0%, color-mix(in oklab, var(--neon) 5%, transparent), transparent 70%),
-    #04080f;
-  border: 1px solid rgba(0, 245, 255, 0.16);
-  border-radius: 12px;
-  color: #c7d6ef;
+    radial-gradient(ellipse 90% 80% at 50% 0%, color-mix(in oklab, var(--neon) 4%, transparent), transparent 70%),
+    #04090b;
+  border: 1px solid rgba(0, 255, 156, 0.18);
+  border-radius: 10px;
+  color: #bfe6d6;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 12px;
   line-height: 1.7;
-  box-shadow: inset 0 0 40px -20px rgba(0, 245, 255, 0.28);
+  box-shadow: inset 0 0 36px -22px rgba(0, 255, 156, 0.22);
 }
 .code-inline {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.85em;
   padding: 1px 5px;
-  border-radius: 5px;
+  border-radius: 4px;
   background: color-mix(in oklab, var(--surface-3) 80%, transparent);
   border: 1px solid var(--line);
   color: var(--ink-2);
@@ -543,7 +561,7 @@
 
 /* Focus ring utilities used by custom controls */
 .ring-brand {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--neon) 20%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--neon) 16%, transparent);
 }
 
 /* Selection rows in tables */
@@ -551,7 +569,7 @@
   transition: background-color 0.18s ease;
 }
 .row-hover:hover {
-  background: color-mix(in oklab, var(--neon) 5%, transparent);
+  background: color-mix(in oklab, var(--neon) 4%, transparent);
 }
 
 /* Vertical connector for timelines */
@@ -565,102 +583,101 @@
   top: 24px;
   bottom: 4px;
   width: 1px;
-  background: linear-gradient(180deg, var(--neon), color-mix(in oklab, var(--accent) 40%, transparent), transparent);
-  opacity: 0.55;
+  background: linear-gradient(180deg, var(--neon), color-mix(in oklab, var(--accent) 36%, transparent), transparent);
+  opacity: 0.4;
 }
 
 /* ---------------------------------------------------------------
    Controls
 --------------------------------------------------------------- */
 .btn-primary {
-  background-image: linear-gradient(100deg, var(--btn-from) 0%, var(--btn-via) 52%, var(--btn-to) 100%);
+  background-image: linear-gradient(100deg, var(--btn-from) 0%, var(--btn-via) 56%, var(--btn-to) 100%);
   color: var(--on-brand);
-  border: 1px solid color-mix(in oklab, var(--neon) 58%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 16%, transparent),
-    0 12px 30px -16px var(--brand-glow);
+  border: 1px solid color-mix(in oklab, var(--neon) 48%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 10%, transparent),
+    0 10px 26px -18px var(--brand-glow);
 }
 .btn-primary:hover {
-  filter: brightness(1.08) saturate(1.05);
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 34%, transparent),
-    0 16px 38px -14px var(--brand-glow);
+  filter: brightness(1.06);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 26%, transparent),
+    0 14px 34px -18px var(--brand-glow);
 }
 .btn-primary:active {
   transform: translateY(1px) scale(0.995);
 }
 
-/* Glass dropdown / popover panel */
+/* Dropdown / popover panel */
 .cyber-menu {
-  background-color: color-mix(in oklab, var(--surface) 88%, transparent);
+  background-color: color-mix(in oklab, var(--surface) 92%, transparent);
   background-image: linear-gradient(
     90deg,
     transparent,
-    color-mix(in oklab, var(--neon) 55%, transparent),
-    color-mix(in oklab, var(--accent) 45%, transparent),
+    color-mix(in oklab, var(--neon) 45%, transparent),
+    color-mix(in oklab, var(--accent) 35%, transparent),
     transparent
   );
   background-repeat: no-repeat;
   background-position: top;
   background-size: 100% 1px;
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--shadow-lg), 0 0 50px -26px var(--brand-glow);
+  box-shadow: var(--shadow-lg), 0 0 40px -28px var(--brand-glow);
 }
 
-/* Neon chip used for HUD eyebrows */
+/* Signal chip used for HUD eyebrows */
 .neon-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--neon) 28%, transparent);
-  background: color-mix(in oklab, var(--neon) 9%, transparent);
-  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in oklab, var(--neon) 26%, transparent);
+  background: color-mix(in oklab, var(--neon) 7%, transparent);
+  padding: 3px 8px;
   color: var(--neon);
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 9.5px;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  box-shadow: inset 0 0 16px -8px var(--glow-cyan);
 }
 
-/* Brand mark: layered neon glass tile with a HUD baseline */
+/* Brand mark: engineered tile with a HUD baseline */
 .logo-mark {
   position: relative;
   overflow: hidden;
   background: linear-gradient(
     145deg,
-    color-mix(in oklab, var(--neon) 20%, var(--surface-2)),
-    color-mix(in oklab, var(--accent) 16%, var(--surface))
+    color-mix(in oklab, var(--neon) 15%, var(--surface-2)),
+    color-mix(in oklab, var(--accent) 12%, var(--surface))
   );
-  border: 1px solid color-mix(in oklab, var(--neon) 34%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 18%, transparent),
-    0 0 24px -10px var(--brand-glow);
+  border: 1px solid color-mix(in oklab, var(--neon) 30%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 12%, transparent),
+    0 0 20px -12px var(--brand-glow);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 .logo-mark::after {
   content: "";
   position: absolute;
-  left: 18%;
-  right: 18%;
-  bottom: 5px;
+  left: 20%;
+  right: 20%;
+  bottom: 4px;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--neon), transparent);
-  opacity: 0.7;
+  opacity: 0.55;
 }
 .group:hover .logo-mark {
-  border-color: color-mix(in oklab, var(--neon) 60%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 22%, transparent),
-    0 0 30px -8px var(--brand-glow);
+  border-color: color-mix(in oklab, var(--neon) 55%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 16%, transparent),
+    0 0 26px -10px var(--brand-glow);
 }
 
 /* Thin animated accent line used at the top of nav / footer */
 .accent-rail {
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, transparent, var(--neon) 22%, var(--accent) 50%, var(--hot) 78%, transparent);
-  opacity: 0.6;
+  background: linear-gradient(90deg, transparent, var(--neon) 24%, var(--accent) 52%, var(--hot) 78%, transparent);
+  opacity: 0.45;
 }
 
 }

@@ -4,6 +4,7 @@ import { useTheme } from '../../context/ThemeContext';
 import Logo from './Logo';
 import CyberBackdrop from './CyberBackdrop';
 import Badge from '../ui/Badge';
+import TerminalLog from '../ui/TerminalLog';
 import { Meter } from '../ui/Progress';
 
 export default function AuthLayout({ children, title, description, footer, eyebrow }) {
@@ -62,12 +63,23 @@ export default function AuthLayout({ children, title, description, footer, eyebr
               </div>
               <Meter value={94} tone="critical" />
             </div>
+            <div className="mt-3">
+              <TerminalLog
+                title="verdict.trace"
+                dense
+                lines={[
+                  { level: 'ok', text: 'brand.match paypal=0.96 · favicon=0.91' },
+                  { level: 'err', text: 'kit.fingerprint "16shop" 0.94' },
+                  { level: 'sys', text: 'verdict → malicious · 94/100' },
+                ]}
+              />
+            </div>
           </div>
         </div>
 
         <div className="relative flex items-center justify-between border-t border-line pt-4 text-[10.5px] text-ink-3">
           <span>Frontend demo — no real authentication</span>
-          <span className="font-mono">build 2.4.0</span>
+          <span className="font-mono">build 3.0.0</span>
         </div>
       </aside>
 

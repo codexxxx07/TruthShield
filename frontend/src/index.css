@@ -6,136 +6,130 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------
-   TruthShield — Cyberpunk SOC design tokens
-   The dark theme is the primary experience. Semantic variables are
-   remapped per theme so every component only references intent
-   (surface, line, ink, critical…) and inherits the identity.
+   TruthShield — Security Operations design tokens
+   Dark is the primary operational mode. Every component references
+   intent (surface, line, ink, critical…) so the whole product inherits
+   the identity from this file.
 ---------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  /* Daylight operations mode — same futuristic language, high contrast */
-  --bg: #eef4fb;
-  --bg-soft: #e3edf9;
+  /* Daylight operations mode */
+  --bg: #f1f5f4;
+  --bg-soft: #e7eeec;
   --surface: #ffffff;
-  --surface-2: #f2f8ff;
-  --surface-3: #e5eefb;
-  --overlay: rgba(7, 11, 20, 0.48);
+  --surface-2: #f3f8f6;
+  --surface-3: #e4ede9;
+  --overlay: rgba(4, 15, 11, 0.46);
 
-  --line: rgba(14, 116, 144, 0.16);
-  --line-strong: rgba(37, 99, 235, 0.24);
+  --line: rgba(0, 122, 82, 0.15);
+  --line-strong: rgba(0, 122, 82, 0.26);
 
-  --ink: #071326;
-  --ink-2: #42566f;
-  --ink-3: #6a7d95;
+  --ink: #071510;
+  --ink-2: #435852;
+  --ink-3: #637972;
 
-  --brand: #0e7490;
-  --brand-2: #2563eb;
-  --brand-soft: rgba(14, 116, 144, 0.09);
-  --brand-glow: rgba(14, 116, 144, 0.2);
-  --btn: #0891b2;
-  --btn-2: #0e7490;
+  --brand: #007a53;
+  --brand-2: #007ea7;
+  --brand-soft: rgba(0, 122, 82, 0.08);
+  --brand-glow: rgba(0, 122, 82, 0.18);
+  --btn: #007a53;
+  --btn-2: #006647;
   --on-brand: #ffffff;
-  --btn-from: #0891b2;
-  --btn-via: #2563eb;
-  --btn-to: #1d4ed8;
+  --btn-from: #00875c;
+  --btn-via: #007a53;
+  --btn-to: #006b49;
 
-  --neon: #0e7490;
-  --accent: #7c3aed;
-  --hot: #db2777;
-  --electric: #2563eb;
+  --neon: #007a53;
+  --accent: #007ea7;
+  --hot: #2456b8;
+  --electric: #2456b8;
 
-  --safe: #059669;
-  --low: #0284c7;
+  --safe: #047857;
+  --low: #0369a1;
   --medium: #b45309;
   --high: #c2410c;
   --critical: #dc2626;
-  --info: #64748b;
+  --info: #557a8f;
 
-  --grid-line: rgba(14, 116, 144, 0.075);
-  --grid-line-strong: rgba(37, 99, 235, 0.14);
-  --scanline: rgba(7, 19, 38, 0.035);
-  --glass: rgba(255, 255, 255, 0.74);
-  --glass-border: rgba(14, 116, 144, 0.2);
+  --grid-line: rgba(0, 122, 82, 0.07);
+  --grid-line-strong: rgba(0, 122, 82, 0.14);
+  --scanline: rgba(7, 21, 16, 0.025);
+  --glass: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(0, 122, 82, 0.18);
   --card-sheen: rgba(255, 255, 255, 0.9);
-  --glow-cyan: rgba(14, 116, 144, 0.28);
-  --glow-purple: rgba(124, 58, 237, 0.2);
-  --glow-magenta: rgba(219, 39, 119, 0.16);
+  --glow-cyan: rgba(0, 126, 167, 0.2);
+  --glow-purple: rgba(36, 86, 184, 0.14);
+  --glow-magenta: rgba(0, 122, 82, 0.14);
 
-  --shadow-xs: 0 1px 2px rgba(11, 22, 44, 0.06);
-  --shadow-sm: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
-    0 10px 26px -18px rgba(11, 22, 44, 0.28);
-  --shadow-md: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
-    0 18px 40px -22px rgba(11, 22, 44, 0.32);
-  --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
-    0 34px 70px -34px rgba(11, 22, 44, 0.42);
-  --hairline: rgba(37, 99, 235, 0.14);
+  --shadow-xs: 0 1px 2px rgba(11, 22, 18, 0.05);
+  --shadow-sm: 0 1px 2px rgba(11, 22, 18, 0.04), 0 8px 22px -18px rgba(11, 22, 18, 0.26);
+  --shadow-md: 0 1px 2px rgba(11, 22, 18, 0.05), 0 18px 40px -26px rgba(11, 22, 18, 0.32);
+  --shadow-lg: 0 2px 4px rgba(11, 22, 18, 0.04), 0 34px 70px -38px rgba(11, 22, 18, 0.4);
+  --hairline: rgba(0, 122, 82, 0.12);
 }
 
 .dark {
   color-scheme: dark;
 
-  /* Primary cyberpunk experience */
-  --bg: #070b14;
-  --bg-soft: #0b1220;
-  --surface: #101a2b;
-  --surface-2: #142238;
-  --surface-3: #1a2c46;
-  --overlay: rgba(2, 5, 12, 0.8);
+  /* Primary security-operations experience */
+  --bg: #070b0f;
+  --bg-soft: #0a1015;
+  --surface: #101a22;
+  --surface-2: #15232d;
+  --surface-3: #1b2e3a;
+  --overlay: rgba(2, 6, 9, 0.82);
 
-  --line: rgba(0, 245, 255, 0.13);
-  --line-strong: rgba(0, 245, 255, 0.24);
+  --line: rgba(0, 255, 156, 0.15);
+  --line-strong: rgba(0, 255, 156, 0.28);
 
-  --ink: #eafbff;
-  --ink-2: #94a3b8;
-  --ink-3: #64748b;
+  --ink: #e6edf3;
+  --ink-2: #8b9baa;
+  --ink-3: #5e7180;
 
-  --brand: #00f5ff;
-  --brand-2: #2563eb;
-  --brand-soft: rgba(0, 245, 255, 0.1);
-  --brand-glow: rgba(0, 245, 255, 0.34);
-  --btn: #00f5ff;
-  --btn-2: #38bdf8;
-  --on-brand: #04121a;
-  --btn-from: #00f5ff;
-  --btn-via: #4adeff;
-  --btn-to: #2563eb;
+  --brand: #00ff9c;
+  --brand-2: #00d9ff;
+  --brand-soft: rgba(0, 255, 156, 0.1);
+  --brand-glow: rgba(0, 255, 156, 0.3);
+  --btn: #00ff9c;
+  --btn-2: #00d9ff;
+  --on-brand: #03140c;
+  --btn-from: #00ff9c;
+  --btn-via: #00f5b0;
+  --btn-to: #00dcb8;
 
-  --neon: #00f5ff;
-  --accent: #a855f7;
-  --hot: #ff2bd6;
-  --electric: #2563eb;
+  --neon: #00ff9c;
+  --accent: #00d9ff;
+  --hot: #2675ff;
+  --electric: #2675ff;
 
-  --safe: #00ffa3;
-  --low: #38bdf8;
-  --medium: #ffd166;
-  --high: #ff9f43;
-  --critical: #ff3864;
-  --info: #7dd3fc;
+  --safe: #00ff9c;
+  --low: #00d9ff;
+  --medium: #ffb020;
+  --high: #ff7a45;
+  --critical: #ff4560;
+  --info: #7ea6c9;
 
-  --grid-line: rgba(0, 245, 255, 0.06);
-  --grid-line-strong: rgba(0, 245, 255, 0.15);
-  --scanline: rgba(0, 245, 255, 0.035);
-  --glass: rgba(16, 26, 43, 0.66);
-  --glass-border: rgba(0, 245, 255, 0.18);
-  --card-sheen: rgba(255, 255, 255, 0.055);
-  --glow-cyan: rgba(0, 245, 255, 0.38);
-  --glow-purple: rgba(168, 85, 247, 0.32);
-  --glow-magenta: rgba(255, 43, 214, 0.26);
+  --grid-line: rgba(0, 255, 156, 0.045);
+  --grid-line-strong: rgba(0, 255, 156, 0.12);
+  --scanline: rgba(0, 255, 156, 0.022);
+  --glass: rgba(13, 23, 30, 0.74);
+  --glass-border: rgba(0, 255, 156, 0.16);
+  --card-sheen: rgba(255, 255, 255, 0.045);
+  --glow-cyan: rgba(0, 217, 255, 0.3);
+  --glow-purple: rgba(38, 117, 255, 0.24);
+  --glow-magenta: rgba(0, 255, 156, 0.16);
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);
-  --shadow-sm: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.5),
-    0 12px 32px -20px rgba(0, 0, 0, 0.9);
-  --shadow-md: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.55),
-    0 20px 48px -26px rgba(0, 0, 0, 0.95);
-  --shadow-lg: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.6),
-    0 40px 90px -40px rgba(0, 0, 0, 1);
-  --hairline: rgba(0, 245, 255, 0.12);
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.55);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.55), 0 12px 30px -22px rgba(0, 0, 0, 0.95);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.6), 0 20px 48px -28px rgba(0, 0, 0, 1);
+  --shadow-lg: 0 2px 5px rgba(0, 0, 0, 0.6), 0 40px 90px -44px rgba(0, 0, 0, 1);
+  --hairline: rgba(0, 255, 156, 0.11);
 }
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Chakra Petch", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --color-bg: var(--bg);
@@ -171,7 +165,7 @@
   --color-critical: var(--critical);
   --color-info: var(--info);
 
-  --radius-card: 16px;
+  --radius-card: 12px;
 
   --shadow-card: var(--shadow-sm);
   --shadow-float: var(--shadow-lg);

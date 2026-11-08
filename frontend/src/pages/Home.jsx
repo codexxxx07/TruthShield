@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiCheck, FiChevronRight, FiCpu, FiCrosshair,
+  FiActivity, FiAlertTriangle, FiArrowRight, FiArrowUpRight, FiCheck, FiChevronRight, FiCpu, FiCrosshair,
   FiEye, FiGlobe, FiLayers, FiLock, FiShield, FiTarget, FiTrendingUp, FiZap,
 } from 'react-icons/fi';
 import Button from '../components/ui/Button';
@@ -11,6 +11,8 @@ import { AreaChart, DonutChart } from '../components/ui/Charts';
 import SectionHeading from '../components/ui/SectionHeading';
 import FeatureIcon from '../components/ui/FeatureIcon';
 import Notice from '../components/ui/Notice';
+import NetworkTopology from '../components/ui/NetworkTopology';
+import TerminalLog from '../components/ui/TerminalLog';
 import { CORE_FEATURES, DETECTION_FEATURES } from '../data/features';
 import { DAILY_DETECTIONS, THREAT_DISTRIBUTION } from '../data/dashboard';
 import { THREAT_RECORDS, THREAT_STATS } from '../data/threats';
@@ -56,6 +58,15 @@ const WHY = [
   { title: 'Ready for integration', body: 'The UI is layered over a clean data contract so a real scanning API can drop in without a rewrite.', metric: '1', metricLabel: 'swap-in API layer' },
 ];
 
+const HOME_TRACE = [
+  { time: '09:41:12', level: 'sys', text: 'mesh.dispatch target=paypal-secure-login.example' },
+  { time: '09:41:13', level: 'info', text: 'tls.inspect issuer=DV · age=9d · chain=valid' },
+  { time: '09:41:14', level: 'warn', text: 'brand.similarity paypal=0.96 · favicon=0.91' },
+  { time: '09:41:15', level: 'err', text: 'kit.fingerprint "16shop" confidence=0.94' },
+  { time: '09:41:16', level: 'ok', text: 'intel.consensus 4/5 sources malicious' },
+  { time: '09:41:17', level: 'ok', text: 'verdict=malicious risk=94/100 · report written' },
+];
+
 function HeroStat({ stat }) {
   const animated = useCountUp(stat.value, { duration: 1200 });
   const Icon = stat.icon;
@@ -77,7 +88,7 @@ function HeroStat({ stat }) {
 
 function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-[440px]">
+    <div className="relative mx-auto w-full max-w-[440px] pb-12">
       <div className="pointer-events-none absolute -inset-6 -z-10" aria-hidden="true">
         <div className="absolute left-1/2 top-1/2 h-[330px] w-[330px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-line/70" />
         <div className="absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-dashed border-line/60" />
@@ -155,7 +166,7 @@ function HeroVisual() {
         </div>
       </div>
 
-      <div className="absolute -bottom-5 -left-3 hidden items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 shadow-[var(--shadow-md)] sm:flex anim-float">
+      <div className="absolute -bottom-1 -left-3 hidden items-center gap-2 rounded-xl border border-line bg-surface px-3 py-2 shadow-[var(--shadow-md)] sm:flex anim-float">
         <span className="grid h-7 w-7 place-items-center rounded-lg bg-safe/10 text-safe">
           <FiLock className="text-[13px]" aria-hidden="true" />
         </span>
@@ -301,6 +312,82 @@ export default function Home() {
             <FiCpu className="text-[11px]" aria-hidden="true" />
             Simulated demo dataset — figures are illustrative, not live telemetry.
           </p>
+        </div>
+      </section>
+
+      {/* ---------------- LIVE OPERATIONS ---------------- */}
+      <section className="relative overflow-hidden border-y border-line bg-bg-soft/40">
+        <div className="pointer-events-none absolute inset-0 grid-lines opacity-60" aria-hidden="true" />
+        <div className="shell relative py-10 sm:py-14">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <span className="neon-chip">
+                <FiActivity className="text-[11px]" aria-hidden="true" /> Live operations
+              </span>
+              <h2 className="mt-3 max-w-xl font-display text-[22px] font-semibold leading-[1.2] tracking-[-0.03em] text-ink sm:text-[27px]">
+                One mesh, every signal in context.
+              </h2>
+              <p className="mt-1.5 max-w-xl text-[12.5px] leading-6 text-ink-2">
+                Sensor edges feed a single correlation core. Hostile clusters are tracked, scored and written back to
+                the indicator database as evidence.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge tone="safe" dot>mesh healthy</Badge>
+              <Badge tone="critical" dot>1 hostile cluster</Badge>
+              <DemoBadge />
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-[1.35fr_1fr]">
+            <div className="card overflow-hidden">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="grid h-7 w-7 place-items-center rounded-md border border-brand/20 bg-brand/[0.07] text-brand">
+                    <FiGlobe className="text-[13px]" aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-[12px] font-semibold text-ink">Global sensor mesh</p>
+                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-3">7 edges · 1 core · anycast</p>
+                  </div>
+                </div>
+                <span className="font-mono text-[9.5px] text-ink-3">38 ms median rtt</span>
+              </div>
+              <NetworkTopology className="px-1.5 py-1.5" />
+              <div className="grid grid-cols-3 divide-x divide-line/60 border-t border-line bg-surface-2/30">
+                {[
+                  { label: 'Sensors online', value: '13 / 13', tone: 'text-safe' },
+                  { label: 'Signals / min', value: '2,184', tone: 'text-ink' },
+                  { label: 'Blocked today', value: '412', tone: 'text-medium' },
+                ].map((item) => (
+                  <div key={item.label} className="px-4 py-2.5">
+                    <p className="hud-label">{item.label}</p>
+                    <p className={cn('mt-1 font-mono text-[12.5px]', item.tone)}>{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="card flex flex-col overflow-hidden">
+              <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+                <div>
+                  <p className="text-[12px] font-semibold text-ink">Detection trace</p>
+                  <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-ink-3">scan TS-9F21C4 · 6 stages</p>
+                </div>
+                <Badge tone="critical" size="sm" dot>malicious</Badge>
+              </div>
+              <div className="flex-1 p-3">
+                <TerminalLog className="flex h-full flex-col" lines={HOME_TRACE} live bodyClassName="min-h-[236px] flex-1" />
+              </div>
+              <Link
+                to="/scan"
+                className="flex items-center justify-between gap-3 border-t border-line bg-surface-2/30 px-4 py-2.5 text-[11px] font-medium text-brand"
+              >
+                Run your own trace
+                <FiArrowUpRight className="text-[12px]" aria-hidden="true" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 

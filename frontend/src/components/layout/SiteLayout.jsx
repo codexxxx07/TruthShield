@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CyberBackdrop from './CyberBackdrop';
+import SystemStatusBar from './SystemStatusBar';
 
 export function ScrollToTop() {
   const { pathname } = useLocation();
@@ -26,6 +27,7 @@ export default function SiteLayout() {
       </a>
       <ScrollToTop />
       <Navbar />
+      <SystemStatusBar />
       <main id="main-content" key={pathname} className="relative z-10 flex-1 anim-fade">
         <Outlet />
       </main>

@@ -62,7 +62,7 @@ const PRINCIPLES = [
 
 const STACK = [
   { name: 'React 19', detail: 'Function components, hooks, context for theme, auth and notifications' },
-  { name: 'Vite 7', detail: 'Development server and production build pipeline' },
+  { name: 'Vite 8', detail: 'Development server and production build pipeline' },
   { name: 'Tailwind CSS v4', detail: 'Installed via the Vite plugin — no CDN, no runtime JIT' },
   { name: 'React Router 7', detail: 'Nested layouts, 13 module routes, scroll restoration' },
   { name: 'Custom SVG charts', detail: 'Hand-built visualisations — no charting dependency' },

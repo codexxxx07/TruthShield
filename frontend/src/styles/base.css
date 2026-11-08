@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------
    Base element styling. Kept in a layer so utilities can override.
-   Cyberpunk identity: deep space background, neon focus, crisp
-   futuristic headings and readable Inter body copy.
+   Security-operations identity: near-black console surfaces, mint
+   signal accents, engineered display type and highly readable body.
 --------------------------------------------------------------- */
 @layer base {
   * {
@@ -17,9 +17,9 @@
     margin: 0;
     background-color: var(--bg);
     background-image:
-      radial-gradient(ellipse 75% 45% at 50% -12%, color-mix(in oklab, var(--neon) 9%, transparent), transparent 62%),
-      radial-gradient(ellipse 45% 38% at 92% 4%, color-mix(in oklab, var(--accent) 8%, transparent), transparent 65%),
-      radial-gradient(ellipse 50% 40% at 4% 22%, color-mix(in oklab, var(--electric) 8%, transparent), transparent 68%);
+      radial-gradient(ellipse 60% 38% at 50% -10%, color-mix(in oklab, var(--neon) 6%, transparent), transparent 64%),
+      radial-gradient(ellipse 38% 30% at 96% 2%, color-mix(in oklab, var(--accent) 5%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 34% at 2% 18%, color-mix(in oklab, var(--electric) 4%, transparent), transparent 70%);
     background-attachment: fixed;
     color: var(--ink);
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -35,9 +35,10 @@
   h2,
   h3,
   h4 {
-    font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Chakra Petch", "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
     text-wrap: balance;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
   }
 
   p {
@@ -45,16 +46,16 @@
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--neon) 72%, transparent);
+    background: color-mix(in oklab, var(--neon) 70%, transparent);
     color: var(--on-brand);
     text-shadow: none;
   }
 
   :focus-visible {
-    outline: 2px solid color-mix(in oklab, var(--neon) 80%, transparent);
+    outline: 2px solid color-mix(in oklab, var(--neon) 78%, transparent);
     outline-offset: 2px;
     border-radius: 4px;
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--neon) 14%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--neon) 10%, transparent);
   }
 
   a {
@@ -85,25 +86,25 @@
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   }
 
-  /* Consistent thin scrollbars with a neon rail */
+  /* Thin console scrollbars */
   * {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklab, var(--neon) 38%, var(--line-strong)) transparent;
+    scrollbar-color: color-mix(in oklab, var(--neon) 32%, var(--line-strong)) transparent;
   }
   ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, color-mix(in oklab, var(--neon) 45%, transparent), var(--line-strong));
+    background: color-mix(in oklab, var(--neon) 30%, var(--line-strong));
     border-radius: 99px;
     border: 3px solid var(--bg);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--neon), var(--electric));
+    background: color-mix(in oklab, var(--neon) 55%, transparent);
   }
 
   .font-mono,
@@ -111,8 +112,15 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Futuristic display type used by headings and brand moments */
+  /* Engineered display type used by headings and brand moments */
   .font-display {
-    font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-family: "Chakra Petch", "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Uppercase technical label used across HUD chrome */
+  .font-tech {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
   }
 }

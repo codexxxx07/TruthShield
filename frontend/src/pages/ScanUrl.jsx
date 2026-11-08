@@ -14,6 +14,7 @@ import Notice from '../components/ui/Notice';
 import Accordion from '../components/ui/Accordion';
 import CopyButton from '../components/ui/CopyButton';
 import EmptyState from '../components/ui/EmptyState';
+import TerminalLog from '../components/ui/TerminalLog';
 import { SCAN_STAGES } from '../data/features';
 import { SCAN_HISTORY } from '../data/dashboard';
 import { buildScanReport, SAMPLE_TARGETS, VERDICT_META } from '../lib/mockEngine';
@@ -29,6 +30,37 @@ const EXTRA_MODULES = [
 ];
 
 const TONE_BY_VERDICT = { safe: 'safe', suspicious: 'medium', malicious: 'critical' };
+
+const STAGE_TRACE = {
+  resolve: { level: 'ok', text: 'dns.query a=185.220.101.4 · ns1=ns1.hostinger.com · ttl=60' },
+  tls: { level: 'ok', text: 'tls.handshake tls1.3 · chain=depth 2 · ocsp=good' },
+  content: { level: 'info', text: 'dom.render 42 nodes · 7 scripts · 3 third-party origins' },
+  signals: { level: 'warn', text: 'signal.extract 9 findings · redirects=2 · forms=1' },
+  intel: { level: 'err', text: 'intel.correlate 4/5 sources malicious · campaign=KP-2201' },
+  score: { level: 'ok', text: 'risk.score computed · confidence=96% · verdict=malicious' },
+};
+
+function progressTrace(stageIndex) {
+  return SCAN_STAGES.slice(0, stageIndex).map((stage, index) => ({
+    time: `09:41:${String(12 + index).padStart(2, '0')}`,
+    level: STAGE_TRACE[stage.key]?.level || 'ok',
+    text: STAGE_TRACE[stage.key]?.text || stage.detail,
+  }));
+}
+
+function resultTrace(result) {
+  const intelMatches = result.intel.filter((item) => item.status !== 'clean' && item.status !== 'unrated').length;
+  return [
+    { time: '00.000', level: 'sys', text: `scan.begin id=${result.scanId} target=${result.url}` },
+    { time: '00.041', level: 'ok', text: `dns.resolve ip=${result.domainInfo.ip} asn=${result.domainInfo.asn} country=${result.domainInfo.countryCode}` },
+    { time: '00.128', level: result.ssl.valid ? 'ok' : 'err', text: `tls.chain valid=${result.ssl.valid} issuer="${result.ssl.issuer}" protocol=${result.ssl.protocol}` },
+    { time: '00.310', level: 'info', text: `http.redirects hops=${result.redirects.length} · content.dom=rendered` },
+    { time: '00.540', level: result.indicators.length ? 'warn' : 'ok', text: `signal.extract indicators=${result.indicators.length} · categories=${Object.keys(result.categories).length}` },
+    { time: '00.720', level: intelMatches ? 'err' : 'ok', text: `intel.correlate sources=${result.intel.length} matches=${intelMatches}` },
+    { time: '00.910', level: result.verdict === 'malicious' ? 'err' : result.verdict === 'suspicious' ? 'warn' : 'ok', text: `risk.score ${result.riskScore}/100 confidence=${result.confidence}%` },
+    { time: '01.020', level: 'sys', text: `verdict.write ${result.verdict} · report=${result.scanId}` },
+  ];
+}
 
 function ScanProgress({ stageIndex, url, onCancel }) {
   const percent = Math.round((stageIndex / SCAN_STAGES.length) * 100);
@@ -91,6 +123,17 @@ function ScanProgress({ stageIndex, url, onCancel }) {
               );
             })}
           </ul>
+
+          <div className="mt-4">
+            <TerminalLog
+              title="scan@truthshield"
+              subtitle={`${percent}% · ${SCAN_STAGES.length} stages`}
+              lines={progressTrace(stageIndex)}
+              live
+              dense
+              bodyClassName="min-h-[140px]"
+            />
+          </div>
         </div>
       </div>
     </Card>
@@ -474,6 +517,20 @@ export default function ScanUrl() {
                     </div>
                   </SectionCard>
                 </div>
+
+                <SectionCard
+                  title="Pipeline trace"
+                  description="Deterministic execution log for this scan"
+                  icon={FiCpu}
+                  action={<Badge tone="neutral" size="sm">{result.scanId}</Badge>}
+                >
+                  <TerminalLog
+                    title="scan@truthshield · completed"
+                    subtitle="read-only"
+                    lines={resultTrace(result)}
+                    maxHeight={228}
+                  />
+                </SectionCard>
 
                 <Notice tone="neutral" icon={FiCpu} title="This result is simulated">
                   No request left your browser. The verdict was generated from deterministic demo data in the frontend;

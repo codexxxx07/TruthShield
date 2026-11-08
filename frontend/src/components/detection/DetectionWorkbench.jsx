@@ -3,6 +3,7 @@ import { FiCpu, FiGlobe, FiPlay, FiRefreshCw, FiCreditCard, FiLock } from 'react
 import Badge, { DemoBadge } from '../ui/Badge';
 import Button from '../ui/Button';
 import CopyButton from '../ui/CopyButton';
+import TerminalLog from '../ui/TerminalLog';
 import { Meter } from '../ui/Progress';
 import { DETECTION_SAMPLES } from '../../lib/detectionEngine';
 import { runDetection } from '../../lib/detectionEngine';
@@ -15,6 +16,13 @@ const STAGES = [
   { key: 'correlate', label: 'Correlating intelligence', detail: 'Feeds, clusters and history' },
   { key: 'score', label: 'Scoring risk', detail: 'Weighted, explainable factors' },
 ];
+
+const TRACE = {
+  fetch: { level: 'ok', text: 'dns.query · tcp.connect · tls.handshake' },
+  extract: { level: 'info', text: 'cert.parse · dom.serialize · asset.hash' },
+  correlate: { level: 'warn', text: 'feed.query · cluster.link · history.lookup' },
+  score: { level: 'ok', text: 'model.score · factors.explain · report.write' },
+};
 
 const KIND_META = {
   domain: { icon: FiLock, label: 'Domain', placeholder: 'yourbrand.com', hint: 'Enter a registrable domain, without a path.' },
@@ -199,6 +207,19 @@ export default function DetectionWorkbench({
               );
             })}
           </div>
+          <TerminalLog
+            className="mt-3"
+            title="module@truthshield"
+            subtitle={`${percent}% · stage ${Math.min(stage + 1, STAGES.length)}/${STAGES.length}`}
+            lines={STAGES.slice(0, stage).map((item, index) => ({
+              time: `00.${String(40 + index * 23).padStart(3, '0')}`,
+              level: TRACE[item.key]?.level || 'ok',
+              text: index === 0 ? `${TRACE[item.key].text} · target=${target}` : TRACE[item.key]?.text || item.detail,
+            }))}
+            live
+            dense
+            bodyClassName="min-h-[92px]"
+          />
         </div>
       ) : null}
 

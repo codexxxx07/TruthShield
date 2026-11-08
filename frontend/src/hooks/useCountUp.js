@@ -18,7 +18,7 @@ export default function useCountUp(target, { duration = 900, start = 0 } = {}) {
     const began = performance.now();
 
     const tick = (now) => {
-      const progress = Math.min(1, (now - began) / duration);
+      const progress = Math.min(1, Math.max(0, (now - began) / duration));
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(from + delta * eased);
       if (progress < 1) frame.current = requestAnimationFrame(tick);

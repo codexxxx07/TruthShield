@@ -13,6 +13,7 @@ import { ScoreRing, Meter, Spinner } from '../components/ui/Progress';
 import Notice from '../components/ui/Notice';
 import Accordion from '../components/ui/Accordion';
 import EmptyState from '../components/ui/EmptyState';
+import TerminalLog from '../components/ui/TerminalLog';
 import { buildSecurityAssessment } from '../lib/mockEngine';
 import { validateDomain } from '../lib/validation';
 import { clamp, cn, formatDateTime } from '../lib/utils';
@@ -151,12 +152,27 @@ export default function SecurityAnalysis() {
         </Card>
 
         {phase === 'scanning' ? (
-          <Card className="mt-5">
-            <div className="flex flex-col items-center justify-center gap-3 px-5 py-16">
+          <Card className="mt-5 p-4 sm:p-5">
+            <div className="flex flex-col items-center justify-center gap-2.5 py-6 text-center">
               <Spinner className="h-7 w-7" />
               <p className="text-[13px] font-medium text-ink">Assessing {value}</p>
               <p className="text-[11.5px] text-ink-3">Header baseline · transport · exposure · software fingerprints</p>
             </div>
+            <TerminalLog
+              title="assess@truthshield"
+              subtitle="7-point baseline"
+              live
+              dense
+              lines={[
+                { time: '00.041', level: 'ok', text: `dns.resolve target=${value}` },
+                { time: '00.118', level: 'ok', text: 'transport.tls chain · protocol · hsts' },
+                { time: '00.236', level: 'info', text: 'header.baseline evaluate 7 policies' },
+                { time: '00.348', level: 'warn', text: 'exposure.probe 14 common paths' },
+                { time: '00.472', level: 'info', text: 'fingerprint.software passive banner read' },
+                { time: '00.590', level: 'sys', text: 'grade.compute · findings grouped by severity' },
+              ]}
+              bodyClassName="min-h-[132px]"
+            />
           </Card>
         ) : null}
 
