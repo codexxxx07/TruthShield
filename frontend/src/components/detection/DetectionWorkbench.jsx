@@ -110,7 +110,7 @@ export default function DetectionWorkbench({
 
   return (
     <div className="space-y-5">
-      <div className="card p-4 sm:p-5">
+      <div className="card top-sheen relative overflow-hidden p-4 sm:p-5">
         <form
           onSubmit={(event) => {
             event.preventDefault();
@@ -137,7 +137,7 @@ export default function DetectionWorkbench({
                 aria-invalid={Boolean(error)}
                 className={cn(
                   'h-11 w-full rounded-xl border bg-surface pl-10 pr-3 font-mono text-[12.5px] text-ink outline-none transition focus:border-brand focus:ring-4 focus:ring-brand/10',
-                  error ? 'border-critical/60' : 'border-line-strong',
+                  error ? 'border-critical/60' : 'border-line-strong hover:border-brand/30',
                 )}
               />
             </div>
@@ -157,7 +157,7 @@ export default function DetectionWorkbench({
                 className={cn(
                   'rounded-md border px-2 py-1 font-mono text-[10px] transition',
                   sample === value
-                    ? 'border-brand/30 bg-brand/10 text-brand'
+                    ? 'border-brand/35 bg-brand/10 text-brand shadow-[inset_0_0_12px_-6px_var(--brand-glow)]'
                     : 'border-line bg-surface-2/70 text-ink-2 hover:border-brand/30 hover:text-brand',
                 )}
               >

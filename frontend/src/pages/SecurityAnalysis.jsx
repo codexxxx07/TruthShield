@@ -162,7 +162,7 @@ export default function SecurityAnalysis() {
 
         {phase === 'done' && report ? (
           <div className="mt-5 space-y-5 anim-fade">
-            <Card className="overflow-hidden">
+            <Card className="top-sheen overflow-hidden">
               <div className={cn('h-1 w-full', report.score > 80 ? 'bg-safe' : report.score > 60 ? 'bg-medium' : 'bg-critical')} />
               <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[auto_1fr_auto]">
                 <ScoreRing

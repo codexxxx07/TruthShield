@@ -2,15 +2,14 @@ import { Link } from 'react-router-dom';
 import { cn } from '../../lib/utils';
 
 const VARIANTS = {
-  primary:
-    'bg-btn text-on-brand border border-transparent hover:bg-btn-2 shadow-[0_12px_30px_-16px_var(--brand-glow)]',
+  primary: 'btn-primary',
   secondary:
-    'bg-surface text-ink border border-line-strong hover:bg-surface-2 hover:border-line-strong',
+    'bg-surface text-ink border border-line-strong hover:bg-surface-2 hover:border-brand/40 hover:text-neon',
   outline:
-    'bg-transparent text-ink border border-line-strong hover:bg-surface-2 hover:border-brand/40',
-  ghost: 'bg-transparent text-ink-2 border border-transparent hover:bg-surface-2 hover:text-ink',
+    'bg-transparent text-ink border border-line-strong hover:bg-brand/[0.06] hover:border-brand/45 hover:text-neon',
+  ghost: 'bg-transparent text-ink-2 border border-transparent hover:bg-surface-2 hover:text-neon',
   subtle: 'bg-surface-3 text-ink border border-transparent hover:bg-line/70',
-  brandSoft: 'bg-brand/10 text-brand border border-brand/20 hover:bg-brand/15',
+  brandSoft: 'bg-brand/10 text-brand border border-brand/20 hover:bg-brand/15 hover:border-brand/40',
   danger: 'bg-critical/10 text-critical border border-critical/25 hover:bg-critical/15',
   inverted: 'bg-ink text-bg border border-transparent hover:bg-ink/90',
 };

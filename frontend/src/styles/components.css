@@ -2,26 +2,108 @@
    Reusable surface + effect classes. Component layout stays in
    Tailwind utilities; these hold the visual treatments that are
    awkward to express inline (masks, layered glows, patterns).
----------------------------------------------------------------- */
+   Cyberpunk identity lives here so every page inherits it.
+--------------------------------------------------------------- */
 @layer components {
 
+/* ---------------------------------------------------------------
+   Ambient backdrop — fixed grid, scanlines and neon atmosphere.
+   Rendered once per layout, behind all content.
+--------------------------------------------------------------- */
+.cyber-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cyber-backdrop__grid {
+  position: absolute;
+  inset: -30%;
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 8%, transparent 74%);
+  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 8%, transparent 74%);
+  animation: cyber-grid-drift 26s linear infinite;
+  will-change: transform;
+}
+
+.cyber-backdrop__scan {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent 0 3px, var(--scanline) 3px 4px);
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+}
+
+.cyber-backdrop__glow {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(120px);
+  will-change: opacity;
+}
+.cyber-backdrop__glow--cyan {
+  top: -14rem;
+  left: 6%;
+  height: 34rem;
+  width: 44rem;
+  background: var(--glow-cyan);
+  opacity: 0.5;
+  animation: cyber-breathe 11s ease-in-out infinite;
+}
+.cyber-backdrop__glow--purple {
+  top: 4%;
+  right: -12rem;
+  height: 30rem;
+  width: 38rem;
+  background: var(--glow-purple);
+  opacity: 0.42;
+  animation: cyber-breathe 14s ease-in-out infinite reverse;
+}
+.cyber-backdrop__glow--magenta {
+  bottom: -16rem;
+  left: 32%;
+  height: 26rem;
+  width: 34rem;
+  background: var(--glow-magenta);
+  opacity: 0.22;
+}
+
+.cyber-backdrop__beam {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon) 18%, var(--accent) 50%, var(--hot) 82%, transparent);
+  opacity: 0.55;
+  box-shadow: 0 0 26px 1px var(--glow-cyan);
+}
+
+/* ---------------------------------------------------------------
+   Surfaces
+--------------------------------------------------------------- */
 .card {
-  background: var(--surface);
+  position: relative;
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--surface) 94%, var(--neon) 6%) 0%, var(--surface) 46%);
   border: 1px solid var(--line);
-  border-radius: var(--radius-card, 18px);
+  border-radius: var(--radius-card, 16px);
   box-shadow: var(--shadow-sm);
 }
 
 .card-flat {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: var(--radius-card, 18px);
+  border-radius: var(--radius-card, 16px);
 }
 
 .card-inset {
-  background: var(--surface-2);
+  background:
+    linear-gradient(180deg, color-mix(in oklab, var(--surface-2) 92%, var(--neon) 8%) 0%, var(--surface-2) 100%);
   border: 1px solid var(--line);
-  border-radius: 14px;
+  border-radius: 12px;
 }
 
 .card-lift {
@@ -30,21 +112,49 @@
 }
 .card-lift:hover {
   transform: translateY(-3px);
-  border-color: color-mix(in oklab, var(--brand) 35%, var(--line));
-  box-shadow: var(--shadow-md);
+  border-color: color-mix(in oklab, var(--neon) 42%, var(--line));
+  box-shadow: var(--shadow-md), 0 0 34px -18px var(--brand-glow);
 }
 
 .glass {
-  background: color-mix(in oklab, var(--surface) 72%, transparent);
-  backdrop-filter: blur(20px) saturate(150%);
-  -webkit-backdrop-filter: blur(20px) saturate(150%);
-  border: 1px solid color-mix(in oklab, var(--line) 75%, transparent);
+  background: var(--glass);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 var(--card-sheen);
 }
 
 .hairline {
   height: 1px;
   width: 100%;
   background: var(--line);
+}
+
+/* Futuristic section divider: gradient rail with a glowing node */
+.cyber-divider {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--neon) 30%, var(--line-strong)) 18%,
+    var(--neon) 50%,
+    color-mix(in oklab, var(--accent) 40%, var(--line-strong)) 82%,
+    transparent
+  );
+  opacity: 0.65;
+}
+.cyber-divider::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 5px;
+  width: 5px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--neon);
+  box-shadow: 0 0 12px 1px var(--glow-cyan);
 }
 
 .dashed-rule {
@@ -75,77 +185,237 @@
 
 /* Faint technical grid, masked to fade out */
 .grid-lines {
-  background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
   background-size: 56px 56px;
   mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 20%, transparent 78%);
   -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, #000 20%, transparent 78%);
 }
 
 .dot-grid {
-  background-image: radial-gradient(var(--line-strong) 0.9px, transparent 0.9px);
+  background-image: radial-gradient(var(--grid-line-strong) 0.9px, transparent 0.9px);
   background-size: 22px 22px;
 }
 
+/* Circuit-inspired decorative lattice */
+.circuit-grid {
+  background-image:
+    linear-gradient(90deg, transparent 49.5%, var(--grid-line) 49.5%, var(--grid-line) 50.5%, transparent 50.5%),
+    linear-gradient(0deg, transparent 49.5%, var(--grid-line) 49.5%, var(--grid-line) 50.5%, transparent 50.5%),
+    radial-gradient(circle at 0 0, var(--grid-line-strong) 1px, transparent 1.6px);
+  background-size: 128px 128px, 128px 128px, 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 10%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 10%, transparent 75%);
+}
+
+/* ---------------------------------------------------------------
+   HUD details
+--------------------------------------------------------------- */
+.hud-corners {
+  position: relative;
+}
+.hud-corners::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon)),
+    linear-gradient(var(--neon), var(--neon));
+  background-size: 14px 1px, 1px 14px, 14px 1px, 1px 14px, 14px 1px, 1px 14px, 14px 1px, 1px 14px;
+  background-position:
+    left top,
+    left top,
+    right top,
+    right top,
+    left bottom,
+    left bottom,
+    right bottom,
+    right bottom;
+  background-repeat: no-repeat;
+  opacity: 0.45;
+  transition: opacity 0.3s ease;
+}
+.hud-corners:hover::before {
+  opacity: 0.8;
+}
+
+.scanlines {
+  position: relative;
+}
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0 2px, var(--scanline) 2px 3px);
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+}
+
+/* Animated sweep used on scanners and live panels */
+.scan-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.scan-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in oklab, var(--neon) 12%, transparent) 48%,
+    color-mix(in oklab, var(--neon) 22%, transparent) 50%,
+    transparent 78%
+  );
+  transform: translate3d(-120%, 0, 0);
+  animation: cyber-sweep-x 6.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Glowing status dot with a ping ring */
+.status-dot {
+  position: relative;
+  display: inline-flex;
+  height: 6px;
+  width: 6px;
+  border-radius: 999px;
+  background: currentColor;
+}
+.status-dot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.35;
+  animation: ts-ping-ring 2.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.hud-label {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* ---------------------------------------------------------------
+   Atmosphere
+--------------------------------------------------------------- */
 .aurora {
   position: absolute;
   border-radius: 999px;
-  filter: blur(90px);
+  filter: blur(100px);
   pointer-events: none;
-  opacity: 0.55;
+  opacity: 0.5;
 }
 .dark .aurora {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .aurora-brand {
-  background: var(--brand-glow);
+  background: radial-gradient(circle, var(--glow-cyan), transparent 68%);
+}
+.aurora-accent {
+  background: radial-gradient(circle, var(--glow-purple), transparent 68%);
+}
+.aurora-hot {
+  background: radial-gradient(circle, var(--glow-magenta), transparent 68%);
 }
 .aurora-critical {
-  background: rgba(211, 35, 60, 0.16);
+  background: radial-gradient(circle, rgba(255, 56, 100, 0.22), transparent 68%);
 }
 .aurora-safe {
-  background: rgba(11, 143, 106, 0.14);
+  background: radial-gradient(circle, rgba(0, 255, 163, 0.18), transparent 68%);
 }
 
 .glow-brand {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand) 30%, transparent),
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 32%, transparent),
     0 18px 60px -22px var(--brand-glow);
 }
 
+.section-glow {
+  position: relative;
+  background-image: radial-gradient(
+    ellipse 60% 52% at 50% 0%,
+    color-mix(in oklab, var(--neon) 5%, transparent),
+    transparent 72%
+  );
+}
+
 .text-gradient {
-  background: linear-gradient(96deg, var(--ink) 18%, var(--brand) 72%, var(--brand-2) 100%);
+  background: linear-gradient(
+    98deg,
+    var(--ink) 0%,
+    color-mix(in oklab, var(--ink) 62%, var(--neon)) 30%,
+    var(--neon) 58%,
+    var(--accent) 82%,
+    var(--hot) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
+.title-glow {
+  text-shadow: 0 0 46px color-mix(in oklab, var(--neon) 18%, transparent);
+}
+
 /* Hero scanner shell */
 .scanner-shell {
-  background: var(--surface);
-  border: 1px solid var(--line-strong);
-  border-radius: 16px;
-  box-shadow: var(--shadow-md), 0 0 0 6px color-mix(in oklab, var(--surface) 40%, transparent);
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in oklab, var(--surface) 90%, transparent);
+  border: 1px solid color-mix(in oklab, var(--neon) 26%, var(--line-strong));
+  border-radius: 14px;
+  box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in oklab, var(--neon) 5%, transparent),
+    0 0 40px -22px var(--brand-glow);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+.scanner-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklab, var(--neon) 10%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translate3d(-120%, 0, 0);
+  animation: cyber-sweep-x 7s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
 .scanner-shell:focus-within {
-  border-color: color-mix(in oklab, var(--brand) 60%, var(--line-strong));
-  box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in oklab, var(--brand) 16%, transparent);
+  border-color: color-mix(in oklab, var(--neon) 62%, var(--line-strong));
+  box-shadow: var(--shadow-md), 0 0 0 4px color-mix(in oklab, var(--neon) 12%, transparent),
+    0 0 54px -20px var(--brand-glow);
 }
 
 /* Meters (dynamic width comes from a --value custom property) */
 .meter {
   height: 6px;
   width: 100%;
-  background: var(--surface-3);
+  background: color-mix(in oklab, var(--surface-3) 74%, var(--bg));
   border-radius: 99px;
   overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--line), inset 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 .meter-fill {
   height: 100%;
   border-radius: 99px;
   width: var(--value, 0%);
   background: var(--meter-color, var(--brand));
+  box-shadow: 0 0 12px -2px var(--meter-color, var(--brand));
   transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .meter-fill[data-animate="true"] {
@@ -159,8 +429,8 @@
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    color-mix(in oklab, var(--brand) 26%, transparent) 40deg,
-    transparent 80deg
+    color-mix(in oklab, var(--neon) 30%, transparent) 40deg,
+    transparent 84deg
   );
   animation: ts-sweep 6s linear infinite;
 }
@@ -169,7 +439,7 @@
   background: linear-gradient(
     90deg,
     var(--surface-3) 25%,
-    color-mix(in oklab, var(--surface-3) 55%, var(--line-strong)) 37%,
+    color-mix(in oklab, var(--surface-3) 55%, var(--neon)) 37%,
     var(--surface-3) 63%
   );
   background-size: 200% 100%;
@@ -186,51 +456,58 @@
   position: absolute;
   inset: 0 12% auto 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
-  opacity: 0.8;
+  background: linear-gradient(90deg, transparent, var(--neon), var(--accent), transparent);
+  opacity: 0.5;
 }
 
-/* Navigation */
+/* ---------------------------------------------------------------
+   Navigation
+--------------------------------------------------------------- */
 .nav-link {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 9px;
-  border-radius: 9px;
-  font-size: 13px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
   font-weight: 500;
+  letter-spacing: 0.01em;
   color: var(--ink-2);
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   white-space: nowrap;
 }
 .nav-link:hover {
   color: var(--ink);
-  background: var(--surface-2);
+  background: color-mix(in oklab, var(--neon) 7%, transparent);
+  text-shadow: 0 0 18px color-mix(in oklab, var(--neon) 40%, transparent);
 }
 .nav-link[data-active="true"] {
-  color: var(--brand);
-  background: color-mix(in oklab, var(--brand) 10%, transparent);
+  color: var(--neon);
+  background: color-mix(in oklab, var(--neon) 9%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--neon) 18%, transparent);
 }
 .nav-link[data-active="true"]::after {
   content: "";
   position: absolute;
-  left: 9px;
-  right: 9px;
-  bottom: 2px;
-  height: 1.5px;
+  left: 10px;
+  right: 10px;
+  bottom: 1px;
+  height: 2px;
   border-radius: 2px;
-  background: var(--brand);
-  opacity: 0.7;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  box-shadow: 0 0 10px var(--glow-cyan);
+  opacity: 0.9;
 }
 
 /* Fine link with animated underline */
 .link-quiet {
   color: var(--ink-2);
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
 }
 .link-quiet:hover {
-  color: var(--brand);
+  color: var(--neon);
+  text-shadow: 0 0 16px color-mix(in oklab, var(--neon) 34%, transparent);
 }
 
 /* Text link with arrow that leans forward */
@@ -243,27 +520,30 @@
 
 /* Code / terminal surfaces */
 .terminal {
-  background: #060b13;
-  border: 1px solid #16233a;
+  background:
+    radial-gradient(ellipse 90% 80% at 50% 0%, color-mix(in oklab, var(--neon) 5%, transparent), transparent 70%),
+    #04080f;
+  border: 1px solid rgba(0, 245, 255, 0.16);
   border-radius: 12px;
   color: #c7d6ef;
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 12px;
   line-height: 1.7;
+  box-shadow: inset 0 0 40px -20px rgba(0, 245, 255, 0.28);
 }
 .code-inline {
   font-family: "JetBrains Mono", ui-monospace, monospace;
   font-size: 0.85em;
   padding: 1px 5px;
   border-radius: 5px;
-  background: var(--surface-3);
+  background: color-mix(in oklab, var(--surface-3) 80%, transparent);
   border: 1px solid var(--line);
   color: var(--ink-2);
 }
 
 /* Focus ring utilities used by custom controls */
 .ring-brand {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 22%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--neon) 20%, transparent);
 }
 
 /* Selection rows in tables */
@@ -271,7 +551,7 @@
   transition: background-color 0.18s ease;
 }
 .row-hover:hover {
-  background: color-mix(in oklab, var(--surface-2) 80%, transparent);
+  background: color-mix(in oklab, var(--neon) 5%, transparent);
 }
 
 /* Vertical connector for timelines */
@@ -285,8 +565,102 @@
   top: 24px;
   bottom: 4px;
   width: 1px;
-  background: linear-gradient(180deg, var(--line-strong), transparent);
+  background: linear-gradient(180deg, var(--neon), color-mix(in oklab, var(--accent) 40%, transparent), transparent);
+  opacity: 0.55;
+}
+
+/* ---------------------------------------------------------------
+   Controls
+--------------------------------------------------------------- */
+.btn-primary {
+  background-image: linear-gradient(100deg, var(--btn-from) 0%, var(--btn-via) 52%, var(--btn-to) 100%);
+  color: var(--on-brand);
+  border: 1px solid color-mix(in oklab, var(--neon) 58%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 16%, transparent),
+    0 12px 30px -16px var(--brand-glow);
+}
+.btn-primary:hover {
+  filter: brightness(1.08) saturate(1.05);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--neon) 34%, transparent),
+    0 16px 38px -14px var(--brand-glow);
+}
+.btn-primary:active {
+  transform: translateY(1px) scale(0.995);
+}
+
+/* Glass dropdown / popover panel */
+.cyber-menu {
+  background-color: color-mix(in oklab, var(--surface) 88%, transparent);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--neon) 55%, transparent),
+    color-mix(in oklab, var(--accent) 45%, transparent),
+    transparent
+  );
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: 100% 1px;
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-lg), 0 0 50px -26px var(--brand-glow);
+}
+
+/* Neon chip used for HUD eyebrows */
+.neon-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--neon) 28%, transparent);
+  background: color-mix(in oklab, var(--neon) 9%, transparent);
+  padding: 3px 9px;
+  color: var(--neon);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 16px -8px var(--glow-cyan);
+}
+
+/* Brand mark: layered neon glass tile with a HUD baseline */
+.logo-mark {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--neon) 20%, var(--surface-2)),
+    color-mix(in oklab, var(--accent) 16%, var(--surface))
+  );
+  border: 1px solid color-mix(in oklab, var(--neon) 34%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 18%, transparent),
+    0 0 24px -10px var(--brand-glow);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.logo-mark::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 5px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon), transparent);
+  opacity: 0.7;
+}
+.group:hover .logo-mark {
+  border-color: color-mix(in oklab, var(--neon) 60%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 22%, transparent),
+    0 0 30px -8px var(--brand-glow);
+}
+
+/* Thin animated accent line used at the top of nav / footer */
+.accent-rail {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--neon) 22%, var(--accent) 50%, var(--hot) 78%, transparent);
+  opacity: 0.6;
 }
 
 }
-

@@ -3,12 +3,12 @@ import { cn } from '../../lib/utils';
 
 const TONES = {
   neutral: 'border-line bg-surface-3 text-ink-2',
-  brand: 'border-brand/25 bg-brand/10 text-brand',
-  safe: 'border-safe/25 bg-safe/10 text-safe',
-  low: 'border-low/25 bg-low/10 text-low',
-  medium: 'border-medium/30 bg-medium/10 text-medium',
-  high: 'border-high/30 bg-high/10 text-high',
-  critical: 'border-critical/30 bg-critical/10 text-critical',
+  brand: 'border-brand/30 bg-brand/10 text-brand shadow-[inset_0_0_14px_-8px_var(--brand-glow)]',
+  safe: 'border-safe/30 bg-safe/10 text-safe shadow-[inset_0_0_14px_-8px_rgba(0,255,163,0.45)]',
+  low: 'border-low/30 bg-low/10 text-low',
+  medium: 'border-medium/35 bg-medium/10 text-medium shadow-[inset_0_0_14px_-8px_rgba(255,209,102,0.4)]',
+  high: 'border-high/35 bg-high/10 text-high',
+  critical: 'border-critical/35 bg-critical/10 text-critical shadow-[inset_0_0_14px_-8px_rgba(255,56,100,0.5)]',
   info: 'border-info/30 bg-info/10 text-info',
 };
 
@@ -27,7 +27,7 @@ export default function Badge({ children, tone = 'neutral', dot = false, icon: I
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border font-medium',
+        'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border font-medium tracking-[0.01em]',
         size === 'sm' ? 'px-2 py-[2px] text-[10.5px]' : 'px-2.5 py-0.5 text-[11px]',
         TONES[tone] || TONES.neutral,
         className,

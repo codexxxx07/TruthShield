@@ -63,8 +63,8 @@ export default function FileDrop({
           handleFiles(event.dataTransfer.files);
         }}
         className={cn(
-          'relative flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-7 text-center transition-colors',
-          dragging ? 'border-brand bg-brand/5' : 'border-line-strong bg-surface-2/50',
+          'relative flex flex-col items-center justify-center gap-2 overflow-hidden rounded-xl border border-dashed px-4 py-7 text-center transition-colors',
+          dragging ? 'border-brand bg-brand/5 shadow-[inset_0_0_28px_-16px_var(--brand-glow)]' : 'border-line-strong bg-surface-2/50 hover:border-brand/35',
           error && 'border-critical/60 bg-critical/5',
         )}
       >
@@ -100,10 +100,10 @@ export default function FileDrop({
           </div>
         ) : (
           <>
-            <span className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-surface text-ink-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl border border-brand/20 bg-brand/[0.07] text-brand">
               {dragging ? <FiUploadCloud className="text-lg" aria-hidden="true" /> : <FiImage className="text-lg" aria-hidden="true" />}
             </span>
-            <button type="button" onClick={() => inputRef.current?.click()} className="text-[12.5px] font-medium text-ink transition hover:text-brand">
+            <button type="button" onClick={() => inputRef.current?.click()} className="text-[12.5px] font-medium text-ink transition hover:text-neon">
               {label}
             </button>
             <p className="text-[11.5px] text-ink-3">{hint}</p>

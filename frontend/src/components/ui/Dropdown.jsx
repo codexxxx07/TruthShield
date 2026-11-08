@@ -30,7 +30,7 @@ export default function Dropdown({ trigger, children, align = 'right', panelClas
         <div
           id={panelId}
           className={cn(
-            'absolute z-50 mt-2 overflow-hidden rounded-xl border border-line bg-surface p-1.5 shadow-[var(--shadow-lg)] anim-pop',
+            'cyber-menu absolute z-50 mt-2 overflow-hidden rounded-xl p-1.5 anim-pop',
             align === 'right' ? 'right-0' : 'left-0',
             width,
             panelClassName,

@@ -145,7 +145,7 @@ export default function SslChecker() {
 
         {phase === 'done' && report ? (
           <div className="mt-5 space-y-5 anim-fade">
-            <Card className="overflow-hidden">
+            <Card className="top-sheen overflow-hidden">
               <div className={cn('h-1 w-full', report.health === 'healthy' ? 'bg-safe' : report.health === 'attention' ? 'bg-medium' : 'bg-critical')} />
               <div className="grid gap-6 p-5 sm:p-6 lg:grid-cols-[auto_1fr_auto]">
                 <div className="flex items-center gap-4">

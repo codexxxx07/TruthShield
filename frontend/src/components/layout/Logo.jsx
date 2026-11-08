@@ -5,15 +5,18 @@ import { cn } from '../../lib/utils';
 export default function Logo({ className, compact = false, link = true }) {
   const content = (
     <span className="flex items-center gap-2.5">
-      <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-[11px] border border-brand/25 bg-brand/10 text-brand transition-colors group-hover:border-brand/45">
-        <FiShield className="text-[17px]" aria-hidden="true" />
-        <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-bg bg-safe" aria-hidden="true" />
+      <span className="logo-mark grid h-9 w-9 shrink-0 place-items-center rounded-[10px] text-neon">
+        <FiShield className="text-[17px] drop-shadow-[0_0_6px_var(--glow-cyan)]" aria-hidden="true" />
+        <span
+          className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-bg bg-safe shadow-[0_0_8px_var(--safe)]"
+          aria-hidden="true"
+        />
       </span>
       <span className={cn('min-w-0 leading-none', compact && 'sr-only')}>
-        <span className="block text-[15.5px] font-semibold tracking-[-0.035em] text-ink">
-          Truth<span className="text-brand">Shield</span>
+        <span className="block font-display text-[15.5px] font-semibold tracking-[-0.03em] text-ink">
+          Truth<span className="text-neon">Shield</span>
         </span>
-        <span className="mt-[5px] block text-[8.5px] font-medium uppercase tracking-[0.2em] text-ink-3">
+        <span className="mt-[5px] block font-mono text-[8px] font-medium uppercase tracking-[0.24em] text-ink-3">
           Security Intelligence
         </span>
       </span>

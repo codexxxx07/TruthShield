@@ -40,13 +40,13 @@ export default function DataTable({
         <table className="w-full border-collapse text-left" style={{ minWidth }}>
           {caption ? <caption className="sr-only">{caption}</caption> : null}
           <thead>
-            <tr className="border-b border-line bg-surface-2/70">
+            <tr className="border-b border-line bg-surface-2/60">
               {columns.map((column) => (
                 <th
                   key={column.key}
                   scope="col"
                   className={cn(
-                    'whitespace-nowrap px-4 py-2.5 text-[10.5px] font-semibold uppercase tracking-[0.07em] text-ink-3',
+                    'whitespace-nowrap px-4 py-2.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.12em] text-ink-3',
                     column.align === 'right' && 'text-right',
                     column.align === 'center' && 'text-center',
                     column.headerClassName,

@@ -224,7 +224,7 @@ export default function ReportThreat() {
                 </div>
               </Card>
             ) : (
-              <Card className="overflow-hidden">
+              <Card className="top-sheen overflow-hidden">
                 <div className="border-b border-line px-5 py-4">
                   <h2 className="text-[14px] font-semibold text-ink">Submission details</h2>
                   <p className="mt-0.5 text-[12px] text-ink-2">Fields marked with * are required.</p>

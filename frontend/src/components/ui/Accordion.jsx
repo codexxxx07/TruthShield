@@ -28,7 +28,7 @@ export default function Accordion({ items = [], defaultOpen = [], className, var
             key={item.id}
             className={cn(
               variant === 'card' && 'overflow-hidden rounded-xl border border-line bg-surface transition-colors',
-              variant === 'card' && expanded && 'border-brand/25',
+              variant === 'card' && expanded && 'border-brand/30 shadow-[inset_0_0_24px_-16px_var(--brand-glow)]',
             )}
           >
             <button
@@ -38,7 +38,7 @@ export default function Accordion({ items = [], defaultOpen = [], className, var
               className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-surface-2/60"
             >
               {Icon ? (
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-ink-2">
+                <span className={cn('grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition-colors', expanded ? 'border-brand/25 bg-brand/10 text-brand' : 'border-line bg-surface-2 text-ink-2')}>
                   <Icon className="text-[14px]" aria-hidden="true" />
                 </span>
               ) : null}

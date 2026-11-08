@@ -28,7 +28,7 @@ export default function CopyButton({ value, label = 'Copy', className, compact =
       type="button"
       onClick={handleCopy}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition hover:border-brand/30 hover:text-brand',
+        'inline-flex items-center gap-1.5 rounded-md border border-line bg-surface px-2 py-1 text-[11px] font-medium text-ink-2 transition hover:border-brand/40 hover:text-neon',
         className,
       )}
       aria-label={copied ? 'Copied' : label}

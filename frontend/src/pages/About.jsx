@@ -145,7 +145,7 @@ export default function About() {
             </div>
           </div>
 
-          <figure className="relative overflow-hidden rounded-2xl border border-line bg-surface p-1.5 shadow-[var(--shadow-md)]">
+          <figure className="top-sheen relative overflow-hidden rounded-2xl border border-line bg-surface p-1.5 shadow-[var(--shadow-md)]">
             <div className="pointer-events-none absolute inset-0 grid-lines opacity-50" aria-hidden="true" />
             <div className="relative rounded-xl border border-line bg-bg/60 p-4 sm:p-5">
               <div className="flex items-center justify-between gap-3">
@@ -249,7 +249,7 @@ export default function About() {
 
       {/* Security-first + honesty */}
       <section className="shell pb-14 lg:pb-20">
-        <div className="overflow-hidden rounded-2xl border border-line bg-surface">
+        <div className="top-sheen relative overflow-hidden rounded-2xl border border-line bg-surface">
           <div className="grid lg:grid-cols-[1fr_1fr]">
             <div className="border-b border-line p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-safe/25 bg-safe/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-safe">
@@ -372,7 +372,7 @@ export default function About() {
         />
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {ROADMAP.map((stage, index) => (
-            <article key={stage.phase} className="relative flex flex-col rounded-xl border border-line bg-surface p-5 lg:p-6">
+            <article key={stage.phase} className="card-lift top-sheen relative flex flex-col rounded-xl border border-line bg-surface p-5 lg:p-6">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.1em] text-brand">{stage.phase}</span>
                 <Badge tone={index === 0 ? 'safe' : index === 1 ? 'brand' : 'neutral'} size="sm" dot>{stage.status}</Badge>
@@ -393,7 +393,7 @@ export default function About() {
 
       {/* CTA */}
       <section className="shell pb-16 lg:pb-24">
-        <div className="relative overflow-hidden rounded-2xl border border-line bg-surface-2/60 px-6 py-10 text-center sm:px-10 sm:py-12">
+        <div className="hud-corners relative overflow-hidden rounded-2xl border border-line bg-surface-2/60 px-6 py-10 text-center sm:px-10 sm:py-12">
           <div className="pointer-events-none absolute inset-0 dot-grid opacity-50" aria-hidden="true" />
           <div className="aurora aurora-brand left-1/2 top-0 h-40 w-[420px] -translate-x-1/2" aria-hidden="true" />
           <div className="relative mx-auto max-w-xl">

@@ -19,16 +19,16 @@ export default function StatCard({ label, value, delta, trend = 'up', hint, icon
   const deltaGood = tone === 'critical' || tone === 'medium' ? !positive : positive;
 
   return (
-    <div className={cn('card group relative overflow-hidden p-4 transition-colors hover:border-brand/25 sm:p-5', className)}>
+    <div className={cn('card top-sheen group relative overflow-hidden p-4 transition-colors hover:border-brand/35 hover:shadow-[var(--shadow-md),0_0_34px_-18px_var(--brand-glow)] sm:p-5', className)}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="truncate text-[11.5px] font-medium uppercase tracking-[0.06em] text-ink-3">{label}</p>
-          <p className="mt-2 text-[26px] font-semibold leading-none tracking-[-0.03em] tabular text-ink sm:text-[28px]">
+          <p className="truncate font-mono text-[10px] font-medium uppercase tracking-[0.12em] text-ink-3">{label}</p>
+          <p className="mt-2 font-display text-[26px] font-semibold leading-none tracking-[-0.03em] tabular text-ink sm:text-[28px]">
             {formatNumber(Math.round(animated))}
           </p>
         </div>
         {Icon ? (
-          <span className={cn('grid h-9 w-9 shrink-0 place-items-center rounded-lg border', meta.icon, meta.text)}>
+          <span className={cn('grid h-9 w-9 shrink-0 place-items-center rounded-lg border transition-colors', meta.icon, meta.text)}>
             <Icon className="text-[16px]" aria-hidden="true" />
           </span>
         ) : null}

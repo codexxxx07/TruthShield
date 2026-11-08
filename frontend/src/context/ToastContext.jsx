@@ -17,9 +17,10 @@ function ToastCard({ toast, onDismiss }) {
   return (
     <div
       role="status"
-      className="pointer-events-auto relative w-[min(92vw,380px)] overflow-hidden rounded-xl border border-line bg-surface p-4 shadow-[var(--shadow-lg)] anim-slide-left"
+      className="cyber-menu pointer-events-auto relative w-[min(92vw,380px)] overflow-hidden rounded-xl p-4 anim-slide-left"
     >
-      <span className="absolute inset-y-0 left-0 w-[3px]" style={{ background: meta.bar }} aria-hidden="true" />
+      <span className="absolute inset-y-0 left-0 w-[3px]" style={{ background: meta.bar, boxShadow: `0 0 14px ${meta.bar}` }} aria-hidden="true" />
+      <span className="accent-rail absolute inset-x-0 top-0 opacity-40" aria-hidden="true" />
       <div className="flex items-start gap-3 pl-1.5">
         <Icon className={cn('mt-0.5 shrink-0 text-lg', meta.className)} aria-hidden="true" />
         <div className="min-w-0 flex-1">

@@ -19,15 +19,15 @@ export default function SectionHeading({ eyebrow, title, description, action, al
         {eyebrow ? (
           <span
             className={cn(
-              'mb-3 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em]',
+              'mb-3 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.12em]',
               tones[tone] || tones.brand,
             )}
           >
-            <span className="h-1 w-1 rounded-full bg-current" aria-hidden="true" />
+            <span className="h-1 w-1 rounded-full bg-current shadow-[0_0_8px_currentColor]" aria-hidden="true" />
             {eyebrow}
           </span>
         ) : null}
-        <h2 className="text-[24px] font-semibold leading-[1.2] tracking-[-0.03em] text-ink sm:text-[30px]">{title}</h2>
+        <h2 className="font-display text-[24px] font-semibold leading-[1.2] tracking-[-0.03em] text-ink sm:text-[30px]">{title}</h2>
         {description ? <p className="mt-3 text-[13.5px] leading-6 text-ink-2">{description}</p> : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}

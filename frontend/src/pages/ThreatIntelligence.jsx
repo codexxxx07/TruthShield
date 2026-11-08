@@ -325,7 +325,7 @@ export default function ThreatIntelligence() {
 
         <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div className="min-w-0 space-y-4">
-            <Card className="overflow-hidden">
+            <Card className="top-sheen overflow-hidden">
               <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line px-4 py-3.5">
                 <div className="min-w-0">
                   <p className="flex items-center gap-2 text-[13px] font-semibold text-ink">
@@ -686,7 +686,7 @@ export default function ThreatIntelligence() {
               </ul>
             </SectionCard>
 
-            <Card className="p-4">
+            <Card className="top-sheen p-4">
               <p className="flex items-center gap-2 text-[11.5px] font-semibold text-ink">
                 <FiAlertTriangle className="text-medium" aria-hidden="true" /> Reporting guidance
               </p>

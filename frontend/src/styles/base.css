@@ -1,6 +1,8 @@
 /* ---------------------------------------------------------------
    Base element styling. Kept in a layer so utilities can override.
----------------------------------------------------------------- */
+   Cyberpunk identity: deep space background, neon focus, crisp
+   futuristic headings and readable Inter body copy.
+--------------------------------------------------------------- */
 @layer base {
   * {
     border-color: var(--line);
@@ -14,6 +16,11 @@
   body {
     margin: 0;
     background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 75% 45% at 50% -12%, color-mix(in oklab, var(--neon) 9%, transparent), transparent 62%),
+      radial-gradient(ellipse 45% 38% at 92% 4%, color-mix(in oklab, var(--accent) 8%, transparent), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 4% 22%, color-mix(in oklab, var(--electric) 8%, transparent), transparent 68%);
+    background-attachment: fixed;
     color: var(--ink);
     font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
     font-feature-settings: "cv11", "ss01";
@@ -28,8 +35,9 @@
   h2,
   h3,
   h4 {
+    font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
     text-wrap: balance;
-    letter-spacing: -0.022em;
+    letter-spacing: -0.03em;
   }
 
   p {
@@ -37,14 +45,16 @@
   }
 
   ::selection {
-    background: var(--brand);
-    color: #ffffff;
+    background: color-mix(in oklab, var(--neon) 72%, transparent);
+    color: var(--on-brand);
+    text-shadow: none;
   }
 
   :focus-visible {
-    outline: 2px solid var(--brand);
+    outline: 2px solid color-mix(in oklab, var(--neon) 80%, transparent);
     outline-offset: 2px;
     border-radius: 4px;
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--neon) 14%, transparent);
   }
 
   a {
@@ -68,10 +78,17 @@
     color: var(--ink-3);
   }
 
-  /* Consistent thin scrollbars */
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  /* Consistent thin scrollbars with a neon rail */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--line-strong) transparent;
+    scrollbar-color: color-mix(in oklab, var(--neon) 38%, var(--line-strong)) transparent;
   }
   ::-webkit-scrollbar {
     width: 10px;
@@ -81,16 +98,21 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--line-strong);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--neon) 45%, transparent), var(--line-strong));
     border-radius: 99px;
     border: 3px solid var(--bg);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--ink-3);
+    background: linear-gradient(180deg, var(--neon), var(--electric));
   }
 
   .font-mono,
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Futuristic display type used by headings and brand moments */
+  .font-display {
+    font-family: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
   }
 }

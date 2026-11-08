@@ -22,15 +22,16 @@ export function SectionCard({
   return (
     <Card className={cn('flex flex-col', className)}>
       {title ? (
-        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-4">
+        <div className="relative flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-4">
+          <span className="pointer-events-none absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-brand/40 to-transparent" aria-hidden="true" />
           <div className="flex min-w-0 items-start gap-3">
             {Icon ? (
-              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-ink-2">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-brand/20 bg-brand/[0.07] text-brand">
                 <Icon className="text-[15px]" aria-hidden="true" />
               </span>
             ) : null}
             <div className="min-w-0">
-              <h3 className="text-[14px] font-semibold tracking-[-0.01em] text-ink">{title}</h3>
+              <h3 className="font-display text-[14px] font-semibold tracking-[-0.01em] text-ink">{title}</h3>
               {description ? <p className="mt-0.5 text-[12.5px] leading-5 text-ink-2">{description}</p> : null}
             </div>
           </div>
@@ -38,7 +39,7 @@ export function SectionCard({
         </div>
       ) : null}
       <div className={cn(!flush && 'px-5 py-5', 'flex-1', bodyClassName)}>{children}</div>
-      {footer ? <div className="border-t border-line bg-surface-2/60 px-5 py-3">{footer}</div> : null}
+      {footer ? <div className="border-t border-line bg-surface-2/50 px-5 py-3">{footer}</div> : null}
     </Card>
   );
 }

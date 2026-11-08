@@ -28,7 +28,7 @@ export default function Pagination({ page, pages, onChange, total, pageSize, cla
           type="button"
           onClick={() => onChange(page - 1)}
           disabled={page <= 1}
-          className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface text-ink-2 transition hover:border-brand/30 hover:text-ink disabled:pointer-events-none disabled:opacity-40"
+          className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface text-ink-2 transition hover:border-brand/40 hover:text-neon disabled:pointer-events-none disabled:opacity-40"
           aria-label="Previous page"
         >
           <FiChevronLeft className="text-sm" aria-hidden="true" />
@@ -42,8 +42,8 @@ export default function Pagination({ page, pages, onChange, total, pageSize, cla
             className={cn(
               'h-8 min-w-8 rounded-lg border px-2 text-[12px] font-medium tabular transition',
               number === page
-                ? 'border-brand/30 bg-brand/10 text-brand'
-                : 'border-line bg-surface text-ink-2 hover:border-brand/25 hover:text-ink',
+                ? 'border-brand/35 bg-brand/10 text-brand shadow-[inset_0_0_14px_-8px_var(--brand-glow)]'
+                : 'border-line bg-surface text-ink-2 hover:border-brand/25 hover:text-neon',
             )}
           >
             {number}
@@ -53,7 +53,7 @@ export default function Pagination({ page, pages, onChange, total, pageSize, cla
           type="button"
           onClick={() => onChange(page + 1)}
           disabled={page >= pages}
-          className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface text-ink-2 transition hover:border-brand/30 hover:text-ink disabled:pointer-events-none disabled:opacity-40"
+          className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface text-ink-2 transition hover:border-brand/40 hover:text-neon disabled:pointer-events-none disabled:opacity-40"
           aria-label="Next page"
         >
           <FiChevronRight className="text-sm" aria-hidden="true" />

@@ -61,15 +61,17 @@ function AdvancedMenu() {
 
       {open ? (
         <div
-          className="fixed left-1/2 top-[66px] z-[75] w-[min(780px,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-surface shadow-[var(--shadow-lg)] anim-pop"
+          className="cyber-menu fixed left-1/2 top-[66px] z-[75] w-[min(780px,calc(100vw-2rem))] -translate-x-1/2 overflow-hidden rounded-2xl anim-pop"
           role="menu"
         >
-          <div className="flex items-center justify-between gap-4 border-b border-line bg-surface-2/60 px-5 py-3.5">
+          <div className="flex items-center justify-between gap-4 border-b border-line bg-surface-2/40 px-5 py-3.5">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-brand">Advanced detection</p>
-              <p className="mt-0.5 text-[12.5px] text-ink-2">13 specialised modules for deep infrastructure analysis</p>
+              <p className="flex items-center gap-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.16em] text-neon">
+                <span className="status-dot text-neon" aria-hidden="true" /> Advanced detection
+              </p>
+              <p className="mt-1 text-[12.5px] text-ink-2">13 specialised modules for deep infrastructure analysis</p>
             </div>
-            <Link to="/advanced" onClick={() => setOpen(false)} className="arrow-link inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-ink-2 transition hover:text-brand">
+            <Link to="/advanced" onClick={() => setOpen(false)} className="arrow-link inline-flex shrink-0 items-center gap-1.5 text-[12px] font-medium text-ink-2 transition hover:text-neon">
               All modules <FiArrowRight className="arrow-link-icon text-[13px]" aria-hidden="true" />
             </Link>
           </div>
@@ -111,7 +113,7 @@ function ThemeToggle({ className }) {
       type="button"
       onClick={toggleTheme}
       className={cn(
-        'grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2/60 text-ink-2 transition hover:border-brand/30 hover:text-ink',
+        'grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2/60 text-ink-2 transition hover:border-brand/40 hover:bg-brand/10 hover:text-neon hover:shadow-[0_0_20px_-6px_var(--brand-glow)]',
         className,
       )}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
@@ -153,7 +155,7 @@ function UserMenu({ user, logout }) {
         <FiChevronDown className={cn('text-[12px] text-ink-3 transition-transform', open && 'rotate-180')} aria-hidden="true" />
       </button>
       {open ? (
-        <div className="absolute right-0 z-[75] mt-2 w-64 overflow-hidden rounded-xl border border-line bg-surface p-1.5 shadow-[var(--shadow-lg)] anim-pop">
+        <div className="cyber-menu absolute right-0 z-[75] mt-2 w-64 overflow-hidden rounded-xl p-1.5 anim-pop">
           <div className="border-b border-line px-2.5 pb-2.5 pt-1.5">
             <p className="truncate text-[12.5px] font-semibold text-ink">{user.name}</p>
             <p className="truncate text-[11.5px] text-ink-3">{user.email}</p>
@@ -216,9 +218,12 @@ export default function Navbar() {
     <header
       className={cn(
         'sticky top-0 z-[70] w-full transition-all duration-300',
-        scrolled ? 'border-b border-line bg-bg/85 backdrop-blur-xl' : 'border-b border-transparent bg-bg/60 backdrop-blur-md',
+        scrolled
+          ? 'border-b border-line bg-bg/80 shadow-[0_18px_40px_-30px_rgba(0,0,0,0.9)] backdrop-blur-2xl'
+          : 'border-b border-transparent bg-bg/55 backdrop-blur-md',
       )}
     >
+      <span className="accent-rail absolute inset-x-0 top-0 opacity-70" aria-hidden="true" />
       <div className="shell flex h-16 items-center gap-3">
         <Logo />
 
@@ -258,6 +263,9 @@ export default function Navbar() {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+          <span className="hidden items-center gap-1.5 rounded-md border border-line bg-surface-2/40 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.14em] text-ink-3 2xl:inline-flex">
+            <span className="status-dot text-safe" aria-hidden="true" /> SOC online
+          </span>
           <ThemeToggle />
           {user ? (
             <UserMenu user={user} logout={logout} />
@@ -265,7 +273,7 @@ export default function Navbar() {
             <>
               <Link
                 to="/login"
-                className="hidden rounded-lg px-3 py-2 text-[12.5px] font-medium text-ink-2 transition hover:bg-surface-2 hover:text-ink sm:inline-flex"
+                className="hidden rounded-lg px-3 py-2 text-[12.5px] font-medium text-ink-2 transition hover:bg-surface-2 hover:text-neon sm:inline-flex"
               >
                 Login
               </Link>
@@ -277,7 +285,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2/60 text-ink lg:hidden"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-line bg-surface-2/60 text-ink-2 transition hover:border-brand/40 hover:text-neon lg:hidden"
             aria-label="Open navigation menu"
             aria-expanded={mobileOpen}
           >
@@ -298,10 +306,11 @@ export default function Navbar() {
           aria-modal="true"
           aria-label="Navigation"
           className={cn(
-            'fixed right-0 top-0 z-[86] flex h-full w-[min(92vw,400px)] flex-col border-l border-line bg-surface transition-transform duration-300 ease-out',
+            'fixed right-0 top-0 z-[86] flex h-full w-[min(92vw,400px)] flex-col border-l border-line bg-surface/95 backdrop-blur-2xl transition-transform duration-300 ease-out',
             mobileOpen ? 'translate-x-0' : 'translate-x-full',
           )}
         >
+          <span className="accent-rail absolute inset-x-0 top-0 opacity-70" aria-hidden="true" />
           <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-4">
             <Logo />
             <button
@@ -323,7 +332,9 @@ export default function Navbar() {
                   onClick={closeMobile}
                   className={cn(
                     'flex items-center justify-between rounded-lg px-3 py-2.5 text-[13.5px] font-medium transition',
-                    isActive(pathname, item.to) ? 'bg-brand/10 text-brand' : 'text-ink-2 hover:bg-surface-2 hover:text-ink',
+                    isActive(pathname, item.to)
+                      ? 'bg-brand/10 text-brand shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--neon)_18%,transparent)]'
+                      : 'text-ink-2 hover:bg-surface-2 hover:text-ink',
                   )}
                 >
                   {item.label}
@@ -454,7 +465,7 @@ function MoreMenu({ label, items }) {
         <FiChevronDown className={cn('text-[12px] transition-transform', open && 'rotate-180')} aria-hidden="true" />
       </button>
       {open ? (
-        <div className="absolute left-0 z-[75] mt-2 w-56 overflow-hidden rounded-xl border border-line bg-surface p-1.5 shadow-[var(--shadow-lg)] anim-pop">
+        <div className="cyber-menu absolute left-0 z-[75] mt-2 w-56 overflow-hidden rounded-xl p-1.5 anim-pop">
           {items.map((item) => (
             <Link
               key={item.to}

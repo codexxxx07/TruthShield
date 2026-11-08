@@ -4,7 +4,7 @@ import { cn } from '../../lib/utils';
 
 const CONTROL =
   'w-full rounded-xl border bg-surface text-sm text-ink outline-none transition-all duration-200 placeholder:text-ink-3 ' +
-  'focus:border-brand focus:ring-4 focus:ring-brand/10 disabled:cursor-not-allowed disabled:opacity-60';
+  'hover:border-brand/30 focus:border-brand focus:ring-4 focus:ring-brand/10 disabled:cursor-not-allowed disabled:opacity-60';
 
 export function Field({ label, htmlFor, hint, error, required, children, className, action }) {
   return (
@@ -91,7 +91,7 @@ export function Checkbox({ label, description, className, id: providedId, ...res
       <input
         id={id}
         type="checkbox"
-        className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[5px] border border-line-strong bg-surface transition checked:border-brand checked:bg-brand focus-visible:ring-2 focus-visible:ring-brand/40"
+        className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-[5px] border border-line-strong bg-surface transition checked:border-brand checked:bg-brand checked:shadow-[0_0_12px_-2px_var(--brand-glow)] focus-visible:ring-2 focus-visible:ring-brand/40"
         {...rest}
       />
       <span className="min-w-0">

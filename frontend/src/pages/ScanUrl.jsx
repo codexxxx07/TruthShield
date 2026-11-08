@@ -33,7 +33,7 @@ const TONE_BY_VERDICT = { safe: 'safe', suspicious: 'medium', malicious: 'critic
 function ScanProgress({ stageIndex, url, onCancel }) {
   const percent = Math.round((stageIndex / SCAN_STAGES.length) * 100);
   return (
-    <Card className="relative overflow-hidden">
+    <Card className="scan-sweep relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-[2px] bg-surface-3">
         <div className="h-full bg-brand transition-[width] duration-300" style={{ width: `${percent}%` }} />
       </div>
@@ -290,7 +290,7 @@ export default function ScanUrl() {
             {phase === 'done' && result ? (
               <>
                 {/* Verdict summary */}
-                <Card className="relative overflow-hidden">
+                <Card className="top-sheen relative overflow-hidden">
                   <div className={cn('h-1 w-full', result.verdict === 'malicious' ? 'bg-critical' : result.verdict === 'suspicious' ? 'bg-medium' : 'bg-safe')} />
                   <div className="p-5 sm:p-6">
                     <div className="flex flex-col gap-5 sm:flex-row sm:items-start">

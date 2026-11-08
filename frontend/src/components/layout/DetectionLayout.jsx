@@ -14,15 +14,15 @@ export default function DetectionLayout() {
           <div className="sticky top-[84px]">
             <Link
               to="/advanced"
-              className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-3 transition hover:text-brand"
+              className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-3 transition hover:text-neon"
             >
               <FiArrowLeft className="text-[12px]" aria-hidden="true" /> All modules
             </Link>
-            <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-3">Detection workspace</p>
-            <nav className="mt-2 max-h-[calc(100vh-230px)] space-y-4 overflow-y-auto pb-2 pr-1" aria-label="Detection modules">
+            <p className="hud-label mt-4">Detection workspace</p>
+            <nav className="rail mt-2 max-h-[calc(100vh-230px)] space-y-4 overflow-y-auto pb-2 pl-1 pr-1" aria-label="Detection modules">
               {FEATURE_CATEGORIES.map((category) => (
                 <div key={category}>
-                  <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-ink-3/80">{category}</p>
+                  <p className="mb-1 px-2 font-mono text-[9.5px] font-semibold uppercase tracking-[0.1em] text-ink-3/80">{category}</p>
                   <ul className="space-y-0.5">
                     {DETECTION_FEATURES.filter((feature) => feature.category === category).map((feature) => {
                       const active = pathname === `/advanced/${feature.slug}`;
@@ -33,7 +33,7 @@ export default function DetectionLayout() {
                             className={cn(
                               'group flex items-start gap-2.5 rounded-lg border border-transparent px-2 py-2 text-[12px] leading-4 transition-colors',
                               active
-                                ? 'border-brand/20 bg-brand/10 font-medium text-brand'
+                                ? 'border-brand/25 bg-brand/10 font-medium text-brand shadow-[inset_0_0_18px_-10px_var(--brand-glow)]'
                                 : 'text-ink-2 hover:bg-surface-2 hover:text-ink',
                             )}
                             aria-current={active ? 'page' : undefined}
@@ -51,8 +51,8 @@ export default function DetectionLayout() {
                 </div>
               ))}
             </nav>
-            <div className="mt-3 rounded-xl border border-line bg-surface-2/60 p-3">
-              <p className="flex items-center gap-1.5 text-[10.5px] font-semibold uppercase tracking-[0.08em] text-ink-3">
+            <div className="card-inset hud-corners mt-3 p-3">
+              <p className="flex items-center gap-1.5 font-mono text-[9.5px] font-semibold uppercase tracking-[0.1em] text-ink-3">
                 <FiCpu className="text-[11px]" aria-hidden="true" /> Simulated output
               </p>
               <p className="mt-1.5 text-[11px] leading-4 text-ink-3">
@@ -65,7 +65,7 @@ export default function DetectionLayout() {
         <div className="min-w-0">
           <div className="mb-5 lg:hidden">
             <div className="flex items-center justify-between gap-3">
-              <Link to="/advanced" className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-3 transition hover:text-brand">
+              <Link to="/advanced" className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-ink-3 transition hover:text-neon">
                 <FiArrowLeft className="text-[12px]" aria-hidden="true" /> All modules
               </Link>
               <span className="rounded-full border border-line bg-surface-2 px-2 py-1 font-mono text-[9.5px] uppercase tracking-[0.08em] text-ink-3">
@@ -82,8 +82,8 @@ export default function DetectionLayout() {
                     className={cn(
                       'inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11.5px] font-medium transition',
                       active
-                        ? 'border-brand/25 bg-brand/10 text-brand'
-                        : 'border-line bg-surface text-ink-2 hover:border-brand/25 hover:text-ink',
+                        ? 'border-brand/30 bg-brand/10 text-brand shadow-[inset_0_0_14px_-8px_var(--brand-glow)]'
+                        : 'border-line bg-surface text-ink-2 hover:border-brand/25 hover:text-neon',
                     )}
                   >
                     <FeatureIcon name={feature.icon} className="text-[12px]" />

@@ -177,7 +177,7 @@ export default function Dashboard() {
         {tab === 'overview' ? (
           <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
             <div className="min-w-0 space-y-4">
-              <Card className="p-5">
+              <Card className="top-sheen p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-[13px] font-semibold text-ink">Detection volume</p>
@@ -253,7 +253,7 @@ export default function Dashboard() {
             </div>
 
             <div className="space-y-4">
-              <Card className="p-4">
+              <Card className="top-sheen p-4">
                 <div className="flex items-center gap-2">
                   <span className="grid h-8 w-8 place-items-center rounded-lg border border-brand/25 bg-brand/10 text-brand">
                     <FiZap className="text-[14px]" aria-hidden="true" />

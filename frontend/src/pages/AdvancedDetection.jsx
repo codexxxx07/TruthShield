@@ -88,8 +88,8 @@ export default function AdvancedDetection() {
                 className={cn(
                   'rounded-full border px-3 py-1.5 text-[11.5px] font-medium transition',
                   category === item
-                    ? 'border-brand/30 bg-brand/10 text-brand'
-                    : 'border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink',
+                    ? 'border-brand/35 bg-brand/10 text-brand shadow-[inset_0_0_16px_-8px_var(--brand-glow)]'
+                    : 'border-line bg-surface text-ink-2 hover:border-brand/30 hover:text-neon',
                 )}
               >
                 {item}
@@ -113,12 +113,12 @@ export default function AdvancedDetection() {
             {features.map((feature) => (
               <Card key={feature.slug} hover className="group flex flex-col p-5">
                 <div className="flex items-start justify-between gap-3">
-                  <span className={cn('grid h-10 w-10 place-items-center rounded-xl border', TONE_CLASS[feature.tone] || TONE_CLASS.low)}>
+                  <span className={cn('grid h-10 w-10 place-items-center rounded-xl border shadow-[inset_0_0_18px_-8px_currentColor]', TONE_CLASS[feature.tone] || TONE_CLASS.low)}>
                     <FeatureIcon name={feature.icon} className="text-[17px]" />
                   </span>
                   <Badge tone="neutral" size="sm">{feature.category}</Badge>
                 </div>
-                <h2 className="mt-4 text-[14px] font-semibold leading-5 text-ink">{feature.name}</h2>
+                <h2 className="mt-4 font-display text-[14px] font-semibold leading-5 text-ink">{feature.name}</h2>
                 <p className="mt-1.5 flex-1 text-[12px] leading-5 text-ink-2">{feature.description}</p>
 
                 <ul className="mt-3 space-y-1.5">

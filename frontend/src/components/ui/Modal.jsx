@@ -45,11 +45,12 @@ export default function Modal({ open, onClose, title, description, children, foo
         aria-label={typeof title === 'string' ? title : 'Dialog'}
         tabIndex={-1}
         className={cn(
-          'relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border border-line bg-surface shadow-[var(--shadow-lg)] outline-none anim-pop sm:rounded-2xl',
+          'cyber-menu relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl outline-none anim-pop sm:rounded-2xl',
           SIZES[size] || SIZES.md,
           className,
         )}
       >
+        <span className="accent-rail absolute inset-x-0 top-0 z-10 opacity-70" aria-hidden="true" />
         {title ? (
           <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4">
             <div className="min-w-0">
@@ -67,7 +68,7 @@ export default function Modal({ open, onClose, title, description, children, foo
           </div>
         ) : null}
         <div className={cn('flex-1 overflow-y-auto px-5 py-5', bodyClassName)}>{children}</div>
-        {footer ? <div className="border-t border-line bg-surface-2/60 px-5 py-3.5">{footer}</div> : null}
+        {footer ? <div className="border-t border-line bg-surface-2/50 px-5 py-3.5">{footer}</div> : null}
       </div>
     </div>,
     document.body,

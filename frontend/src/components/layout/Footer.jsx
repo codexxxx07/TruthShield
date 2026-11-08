@@ -21,8 +21,11 @@ const COMPANY = [
 
 export default function Footer() {
   return (
-    <footer className="relative mt-auto overflow-hidden border-t border-line bg-surface/40">
-      <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
+    <footer className="relative mt-auto overflow-hidden border-t border-line bg-surface/30">
+      <span className="accent-rail absolute inset-x-0 top-0 opacity-60" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 circuit-grid opacity-40" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 dot-grid opacity-30" aria-hidden="true" />
+      <div className="pointer-events-none absolute -top-24 left-1/4 h-48 w-[420px] aurora aurora-brand opacity-40" aria-hidden="true" />
       <div className="shell relative">
         <div className="grid gap-10 py-12 lg:grid-cols-[1.4fr_1fr_1.4fr_1fr] lg:gap-8 lg:py-14">
           <div>
@@ -31,17 +34,14 @@ export default function Footer() {
               A trust layer for the open web — combining certificate intelligence, brand protection and
               behavioural analysis into one explainable verdict.
             </p>
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-safe/25 bg-safe/[0.07] px-2.5 py-1 text-[11px] font-medium text-safe">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-safe opacity-70 anim-ping" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-safe" />
-              </span>
+            <div className="neon-chip mt-4 border-safe/30 bg-safe/[0.08] text-safe shadow-[inset_0_0_16px_-8px_rgba(0,255,163,0.5)]">
+              <span className="status-dot text-safe" aria-hidden="true" />
               All demo systems operational
             </div>
           </div>
 
           <nav aria-label="Platform">
-            <h2 className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">Platform</h2>
+            <h2 className="hud-label">Platform</h2>
             <ul className="mt-3.5 space-y-2.5">
               {PLATFORM.map((item) => (
                 <li key={item.to}>
@@ -54,7 +54,7 @@ export default function Footer() {
           </nav>
 
           <nav aria-label="Detection modules">
-            <h2 className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">Detection</h2>
+            <h2 className="hud-label">Detection</h2>
             <ul className="mt-3.5 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
               {DETECTION_FEATURES.slice(0, 6).map((feature) => (
                 <li key={feature.slug}>
@@ -64,15 +64,15 @@ export default function Footer() {
                 </li>
               ))}
               <li>
-                <Link to="/advanced" className="inline-flex items-center gap-1 text-[12.5px] font-medium text-brand">
-                  All 13 modules <FiArrowUpRight className="text-[11px]" aria-hidden="true" />
+                <Link to="/advanced" className="arrow-link inline-flex items-center gap-1 text-[12.5px] font-medium text-brand transition hover:text-neon">
+                  All 13 modules <FiArrowUpRight className="arrow-link-icon text-[11px]" aria-hidden="true" />
                 </Link>
               </li>
             </ul>
           </nav>
 
           <nav aria-label="Company">
-            <h2 className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink-3">Workspace</h2>
+            <h2 className="hud-label">Workspace</h2>
             <ul className="mt-3.5 space-y-2.5">
               {COMPANY.map((item) => (
                 <li key={item.to}>
@@ -85,7 +85,7 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="hairline" />
+        <div className="cyber-divider" />
 
         <div className="flex flex-col gap-3 py-5 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-[11.5px] text-ink-3">

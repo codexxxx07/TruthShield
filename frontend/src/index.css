@@ -6,90 +6,136 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ---------------------------------------------------------------
-   TruthShield design tokens
-   Semantic variables are remapped per theme, so components only
-   ever reference intent (surface, line, ink, critical...).
+   TruthShield — Cyberpunk SOC design tokens
+   The dark theme is the primary experience. Semantic variables are
+   remapped per theme so every component only references intent
+   (surface, line, ink, critical…) and inherits the identity.
 ---------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  --bg: #f4f7fc;
-  --bg-soft: #eaf0fa;
+  /* Daylight operations mode — same futuristic language, high contrast */
+  --bg: #eef4fb;
+  --bg-soft: #e3edf9;
   --surface: #ffffff;
-  --surface-2: #f6f9fe;
-  --surface-3: #edf2fb;
-  --overlay: rgba(8, 14, 26, 0.5);
+  --surface-2: #f2f8ff;
+  --surface-3: #e5eefb;
+  --overlay: rgba(7, 11, 20, 0.48);
 
-  --line: #e2e8f4;
-  --line-strong: #c8d4e8;
+  --line: rgba(14, 116, 144, 0.16);
+  --line-strong: rgba(37, 99, 235, 0.24);
 
-  --ink: #070d19;
-  --ink-2: #46536d;
-  --ink-3: #7a869c;
+  --ink: #071326;
+  --ink-2: #42566f;
+  --ink-3: #6a7d95;
 
-  --brand: #2f56f0;
-  --brand-2: #2340c4;
-  --brand-soft: #e7ecfe;
-  --brand-glow: rgba(47, 86, 240, 0.18);
-  --btn: #2f56f0;
-  --btn-2: #2340c4;
+  --brand: #0e7490;
+  --brand-2: #2563eb;
+  --brand-soft: rgba(14, 116, 144, 0.09);
+  --brand-glow: rgba(14, 116, 144, 0.2);
+  --btn: #0891b2;
+  --btn-2: #0e7490;
   --on-brand: #ffffff;
+  --btn-from: #0891b2;
+  --btn-via: #2563eb;
+  --btn-to: #1d4ed8;
 
-  --safe: #0b8f6a;
-  --low: #0a7ba8;
-  --medium: #a05a00;
-  --high: #c2470a;
-  --critical: #d3233c;
-  --info: #5b6a85;
+  --neon: #0e7490;
+  --accent: #7c3aed;
+  --hot: #db2777;
+  --electric: #2563eb;
 
-  --shadow-xs: 0 1px 2px rgba(11, 22, 44, 0.05);
-  --shadow-sm: 0 1px 2px rgba(11, 22, 44, 0.05), 0 4px 12px -4px rgba(11, 22, 44, 0.08);
-  --shadow-md: 0 1px 2px rgba(11, 22, 44, 0.04), 0 12px 28px -14px rgba(11, 22, 44, 0.2);
-  --shadow-lg: 0 1px 2px rgba(11, 22, 44, 0.04), 0 28px 60px -30px rgba(11, 22, 44, 0.32);
-  --hairline: rgba(11, 22, 44, 0.08);
+  --safe: #059669;
+  --low: #0284c7;
+  --medium: #b45309;
+  --high: #c2410c;
+  --critical: #dc2626;
+  --info: #64748b;
+
+  --grid-line: rgba(14, 116, 144, 0.075);
+  --grid-line-strong: rgba(37, 99, 235, 0.14);
+  --scanline: rgba(7, 19, 38, 0.035);
+  --glass: rgba(255, 255, 255, 0.74);
+  --glass-border: rgba(14, 116, 144, 0.2);
+  --card-sheen: rgba(255, 255, 255, 0.9);
+  --glow-cyan: rgba(14, 116, 144, 0.28);
+  --glow-purple: rgba(124, 58, 237, 0.2);
+  --glow-magenta: rgba(219, 39, 119, 0.16);
+
+  --shadow-xs: 0 1px 2px rgba(11, 22, 44, 0.06);
+  --shadow-sm: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
+    0 10px 26px -18px rgba(11, 22, 44, 0.28);
+  --shadow-md: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
+    0 18px 40px -22px rgba(11, 22, 44, 0.32);
+  --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 2px rgba(11, 22, 44, 0.05),
+    0 34px 70px -34px rgba(11, 22, 44, 0.42);
+  --hairline: rgba(37, 99, 235, 0.14);
 }
 
 .dark {
   color-scheme: dark;
 
-  --bg: #05080f;
-  --bg-soft: #080e18;
-  --surface: #0b121c;
-  --surface-2: #0f1824;
-  --surface-3: #142030;
-  --overlay: rgba(1, 3, 7, 0.72);
+  /* Primary cyberpunk experience */
+  --bg: #070b14;
+  --bg-soft: #0b1220;
+  --surface: #101a2b;
+  --surface-2: #142238;
+  --surface-3: #1a2c46;
+  --overlay: rgba(2, 5, 12, 0.8);
 
-  --line: #1a2636;
-  --line-strong: #2a3a50;
+  --line: rgba(0, 245, 255, 0.13);
+  --line-strong: rgba(0, 245, 255, 0.24);
 
-  --ink: #e9eff9;
-  --ink-2: #9caac1;
-  --ink-3: #6d7d95;
+  --ink: #eafbff;
+  --ink-2: #94a3b8;
+  --ink-3: #64748b;
 
-  --brand: #7396ff;
-  --brand-2: #4a72ff;
-  --brand-soft: rgba(115, 150, 255, 0.12);
-  --brand-glow: rgba(90, 130, 255, 0.26);
-  --btn: #3d63e8;
-  --btn-2: #5175f5;
-  --on-brand: #ffffff;
+  --brand: #00f5ff;
+  --brand-2: #2563eb;
+  --brand-soft: rgba(0, 245, 255, 0.1);
+  --brand-glow: rgba(0, 245, 255, 0.34);
+  --btn: #00f5ff;
+  --btn-2: #38bdf8;
+  --on-brand: #04121a;
+  --btn-from: #00f5ff;
+  --btn-via: #4adeff;
+  --btn-to: #2563eb;
 
-  --safe: #35ddb0;
-  --low: #56c8f2;
-  --medium: #ffc65c;
-  --high: #ff9155;
-  --critical: #ff5f74;
-  --info: #93a4bd;
+  --neon: #00f5ff;
+  --accent: #a855f7;
+  --hot: #ff2bd6;
+  --electric: #2563eb;
 
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 16px -8px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.45), 0 18px 40px -22px rgba(0, 0, 0, 0.8);
-  --shadow-lg: 0 1px 2px rgba(0, 0, 0, 0.5), 0 36px 80px -40px rgba(0, 0, 0, 0.9);
-  --hairline: rgba(148, 178, 220, 0.1);
+  --safe: #00ffa3;
+  --low: #38bdf8;
+  --medium: #ffd166;
+  --high: #ff9f43;
+  --critical: #ff3864;
+  --info: #7dd3fc;
+
+  --grid-line: rgba(0, 245, 255, 0.06);
+  --grid-line-strong: rgba(0, 245, 255, 0.15);
+  --scanline: rgba(0, 245, 255, 0.035);
+  --glass: rgba(16, 26, 43, 0.66);
+  --glass-border: rgba(0, 245, 255, 0.18);
+  --card-sheen: rgba(255, 255, 255, 0.055);
+  --glow-cyan: rgba(0, 245, 255, 0.38);
+  --glow-purple: rgba(168, 85, 247, 0.32);
+  --glow-magenta: rgba(255, 43, 214, 0.26);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-sm: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.5),
+    0 12px 32px -20px rgba(0, 0, 0, 0.9);
+  --shadow-md: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.55),
+    0 20px 48px -26px rgba(0, 0, 0, 0.95);
+  --shadow-lg: inset 0 1px 0 var(--card-sheen), 0 1px 2px rgba(0, 0, 0, 0.6),
+    0 40px 90px -40px rgba(0, 0, 0, 1);
+  --hairline: rgba(0, 245, 255, 0.12);
 }
 
 @theme inline {
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   --color-bg: var(--bg);
@@ -113,6 +159,11 @@
   --color-btn-2: var(--btn-2);
   --color-on-brand: var(--on-brand);
 
+  --color-neon: var(--neon);
+  --color-accent: var(--accent);
+  --color-hot: var(--hot);
+  --color-electric: var(--electric);
+
   --color-safe: var(--safe);
   --color-low: var(--low);
   --color-medium: var(--medium);
@@ -120,7 +171,7 @@
   --color-critical: var(--critical);
   --color-info: var(--info);
 
-  --radius-card: 18px;
+  --radius-card: 16px;
 
   --shadow-card: var(--shadow-sm);
   --shadow-float: var(--shadow-lg);

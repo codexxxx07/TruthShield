@@ -61,15 +61,15 @@ function HeroStat({ stat }) {
   const Icon = stat.icon;
   return (
     <div className="flex items-start gap-2.5">
-      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-line bg-surface-2 text-ink-3">
+      <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-brand/20 bg-brand/[0.07] text-brand">
         <Icon className="text-[14px]" aria-hidden="true" />
       </span>
       <div className="min-w-0">
-        <p className="text-[19px] font-semibold leading-none tracking-[-0.02em] tabular text-ink">
+        <p className="font-display text-[19px] font-semibold leading-none tracking-[-0.02em] tabular text-ink">
           {stat.decimals ? animated.toFixed(stat.decimals) : formatNumber(Math.round(animated))}
           {stat.suffix}
         </p>
-        <p className="mt-1 truncate text-[10.5px] uppercase tracking-[0.07em] text-ink-3">{stat.label}</p>
+        <p className="mt-1 truncate font-mono text-[9.5px] uppercase tracking-[0.08em] text-ink-3">{stat.label}</p>
       </div>
     </div>
   );
@@ -84,7 +84,7 @@ function HeroVisual() {
         <div className="radar absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40" />
       </div>
 
-      <div className="card top-sheen relative overflow-hidden p-0 shadow-[var(--shadow-lg)]">
+      <div className="card top-sheen hud-corners relative overflow-hidden p-0 shadow-[var(--shadow-lg)]">
         <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
           <span className="flex items-center gap-2 text-[11.5px] font-medium text-ink-2">
             <span className="relative flex h-2 w-2">
@@ -243,25 +243,27 @@ export default function Home() {
       {/* ---------------- HERO ---------------- */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 grid-lines" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-0 circuit-grid opacity-30" aria-hidden="true" />
         <div className="aurora aurora-brand -top-40 left-[8%] h-72 w-[520px]" aria-hidden="true" />
-        <div className="aurora aurora-safe right-[4%] top-[18%] h-56 w-[360px] opacity-40" aria-hidden="true" />
+        <div className="aurora aurora-accent right-[2%] top-[10%] h-56 w-[320px] opacity-30" aria-hidden="true" />
+        <div className="aurora aurora-safe right-[4%] top-[30%] h-56 w-[360px] opacity-30" aria-hidden="true" />
 
         <div className="shell relative pb-14 pt-12 sm:pb-16 sm:pt-16 lg:pb-20 lg:pt-20">
           <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-brand/25 bg-brand/10 px-2.5 py-1 text-[10.5px] font-semibold uppercase tracking-[0.1em] text-brand">
+                <span className="neon-chip">
                   <FiShield className="text-[11px]" aria-hidden="true" /> Digital trust platform
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-1 text-[10.5px] font-medium text-ink-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-safe" aria-hidden="true" /> 13 detection modules online
+                  <span className="status-dot text-safe" aria-hidden="true" /> 13 detection modules online
                 </span>
               </div>
 
-              <h1 className="mt-5 text-[38px] font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-[52px] lg:text-[58px]">
+              <h1 className="mt-5 font-display text-[38px] font-semibold leading-[1.04] tracking-[-0.045em] text-ink sm:text-[52px] lg:text-[58px]">
                 Trust nothing.
                 <br />
-                <span className="text-gradient">Verify everything.</span>
+                <span className="text-gradient title-glow">Verify everything.</span>
               </h1>
 
               <p className="mt-4 max-w-xl text-[14px] leading-6 text-ink-2 sm:text-[15px] sm:leading-7">
@@ -719,18 +721,21 @@ export default function Home() {
       {/* ---------------- CTA ---------------- */}
       <section className="py-16 sm:py-20">
         <div className="shell">
-          <div className="relative overflow-hidden rounded-2xl border border-brand/25 bg-surface p-6 sm:p-10">
+          <div className="relative overflow-hidden rounded-2xl border border-brand/30 bg-surface p-6 shadow-[var(--shadow-lg),0_0_60px_-30px_var(--brand-glow)] sm:p-10">
+            <span className="accent-rail absolute inset-x-0 top-0 opacity-70" aria-hidden="true" />
             <div className="pointer-events-none absolute inset-0 grid-lines opacity-80" aria-hidden="true" />
+            <div className="pointer-events-none absolute inset-0 circuit-grid opacity-30" aria-hidden="true" />
             <div className="aurora aurora-brand -right-10 -top-16 h-56 w-[420px]" aria-hidden="true" />
+            <div className="aurora aurora-hot -bottom-24 left-1/4 h-48 w-[340px] opacity-30" aria-hidden="true" />
             <div className="relative grid gap-6 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand/15 text-brand">
+                  <span className="grid h-8 w-8 place-items-center rounded-lg border border-brand/25 bg-brand/10 text-brand shadow-[inset_0_0_18px_-8px_var(--brand-glow)]">
                     <FiShield className="text-[15px]" aria-hidden="true" />
                   </span>
-                  <span className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-brand">Start with one link</span>
+                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-brand">Start with one link</span>
                 </div>
-                <h2 className="mt-4 text-[26px] font-semibold leading-[1.15] tracking-[-0.035em] text-ink sm:text-[34px]">
+                <h2 className="mt-4 font-display text-[26px] font-semibold leading-[1.15] tracking-[-0.035em] text-ink sm:text-[34px]">
                   Put every link on trial before your users do.
                 </h2>
                 <p className="mt-2.5 max-w-xl text-[13px] leading-6 text-ink-2">
